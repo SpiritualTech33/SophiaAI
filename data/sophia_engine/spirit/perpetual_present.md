@@ -1,0 +1,11 @@
+---
+title: Perpetual Present
+category: spirit
+author: Cosmos De La Cruz
+date: 2026
+---
+# Perpetual Present
+
+I begin by asking, since questioning is the key that opens the doors to the temple of knowledge. What happens to a man when he dilutes space, time, and body? When he stops observing time pass, when he stops worrying about what will be or what was, and decides to live only in the perpetual present? Suddenly there comes a moment when the observation of the mind is more important than the passing of time. You pay more attention to your mind than to your ephemeral impulses, which come and go like a symphony. When you begin to observe your entire being in the present, creating tomorrow with what you are deciding today, you suddenly realize that you are someone capable of creating your own reality. Someone who fully trusts in himself, because he knows he is guided by something much greater than him. Greater than our planet. Greater than our solar system, our galaxy - even greater than our universe. A superior being, creator of all that exists, all that is, all that was, and all that will be. What happens, then, when you begin to live through the eyes of that which guides me, of that which is above all? I say it; It is peace. It is love. It is harmony. It is unity, plenitude, and hope. It is light, beatitude, and divinity. That is what happens, that is what your essence transforms into. You dilute all the dense evils, coming from the corporeal nature of man, and transmute them into ethereal powers, elevated, of divine and incorporeal character. Bliss is with me; now in the present, since it is God, sovereign, creator of all, manifester of manifestation. The reason and cause in itself of existence. Creator and created. Father and son, teacher and disciple. Unique in existence, since his existence depends on himself. That same being is the one who guides me, takes care of me, blesses me, and loves me. And for that very reason, I love, trust, honor, and value him. May my faith always be with you Lord, may it be your will, your virtue, and your strength that guides me on my path through eternity.
+
+GOD  MEDITATION  SPIRIT  ZEN  PHILOSOPHY  SPIRITUALITY  LOVE  DIVINE  COSMOS
