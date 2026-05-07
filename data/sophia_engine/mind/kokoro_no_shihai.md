@@ -1,6 +1,6 @@
 ---
 title: Kokoro No Shihai - Miyamoto Musashi’s Method to Conquer the Mind
-category: philosophy
+category: mind
 author: Cosmos De La Cruz
 date: 2026
 ---

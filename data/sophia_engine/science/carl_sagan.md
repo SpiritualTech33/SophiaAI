@@ -49,7 +49,7 @@ Sagan conducted laboratory experiments in the early 1960s exploring how complex 
 
 ## Sagan and Cosmos
 
-*Cosmos: A Personal Voyage* (1980) is, by any serious measure, a scientific masterpiece.
+Cosmos: A Personal Voyage (1980) is, by any serious measure, a scientific masterpiece.
 
 The thirteen-episode television series reached an estimated 500 million viewers in 60 countries and remains one of the most widely watched documentary series in the history of the medium. But its significance is not primarily statistical. What Sagan accomplished in *Cosmos* was something genuinely difficult: he made the depth of science accessible without sacrificing the depth itself.
 

@@ -9,6 +9,8 @@ date: 1946
 
 ## An Experience In Cosmic Consciousness
 
+### 1.
+
 “I am here, Guruji.” My shamefacedness spoke more eloquently for me.
 
 “Let us go to the kitchen and find something to eat.” Sri Yukteswar’s manner was as natural as if hours and not days had separated us.
@@ -18,6 +20,8 @@ date: 1946
 “No, of course not! Wrath springs only from thwarted desires. I do not expect anything from others, so their actions cannot be in opposition to wishes of mine. I would not use you for my own ends; I am happy only in your own true happiness.”
 
 “Sir, one hears of divine love in a vague way, but for the first time I am having a concrete example in your angelic self! In the world, even a father does not easily forgive his son if he leaves his parent’s business without warning. But you show not the slightest vexation, though you must have been put to great inconvenience by the many unfinished tasks I left behind.”
+
+### 2.
 
 We looked into each other’s eyes, where tears were shining. A blissful wave engulfed me; I was conscious that the Lord, in the form of my guru, was expanding the small ardors of my heart into the incompressible reaches of cosmic love.
 
@@ -33,6 +37,8 @@ He summoned me again; I remained obstinately silent. The third time his tone hel
 
 “I know how you are meditating,” my guru called out, “with your mind distributed like leaves in a storm! Come here to me.”
 
+### 3.
+
 Snubbed and exposed, I made my way sadly to his side.
 
 “Poor boy, the mountains couldn’t give what you wanted.” Master spoke caressively, comfortingly. His calm gaze was unfathomable. “Your heart’s desire shall be fulfilled.”
@@ -43,17 +49,23 @@ My body became immovably rooted; breath was drawn out of my lungs as if by some 
 
 The whole vicinity lay bare before me. My ordinary frontal vision was now changed to a vast spherical sight, simultaneously all-perceptive. Through the back of my head I saw men strolling far down Rai Ghat Road, and noticed also a white cow who was leisurely approaching. When she reached the space in front of the open ashram gate, I observed her with my two physical eyes. As she passed by, behind the brick wall, I saw her clearly still.
 
+### 4.
+
 All objects within my panoramic gaze trembled and vibrated like quick motion pictures. My body, Master’s, the pillared courtyard, the furniture and floor, the trees and sunshine, occasionally became violently agitated, until all melted into a luminescent sea; even as sugar crystals, thrown into a glass of water, dissolve after being shaken. The unifying light alternated with materializations of form, the metamorphoses revealing the law of cause and effect in creation.
 
 An oceanic joy broke upon calm endless shores of my soul. The Spirit of God, I realized, is exhaustless Bliss; His body is countless tissues of light. A swelling glory within me began to envelop towns, continents, the earth, solar and stellar systems, tenuous nebulae, and floating universes. The entire cosmos, gently luminous, like a city seen afar at night, glimmered within the infinitude of my being. The sharply etched global outlines faded somewhat at the farthest edges; there I could see a mellow radiance, ever-undiminished. It was indescribably subtle; the planetary pictures were formed of a grosser light.
 
 The divine dispersion of rays poured from an Eternal Source, blazing into galaxies, transfigured with ineffable auras. Again and again I saw the creative beams condense into constellations, then resolve into sheets of transparent flame. By rhythmic reversion, sextillion worlds passed into diaphanous luster; fire became firmament.
 
+### 5.
+
 I cognized the center of the empyrean as a point of intuitive perception in my heart. Irradiating splendor issued from my nucleus to every part of the universal structure. Blissful amrita , the nectar of immortality, pulsed through me with a quicksilverlike fluidity. The creative voice of God I heard resounding as Aum , 14-1 the vibration of the Cosmic Motor.
 
 Suddenly the breath returned to my lungs. With a disappointment almost unbearable, I realized that my infinite immensity was lost. Once more I was limited to the humiliating cage of a body, not easily accommodative to the Spirit. Like a prodigal child, I had run away from my macrocosmic home and imprisoned myself in a narrow microcosm.
 
 My guru was standing motionless before me; I started to drop at his holy feet in gratitude for the experience in cosmic consciousness which I had long passionately sought. He held me upright, and spoke calmly, unpretentiously.
+
+### 6.
 
 “You must not get overdrunk with ecstasy. Much work yet remains for you in the world. Come; let us sweep the balcony floor; then we shall walk by the Ganges.”
 
@@ -62,6 +74,8 @@ I fetched a broom; Master, I knew, was teaching me the secret of balanced living
 “It is the Spirit of God that actively sustains every form and force in the universe; yet He is transcendental and aloof in the blissful uncreated void beyond the worlds of vibratory phenomena,” 14-2 Master explained. “Saints who realize their divinity even while in the flesh know a similar twofold existence. Conscientiously engaging in earthly work, they yet remain immersed in an inward beatitude. The Lord has created all men from the limitless joy of His being. Though they are painfully cramped by the body, God nevertheless expects that souls made in His image shall ultimately rise above all sense identifications and reunite with Him.”
 
 The cosmic vision left many permanent lessons. By daily stilling my thoughts, I could win release from the delusive conviction that my body was a mass of flesh and bones, traversing the hard soil of matter. The breath and the restless mind, I saw, were like storms which lashed the ocean of light into waves of material forms-earth, sky, human beings, animals, birds, trees. No perception of the Infinite as One Light could be had except by calming those storms. As often as I silenced the two natural tumults, I beheld the multitudinous waves of creation melt into one lucent sea, even as the waves of the ocean, their tempests subsiding, serenely dissolve into unity.
+
+### 7.
 
 A master bestows the divine experience of cosmic consciousness when his disciple, by meditation, has strengthened his mind to a degree where the vast vistas would not overwhelm him. The experience can never be given through one’s mere intellectual willingness or open- mindedness. Only adequate enlargement by yoga practice and devotional bhakti can prepare the mind to absorb the liberating shock of omnipresence. It comes with a natural inevitability to the sincere devotee. His intense craving begins to pull at God with an irresistible force. The Lord, as the Cosmic Vision, is drawn by the seeker’s magnetic ardor into his range of consciousness.
 
@@ -136,6 +150,8 @@ I wrote, in my later years, the following poem, “Samadhi,” endeavoring to co
   A tiny bubble of laughter, I
   Am become the Sea of Mirth Itself.
 
+### 8.
+
 Sri Yukteswar taught me how to summon the blessed experience at will, and also how to transmit it to others if their intuitive channels were developed. For months I entered the ecstatic union, comprehending why the Upanishads say God is rasa , “the most relishable.” One day, however, I took a problem to Master.
 
 “I want to know, sir-when shall I find God?”
@@ -146,6 +162,8 @@ Sri Yukteswar taught me how to summon the blessed experience at will, and also h
 
 My guru was smiling. “I am sure you aren’t expecting a venerable Personage, adorning a throne in some antiseptic corner of the cosmos! I see, however, that you are imagining that the possession of miraculous powers is knowledge of God. One might have the whole universe, and find the Lord elusive still! Spiritual advancement is not measured by one’s outward powers, but only by the depth of his bliss in meditation.
 
+### 9.
+
 “Ever-new Joy Is God. He is inexhaustible; as you continue your meditations during the years, He will beguile you with an infinite ingenuity. Devotees like yourself who have found the way to God never dream of exchanging Him for any other happiness; He is seductive beyond thought of competition.
 
 “How quickly we weary of earthly pleasures! Desire for material things is endless; man is never satisfied completely, and pursues one goal after another. The ‘something else’ he seeks is the Lord, who alone can grant lasting joy.
@@ -154,11 +172,15 @@ My guru was smiling. “I am sure you aren’t expecting a venerable Personage, 
 
 “I understand now, sir, why saints call the Lord unfathomable. Even everlasting life could not suffice to appraise Him.”
 
+### 10.
+
 “That is true; but He is also near and dear. After the mind has been cleared by Kriya Yoga of sensory obstacles, meditation furnishes a twofold proof of God. Ever-new joy is evidence of His existence, convincing to our very atoms. Also, in meditation one finds His instant guidance, His adequate response to every difficulty.”
 
 “I see, Guruji; you have solved my problem.” I smiled gratefully. “I do realize now that I have found God, for whenever the joy of meditation has returned subconsciously during my active hours, I have been subtly directed to adopt the right course in everything, even details.”
 
 “Human life is beset with sorrow until we know how to tune in with the Divine Will, whose ‘right course’ is often baffling to the egoistic intelligence. God bears the burden of the cosmos; He alone can give unerring counsel.”
+
+### 11.
 
 14-1: “In the beginning was the Word, and the Word was with God, and the Word was God.”-John 1:1.
 

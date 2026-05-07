@@ -50,7 +50,6 @@ The most effective way to train Metacognition is through meditation. Since I beg
 
 Meditation is the laboratory where Metacognition is developed.
 
-*More details on meditative style in the notes path.*
 
 -----
 

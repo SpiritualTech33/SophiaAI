@@ -8,7 +8,7 @@ date: 2026
 # Learning 
 
 
-## **What Does It Mean to Learn?** 
+## What Does It Mean to Learn?
 
 Learning, at least for me, is one of the most stimulating activities I know. Sitting down to read something and walking away with new things to think about, philosophize over, and experiment with — that's nothing short of fascinating. But a question naturally arises: what does it actually mean to learn?
 

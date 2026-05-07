@@ -1,5 +1,5 @@
 ---
-title: Forgivness
+title: Forgiveness
 category: spirit
 author: Cosmos De La Cruz
 date: 2026

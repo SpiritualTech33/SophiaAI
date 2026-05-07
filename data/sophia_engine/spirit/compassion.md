@@ -1,5 +1,5 @@
 ---
-title: COMPASSION
+title: Compassion
 category: spirit
 author: Cosmos De La Cruz
 date: 2026

@@ -4,7 +4,7 @@ category: spirit
 author: Cosmos De La Cruz
 date: 2026
 ---
-#Yin Yangs
+# Yin Yang
 
 ## What is Yin Yang?
 

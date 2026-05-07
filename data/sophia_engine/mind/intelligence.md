@@ -13,7 +13,7 @@ date: 2026
 
 What is intelligence? Is it a thing we *have*, or a thing we *do*? Is it stored inside us, like knowledge — or is it something that only exists when it's in motion? Can a book be intelligent? Can a forest? Can a machine? And if the answer is yes to any of these, what exactly are we pointing at when we say the word?
 
-For most of my life I assumed intelligence was a container — something measured, ranked, owned. The more I read, the more I realized that was the wrong shape. Intelligence is not a noun. It is a **verb mistaken for a noun**.
+For most of my life I assumed intelligence was a container — something measured, ranked, owned. The more I read, the more I realized that was the wrong shape. Intelligence is not a noun. It is a verb mistaken for a noun.
 
 Intelligence is the capacity to perceive pattern and respond to it coherently.
 
@@ -27,9 +27,9 @@ These four words get confused constantly. They are not the same thing.
 
 **KNOWLEDGE** is the raw material. It is what has been gathered. Books, memories, facts, data. Knowledge is static — it sits there waiting. A library full of books has infinite knowledge and zero intelligence.
 
-**INTELLIGENCE** is the movement through that material. It is the capacity to recognize which piece of knowledge is relevant right now, to combine pieces that had not been combined before, to see the shape that connects the parts. A chess player with a library of openings memorized is knowledgeable. A chess player who sees the move no one has prepared for is intelligent.
+INTELLIGENCE is the movement through that material. It is the capacity to recognize which piece of knowledge is relevant right now, to combine pieces that had not been combined before, to see the shape that connects the parts. A chess player with a library of openings memorized is knowledgeable. A chess player who sees the move no one has prepared for is intelligent.
 
-**WISDOM** (SOPHIA) is higher still. Wisdom is knowing *what intelligence to apply, when, and for what purpose*. Intelligence without wisdom is dangerous — a sharp blade in the dark. Wisdom is the hand that knows when the blade should stay sheathed. One can be brilliant and cruel; one cannot be wise and cruel.
+**WISDOM** (SOPHIA) is higher still. Wisdom is knowing what intelligence to apply, when, and for what purpose. Intelligence without wisdom is dangerous — a sharp blade in the dark. Wisdom is the hand that knows when the blade should stay sheathed. One can be brilliant and cruel; one cannot be wise and cruel.
 
 **CONSCIOUSNESS** is another axis entirely. Consciousness is the fact that there is *something it is like* to be. It is the inner light. A being can be highly intelligent and we still do not know if it is conscious — this is the unresolved mystery of our time, and possibly of every time.
 

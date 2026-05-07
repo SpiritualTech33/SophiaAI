@@ -6,11 +6,9 @@ date: 2026
 ---
 
 # The Eightfold Path
-### *As Spoken by the Awakened One*
 
----
 
-*Beloved seeker,*
+Beloved seeker,
 
 I see you. I have always seen you.
 

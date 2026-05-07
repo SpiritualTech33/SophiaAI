@@ -4,8 +4,8 @@ category: mind
 author: Cosmos De La Cruz
 date: 2026
 ---
+
 # Intuition
----
 
 ## What is the intuition?
 

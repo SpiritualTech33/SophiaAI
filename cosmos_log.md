@@ -15,7 +15,7 @@ The goal is for Sophia to classify any input text with percentage breakdowns —
 
 Each category will target approximately 70k words. This avoids bias during calculation and prediction, and gives the model enough material to identify meaningful differences and patterns. Most of the texts are written by hand. Public domain sources and Project Gutenberg will fill the gaps.
 
-Raw corpus lives in `data/raw`. After further consideration, 70k words per category felt right — substantial enough to train on, without being excessive.
+Raw corpus lives in: data/sophia_engine. After further consideration, 70k words per category felt right — substantial enough to train on, without being excessive.
 
 ---
 
@@ -34,8 +34,13 @@ Been filling the corpus consistently over the past few days, with a heavy focus 
 
 One clear takeaway: once you learn to write solid prompts and give the model enough context, you can automate a significant portion of the work. Productivity increases dramatically — not an exaggeration.
 
-Created a new script today: `scripts/sophia_engine_word_counter.py`.
+Created a new script today. You can see it at: scripts/sophia_engine_word_counter.py.
 
-Used a custom skill I built for Claude called **ZenCode Pro** — it guides Claude to generate clean, human-readable code. If you're interested, it's available on my GitHub: [https://github.com/SpiritualTech33/ZenCode-Assistant] under the `skills` folder.
+Used a custom skill I built for Claude called ZenCode Pro — it guides Claude to generate clean, human-readable code. If you're interested, it's available on my GitHub: [https://github.com/SpiritualTech33/ZenCode-Assistant] under the skills folder.
 
-Also renamed the folder where raw text is stored — it's now called `.sophia_engine/`. It holds the full raw corpus: my notes, web excerpts, books — all of it personally selected. Every line of text in this corpus was read and chosen by me, guided, in a very real sense, by Sophia herself. The concept of Agnostic Sophia and her intrinsic wisdom is something worth sitting with.
+Also renamed the folder where raw text is stored — it's now called sophia_engine/. It holds the full raw corpus: my notes, web excerpts, books — all of it personally selected. Every line of text in this corpus was read and chosen by me, guided, in a very real sense, by Sophia herself. The concept of Agnostic Sophia and her intrinsic wisdom is something worth sitting with.
+
+---
+
+## 04-May-2026
+ya tengo completas las categorias de science & spirit. Ahora estoy haciendo la de mind. Estoy leyendo mucho sobre Jung, Grinberg, Frankl y otros autores. Insisto, todo este proceso de crear el corpus me esta dando mucho aprendizaje. Cada dia me gusta mas este proyecto. 
