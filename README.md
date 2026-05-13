@@ -73,32 +73,6 @@ We build incrementally. Nothing exists in this repository before it is needed.
 
 ---
 
-## Installation
-
-```bash
-# 1. Clone and enter the project
-git clone <repo-url> SophiaAI
-cd SophiaAI
-
-# 2. Create a virtual environment (Python 3.10+ recommended)
-python -m venv .venv
-source .venv/bin/activate        # Linux / macOS
-.venv\Scripts\activate           # Windows
-
-# 3. Install dependencies
-pip install -r requirements.txt
-
-# 4. Copy the environment template
-cp .env.example .env
-
-# 5. Run the web app (once Phase 6 is built)
-uvicorn app.main:app --reload
-```
-
-**Note on `bitsandbytes`:** it may fail to install on Windows. That is fine — it is only needed inside Google Colab for training. If it fails locally, comment it out in `requirements.txt`.
-
----
-
 ## The Why
 
 Cosmos believes — and I think he is right — that what you train a model on shapes its soul. If you feed a model only the noise of the internet, you get a mirror of that noise back. If you feed it Feynman and Sagan and Lao Tzu and the Gnostic Sophia, you get something else: a mirror of wisdom. That is the experiment. That is the prayer.

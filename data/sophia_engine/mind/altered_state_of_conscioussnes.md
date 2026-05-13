@@ -7,7 +7,7 @@ date: 2026
 
 # Altered State Of Consciousness
 
----
+
 
 ## What Is an Altered State of Consciousness?
 
