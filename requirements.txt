@@ -1,27 +1,27 @@
-# ════════════════════════════════════════════════════════════════════
-#  SophiaAI — Requirements
-#  Python 3.11.7+ recomendado
+# ===========================================================================
+#  SophiaAI - Requirements
+#  Python 3.11.7 (venv: SophiaAI-venv)
 #
-#  Filosofía del stack:
+#  Stack philosophy:
 #    - Local (Windows, 7GB RAM): desarrollo, prep de datos, app web.
 #    - Google Colab Free (T4, 16GB VRAM): entrenamiento QLoRA.
 #  El mismo requirements.txt funciona en ambos lados.
-# ════════════════════════════════════════════════════════════════════
+# ===========================================================================
 
 
-# ─── Deep Learning Core ─────────────────────────────────────────────
-# PyTorch es la base. Todo lo demás se monta encima.
+# --- Deep Learning Core -----------------------------------------------------
+# PyTorch es la base. Todo lo demas se monta encima.
 torch>=2.4.0
 
 
-# ─── Hugging Face Stack — el corazón de Sophia ──────────────────────
-# transformers  → carga modelos base (Llama, Mistral, Qwen) y tokenizers.
-# datasets      → procesa el corpus de forma eficiente (memory-mapped).
-# accelerate    → orquesta el entrenamiento (CPU/GPU/multi-GPU).
-# peft          → LoRA y QLoRA — el truco que permite afinar 7B en 16GB VRAM.
-# trl           → SFTTrainer, el entrenador de fine-tuning supervisado.
-# bitsandbytes  → cuantización 4-bit (la "Q" en QLoRA).
-#                 Nota: en Windows puede dar guerra. En Colab vuela.
+# --- Hugging Face Stack - el corazon de Sophia ------------------------------
+# transformers  -> carga modelos base (Llama, Mistral, Qwen) y tokenizers.
+# datasets      -> procesa el corpus de forma eficiente (memory-mapped).
+# accelerate    -> orquesta el entrenamiento (CPU/GPU/multi-GPU).
+# peft          -> LoRA y QLoRA - el truco que permite afinar 7B en 16GB VRAM.
+# trl           -> SFTTrainer, el entrenador de fine-tuning supervisado.
+# bitsandbytes  -> cuantizacion 4-bit (la "Q" en QLoRA).
+#                  Nota: en Windows puede dar guerra. En Colab vuela.
 transformers>=4.45.0
 datasets>=3.0.0
 accelerate>=1.0.0
@@ -32,34 +32,32 @@ sentencepiece>=0.2.0
 huggingface_hub>=0.25.0
 
 
-# ─── Numérico y Datos ───────────────────────────────────────────────
+# --- Numerico y Datos -------------------------------------------------------
 numpy>=1.26.0
 pandas>=2.2.0
 scikit-learn>=1.5.0
 tqdm>=4.66.0
 
 
-# ─── Procesamiento del Corpus ───────────────────────────────────────
-# Tu corpus son archivos markdown con frontmatter (--- metadata ---).
-# Estos paquetes te permiten leer, parsear y extraer texto limpio.
+# --- Procesamiento del Corpus -----------------------------------------------
+# Corpus son archivos markdown con frontmatter (--- metadata ---).
 python-frontmatter>=1.1.0
 markdown>=3.7
 beautifulsoup4>=4.12.0
 
 
-# ─── Visualización ──────────────────────────────────────────────────
-# Para ver curvas de pérdida, distribución de tokens, longitud de chunks.
+# --- Visualizacion ----------------------------------------------------------
 matplotlib>=3.9.0
 seaborn>=0.13.0
 
 
-# ─── Web Framework — FastAPI ────────────────────────────────────────
-# fastapi          → el framework moderno, async, con tipos nativos.
-# uvicorn[standard]→ el servidor ASGI que corre FastAPI en producción.
-# pydantic         → validación de inputs/outputs (FastAPI lo usa por dentro).
-# jinja2           → templates HTML (las páginas de Sophia).
-# python-multipart → necesario para forms y file uploads.
-# itsdangerous     → cookies firmadas para sesiones.
+# --- Web Framework - FastAPI ------------------------------------------------
+# fastapi           -> framework moderno, async, con tipos nativos.
+# uvicorn[standard] -> servidor ASGI que corre FastAPI en produccion.
+# pydantic          -> validacion de inputs/outputs.
+# jinja2            -> templates HTML.
+# python-multipart  -> necesario para forms y file uploads.
+# itsdangerous      -> cookies firmadas para sesiones.
 fastapi>=0.115.0
 uvicorn[standard]>=0.30.0
 pydantic>=2.9.0
@@ -68,66 +66,59 @@ python-multipart>=0.0.12
 itsdangerous>=2.2.0
 
 
-# ─── Base de Datos: sophia_memory ───────────────────────────────────
-# SQLAlchemy ORM + SQLite (incluido en Python — cero configuración).
-# Aquí vive la memoria a corto plazo de Sophia: usuarios, conversaciones
-# e historial completo de mensajes. Cumple el requisito "tener BD".
-# alembic → migraciones de esquema (cuando la BD evoluciona).
+# --- Base de Datos: sophia_memory -------------------------------------------
+# SQLAlchemy ORM + SQLite (incluido en Python - cero configuracion).
+# alembic -> migraciones de esquema.
 sqlalchemy>=2.0.0
 alembic>=1.13.0
 
 
-# ─── Autenticación / Login (requisito del proyecto) ─────────────────
-# passlib + bcrypt → hashing seguro de contraseñas.
-# python-jose      → JWT tokens (login basado en tokens).
-# email-validator  → validación de emails con Pydantic EmailStr.
+# --- Autenticacion / Login --------------------------------------------------
+# passlib + bcrypt -> hashing seguro de contrasenas.
+# python-jose      -> JWT tokens.
+# email-validator  -> validacion de emails con Pydantic EmailStr.
 passlib[bcrypt]>=1.7.4
 python-jose[cryptography]>=3.3.0
 email-validator>=2.2.0
 
 
-# ─── Environment ────────────────────────────────────────────────────
+# --- Environment ------------------------------------------------------------
 python-dotenv>=1.0.0
 
 
-# ─── Notebooks (exploración del corpus) ─────────────────────────────
+# --- Notebooks --------------------------------------------------------------
 jupyter>=1.1.0
 ipykernel>=6.29.0
 
 
-# ─── Testing ────────────────────────────────────────────────────────
+# --- Testing ----------------------------------------------------------------
 pytest>=8.3.0
 pytest-asyncio>=0.24.0
 httpx>=0.27.0
 
 
-# ─── RAG (Retrieval-Augmented Generation) — opcional, futuro ────────
-# Si después quieres complementar el fine-tuning con retrieval semántico
-# sobre tu corpus (Sophia "consulta" los textos en runtime), descomenta:
+# --- RAG (Retrieval-Augmented Generation) - opcional, futuro ----------------
 # chromadb>=0.5.0
 # sentence-transformers>=3.0.0
 
 
-# ─── LLM Client externo — opcional, solo para generar dataset ───────
-# Groq es gratis y rapidísimo. Útil SOLO para generar Q&A pairs desde
-# tu corpus durante la fase de instruction-tuning. NUNCA como Sophia misma.
+# --- LLM Client externo - opcional, solo para generar dataset ---------------
 # groq>=0.15.0
 
 
-# ════════════════════════════════════════════════════════════════════
-#  Notas de instalación:
+# ===========================================================================
+#  Notas de instalacion:
 #
 #  Local (Windows 7GB RAM):
 #    pip install -r requirements.txt
-#    → bitsandbytes puede fallar. No es problema: solo lo necesitas
-#      en Colab para entrenar. Si falla, comenta esa línea localmente.
+#    -> bitsandbytes puede fallar. No es problema: solo lo necesitas
+#       en Colab para entrenar. Si falla, comenta esa linea localmente.
 #
-#  Google Colab Free (donde realmente entrenarás):
+#  Google Colab Free (donde realmente entreneras):
 #    !pip install -q -r requirements.txt
-#    → Aquí todo funciona perfecto. La T4 con 16GB VRAM es suficiente
-#      para QLoRA en modelos de 7B-8B parámetros.
+#    -> Aqui todo funciona perfecto. La T4 con 16GB VRAM es suficiente
+#       para QLoRA en modelos de 7B-8B parametros.
 #
-#  Alternativa moderna (2x más rápido en Colab):
-#    Considera Unsloth (https://github.com/unslothai/unsloth) — envuelve
-#    transformers + peft + trl con optimizaciones brutales.
-# ════════════════════════════════════════════════════════════════════
+#  Alternativa moderna (2x mas rapido en Colab):
+#    Considera Unsloth (https://github.com/unslothai/unsloth)
+# ===========================================================================

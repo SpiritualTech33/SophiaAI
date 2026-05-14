@@ -1,11 +1,11 @@
 ---
-title: The Analysis Of Mind
+title: The Analysis Of Mind - Bertrand Russel
 category: mind
 author: Nous & Sophia
 date: 2026
 ---
 
-# The Analysis Of Mind
+# The Analysis Of Mind - Bertrand Russel
 
 A synthesis on Bertrand Russell's Book: The Analysis Of Mind (1921)
 
