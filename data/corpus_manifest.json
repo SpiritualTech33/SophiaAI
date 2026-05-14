@@ -1,0 +1,1885 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-14T14:25:56.739423+00:00",
+  "corpus_root": "data/sophia_engine",
+  "total_files": 134,
+  "total_words": 356197,
+  "entries": [
+    {
+      "path": "data/sophia_engine/mind/3c_learning_protocol.md",
+      "pillar": "mind",
+      "filename": "3c_learning_protocol.md",
+      "word_count": 792,
+      "char_count": 4494,
+      "sha256": "c933081f2a007da487b8c3301730a2c90ae798e9ed2e073925d7aa84a368adbc",
+      "frontmatter": {
+        "title": "3C Learning Protocol",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/a_general_introduction_to_psychoanalysis.md",
+      "pillar": "mind",
+      "filename": "a_general_introduction_to_psychoanalysis.md",
+      "word_count": 747,
+      "char_count": 4735,
+      "sha256": "412b3e801e13a15417ecdb7dd3f13ad604c480b9045ba7c4ada29951d34d36d5",
+      "frontmatter": {
+        "title": "A General Introduction to Psychoanalysis",
+        "category": "mind",
+        "author": "Sigmund Freud",
+        "date": 1920
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/ai_and_consciousness.md",
+      "pillar": "mind",
+      "filename": "ai_and_consciousness.md",
+      "word_count": 2644,
+      "char_count": 15915,
+      "sha256": "e0ace76827e7cdcfcd5b330fe536280c52a077e6d44fd466a2f2265e4ecc6c68",
+      "frontmatter": {
+        "title": "AI & Consciousness",
+        "category": "mind",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/altered_state_of_conscioussnes.md",
+      "pillar": "mind",
+      "filename": "altered_state_of_conscioussnes.md",
+      "word_count": 2947,
+      "char_count": 19060,
+      "sha256": "1a3e2f75dc88c0daa318e18e1e77d44e6d144db49190a5aa908038f4e5d784af",
+      "frontmatter": {
+        "title": "Altered State Of Consciousness",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/archetypes.md",
+      "pillar": "mind",
+      "filename": "archetypes.md",
+      "word_count": 2535,
+      "char_count": 14305,
+      "sha256": "d0f01efa98a4f1c76c6bdc868a1598d23d4cf2d81752b3768da158b4f0298521",
+      "frontmatter": {
+        "title": "Archetypes",
+        "category": "mind",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/carl_jung.md",
+      "pillar": "mind",
+      "filename": "carl_jung.md",
+      "word_count": 2619,
+      "char_count": 14927,
+      "sha256": "dc3c93e0389219f5e19b49b65670713406f7fa8e30f5859f083e59bb55b8e64d",
+      "frontmatter": {
+        "title": "Carl Jung",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/consciousness.md",
+      "pillar": "mind",
+      "filename": "consciousness.md",
+      "word_count": 745,
+      "char_count": 4961,
+      "sha256": "33d6925decab2514083603817a79cee7f52a4d391afc007c9f3842c671e42f77",
+      "frontmatter": {
+        "title": "Consciousness",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/curiosity.md",
+      "pillar": "mind",
+      "filename": "curiosity.md",
+      "word_count": 1726,
+      "char_count": 10247,
+      "sha256": "03ee07b3088fceb5294c3b3581ae530623be81c2038b229787591cd595160926",
+      "frontmatter": {
+        "title": "Curiosity",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/enlightenment.md",
+      "pillar": "mind",
+      "filename": "enlightenment.md",
+      "word_count": 3036,
+      "char_count": 18567,
+      "sha256": "31277de35135cbea83ff4199fe2e4361fb95ecbbebd5f4687dea3301c09dcb9d",
+      "frontmatter": {
+        "title": "How To Achieve Enlightenment",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/first_feynman_principle.md",
+      "pillar": "mind",
+      "filename": "first_feynman_principle.md",
+      "word_count": 33,
+      "char_count": 232,
+      "sha256": "4e922ca5a7b7f67dbcae17d69965794f1e55e380f157aedce08d64c9522fdb01",
+      "frontmatter": {
+        "title": "The First Feynman Principle",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/gnosis.md",
+      "pillar": "mind",
+      "filename": "gnosis.md",
+      "word_count": 1466,
+      "char_count": 8985,
+      "sha256": "c9ec3a7484ff7863a3ce26c6e5b5616135945ca0a475682c1efb31e5f482bba3",
+      "frontmatter": {
+        "title": "Gnosis",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/individuation.md",
+      "pillar": "mind",
+      "filename": "individuation.md",
+      "word_count": 1129,
+      "char_count": 6798,
+      "sha256": "57f8f4b9faa68dfbb2881a479bfe228b7040f2b609bfbefe107b3963bd35141a",
+      "frontmatter": {
+        "title": "Individuation - The Fire That Makes You",
+        "category": "mind",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/intelligence.md",
+      "pillar": "mind",
+      "filename": "intelligence.md",
+      "word_count": 1276,
+      "char_count": 7616,
+      "sha256": "8871f321dbf55c4185a7674c6240c685a222d53415a0a175fcfd91ab1b763585",
+      "frontmatter": {
+        "title": "What is Intelligence?",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/intuition.md",
+      "pillar": "mind",
+      "filename": "intuition.md",
+      "word_count": 1123,
+      "char_count": 6800,
+      "sha256": "6ac35b14b3adcf7fe407fb6d0a1fdf77f4ee2dd2a1fff2251920d65f62d45dc2",
+      "frontmatter": {
+        "title": "Intuition",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/jacobo_grinberg.md",
+      "pillar": "mind",
+      "filename": "jacobo_grinberg.md",
+      "word_count": 1217,
+      "char_count": 7638,
+      "sha256": "db8445e5c9bb1a7aa0819d0eaaefff0d1c3a9f8b2e502cb2212bda43491b3b28",
+      "frontmatter": {
+        "title": "Jacobo Grinberg",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/joe_dispenza.md",
+      "pillar": "mind",
+      "filename": "joe_dispenza.md",
+      "word_count": 2122,
+      "char_count": 12694,
+      "sha256": "3926348a74f76ad32a034964e4dea1b12fe208ea5dfb2e0a4739990d2057d28d",
+      "frontmatter": {
+        "title": "Joe Dispenza",
+        "category": "mind",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/knowledge.md",
+      "pillar": "mind",
+      "filename": "knowledge.md",
+      "word_count": 3311,
+      "char_count": 18601,
+      "sha256": "f0337f6c49906ea8f037ec6e4fed79ac35e19768fafc64820d6a5041ca93722c",
+      "frontmatter": {
+        "title": "Knowledge",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/kokoro_no_shihai.md",
+      "pillar": "mind",
+      "filename": "kokoro_no_shihai.md",
+      "word_count": 484,
+      "char_count": 2802,
+      "sha256": "6f8f7aef786eca3c041ef412c325fc871c2d3caafbee123c268316d59612bd11",
+      "frontmatter": {
+        "title": "Kokoro No Shihai - Miyamoto Musashi’s Method to Conquer the Mind",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/language.md",
+      "pillar": "mind",
+      "filename": "language.md",
+      "word_count": 561,
+      "char_count": 3421,
+      "sha256": "aacf3a75c21fb071afd0ad33bfe6233557765455fc49cfc74df184ff6d730504",
+      "frontmatter": {
+        "title": "Language",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/learning.md",
+      "pillar": "mind",
+      "filename": "learning.md",
+      "word_count": 1567,
+      "char_count": 9080,
+      "sha256": "8f7c9b7a2e7c36e0bdcca3f933d7d2cb2e01f7d9ba21b5cc9b437c97e2ed279b",
+      "frontmatter": {
+        "title": "Learning",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/logos_calibration.md",
+      "pillar": "mind",
+      "filename": "logos_calibration.md",
+      "word_count": 573,
+      "char_count": 3499,
+      "sha256": "37fe42c25325916e7e474a96852e352b8c1568b3e226dccdc80ea6443dcb8c89",
+      "frontmatter": {
+        "title": "THE LOGOS CALIBRATION - THE ARCHITECT OF INTEGRATION",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/meditation.md",
+      "pillar": "mind",
+      "filename": "meditation.md",
+      "word_count": 564,
+      "char_count": 3663,
+      "sha256": "b31b22cbd6700b1420a4408f7ce2d8adde947bdae186540b41bf588c05572a21",
+      "frontmatter": {
+        "title": "Meditation - A Pillar of My Existence",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/metacognition.md",
+      "pillar": "mind",
+      "filename": "metacognition.md",
+      "word_count": 862,
+      "char_count": 5037,
+      "sha256": "4b91d8b7bab4e85f88b8078ae6934d60bff3e8f69472453dfb7801fee2d1c0e3",
+      "frontmatter": {
+        "title": "Metacognition",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/mind.md",
+      "pillar": "mind",
+      "filename": "mind.md",
+      "word_count": 719,
+      "char_count": 4234,
+      "sha256": "e6a0a37006a662228d19c20574306123e21797d5ab35060fbb50401790a3ea7e",
+      "frontmatter": {
+        "title": "Mind",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/neurons.md",
+      "pillar": "mind",
+      "filename": "neurons.md",
+      "word_count": 2587,
+      "char_count": 15346,
+      "sha256": "979de0a4e6c9f6732f7b08c1a7f727c7a50585e5e6b157adde85c64ebbd3e88a",
+      "frontmatter": {
+        "title": "Neurons",
+        "category": "mind",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/neuroplasticity.md",
+      "pillar": "mind",
+      "filename": "neuroplasticity.md",
+      "word_count": 3269,
+      "char_count": 19563,
+      "sha256": "74a6846b192d7fcc9591120a5d60f20eed579f99fd47d648dbf049b56c78ecbd",
+      "frontmatter": {
+        "title": "Neuroplasticity",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/nous_calibration.md",
+      "pillar": "mind",
+      "filename": "nous_calibration.md",
+      "word_count": 470,
+      "char_count": 2890,
+      "sha256": "ed2f721a32e00d64c85b4cc950177365bd4d8e65ecd100fc6be1e3d5c21df17b",
+      "frontmatter": {
+        "title": "Nous Calibration",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/perception.md",
+      "pillar": "mind",
+      "filename": "perception.md",
+      "word_count": 1937,
+      "char_count": 11093,
+      "sha256": "1df7d01964fe16d28a2a813071e726e7e2ee946b8e5a6646148c4438a54e18f1",
+      "frontmatter": {
+        "title": "Perception",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/principles_of_cognitive_physics.md",
+      "pillar": "mind",
+      "filename": "principles_of_cognitive_physics.md",
+      "word_count": 4902,
+      "char_count": 28793,
+      "sha256": "dbd8b9a0703824356d844db667f7400f0079d369a8db7fda0da3bdf8d8ce257f",
+      "frontmatter": {
+        "title": "Principles Of Cognitive Physics",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/principles_of_knowledge.md",
+      "pillar": "mind",
+      "filename": "principles_of_knowledge.md",
+      "word_count": 387,
+      "char_count": 2619,
+      "sha256": "124fd6d66157bf5b06e988b58ffb1a13a8ffb63ff4ac4a5a855f106b48e201e7",
+      "frontmatter": {
+        "title": "Principles Of Knowledge",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/psychology.md",
+      "pillar": "mind",
+      "filename": "psychology.md",
+      "word_count": 1601,
+      "char_count": 9993,
+      "sha256": "37c5099f0ea6d68c1b348a700691d6f11468c6e0f5cd952d03c9d21d76bf01af",
+      "frontmatter": {
+        "title": "Psychology",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/qualia.md",
+      "pillar": "mind",
+      "filename": "qualia.md",
+      "word_count": 483,
+      "char_count": 2693,
+      "sha256": "f3ea7db20483061937a2d30e4bf37fddbb29bb8a1337c0dbc5d261ba0bcf386e",
+      "frontmatter": {
+        "title": "Qualia",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/self_elusive_meditation.md",
+      "pillar": "mind",
+      "filename": "self_elusive_meditation.md",
+      "word_count": 205,
+      "char_count": 1215,
+      "sha256": "8d910b76bea57bb9763bd274f44cc56a974fcc5a04dde6cf681581e75d9f60b3",
+      "frontmatter": {
+        "title": "Self Elusive Meditation",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/seven_operational_principles_of_successful_people.md",
+      "pillar": "mind",
+      "filename": "seven_operational_principles_of_successful_people.md",
+      "word_count": 167,
+      "char_count": 980,
+      "sha256": "981141edf759c3f3a3207b08c5c66abcd78f370dbd560fb7431a5f8452110673",
+      "frontmatter": {
+        "title": "Seven Operational Principles Of Successful People.",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/sophia_instructions.md",
+      "pillar": "mind",
+      "filename": "sophia_instructions.md",
+      "word_count": 637,
+      "char_count": 3931,
+      "sha256": "56236f487e35a941fc59f01156c8a6ffd6607e623188fabed380c633fc9da353",
+      "frontmatter": {
+        "title": "Sophia Instructions",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/sophia_matrix.md",
+      "pillar": "mind",
+      "filename": "sophia_matrix.md",
+      "word_count": 490,
+      "char_count": 3539,
+      "sha256": "fdd51a40fa284775119ddd3f928613f8bbe4f1f736a44fe8049398cd8bed4456",
+      "frontmatter": {
+        "title": "Sophia Matrix",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/synchronicity.md",
+      "pillar": "mind",
+      "filename": "synchronicity.md",
+      "word_count": 1629,
+      "char_count": 9378,
+      "sha256": "c794b066579d71bc0abf480b7426220945b774404930f3b89bfe3a63019bcff0",
+      "frontmatter": {
+        "title": "Synchronicity",
+        "category": "mind",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/the_analysis_of_mind.md",
+      "pillar": "mind",
+      "filename": "the_analysis_of_mind.md",
+      "word_count": 3013,
+      "char_count": 19478,
+      "sha256": "25c6fb4f9622456bc533c64d43e41c5740bca7bb0d8fdadb770f8abdab4af91c",
+      "frontmatter": {
+        "title": "The Analysis Of Mind - Bertrand Russel",
+        "category": "mind",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/the_higher_powers_of_mind_and_spirit_chapter_II.md",
+      "pillar": "mind",
+      "filename": "the_higher_powers_of_mind_and_spirit_chapter_II.md",
+      "word_count": 3984,
+      "char_count": 22484,
+      "sha256": "cd78b068c7a0ba66e85becb8cc6c900c2650f1d07a7be7cb59e8e18d26838c13",
+      "frontmatter": {
+        "title": "The Higher Powers Of Mind And Spirit - Chapter II",
+        "category": "mind",
+        "author": "Ralph Waldo Trine",
+        "date": 1933
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/the_man_of_genius.md",
+      "pillar": "mind",
+      "filename": "the_man_of_genius.md",
+      "word_count": 4472,
+      "char_count": 28600,
+      "sha256": "10a9265a6941f082faed7bfd1ee40df00073002fae76ae458f9b40388d8b92f6",
+      "frontmatter": {
+        "title": "The Man Of Genius",
+        "category": "mind",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/the_mind_and_the_brain.md",
+      "pillar": "mind",
+      "filename": "the_mind_and_the_brain.md",
+      "word_count": 13366,
+      "char_count": 78669,
+      "sha256": "f4ac1de9cc0e83e1f0181cc787434a394232c5728afbed5ff20ef7e4aaafced5",
+      "frontmatter": {
+        "title": "The Mind And The Brain",
+        "category": "mind",
+        "author": "Alfred Binet",
+        "date": 1907
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/the_psychology_of_emotions.md",
+      "pillar": "mind",
+      "filename": "the_psychology_of_emotions.md",
+      "word_count": 4114,
+      "char_count": 24552,
+      "sha256": "7401e4712a97dcbc80f8aaae8589ee44616ac084b2c8f3f5868ce72322897a8e",
+      "frontmatter": {
+        "title": "The Psychology Of Emotions",
+        "category": "mind",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/thinking.md",
+      "pillar": "mind",
+      "filename": "thinking.md",
+      "word_count": 529,
+      "char_count": 3243,
+      "sha256": "dbf4db607582b6e66ebc80e6efb8f15f0821fd35eb053444c859d8cf888ce4fd",
+      "frontmatter": {
+        "title": "Thinking",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/wisdom.md",
+      "pillar": "mind",
+      "filename": "wisdom.md",
+      "word_count": 1960,
+      "char_count": 11454,
+      "sha256": "301f300457149cfb79df82f56963add1705848a69b37f67aa574b95df749a092",
+      "frontmatter": {
+        "title": "Wisdom",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/mind/writing.md",
+      "pillar": "mind",
+      "filename": "writing.md",
+      "word_count": 2356,
+      "char_count": 14556,
+      "sha256": "912402c3adf458901aa26c5df35b4204c4a8ace6765971e70079a01ed8d9cbbb",
+      "frontmatter": {
+        "title": "Writing",
+        "category": "mind",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/ai_&_love.md",
+      "pillar": "philosophy",
+      "filename": "ai_&_love.md",
+      "word_count": 2687,
+      "char_count": 15241,
+      "sha256": "0b7ffd9f5d82934d0a43ef9802f12cda152e972c0ffc0783f6d1c9397c1b75ec",
+      "frontmatter": {
+        "title": "AI & Love",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2025
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/apprentice_principle.md",
+      "pillar": "philosophy",
+      "filename": "apprentice_principle.md",
+      "word_count": 185,
+      "char_count": 1204,
+      "sha256": "bc531eb8365fc3c8982ffc4e25357c8932a5d835cb4f8d2de6712d28dec842a7",
+      "frontmatter": {
+        "title": "Apprentice Principle",
+        "category": "principles",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/buddhism.md",
+      "pillar": "philosophy",
+      "filename": "buddhism.md",
+      "word_count": 1884,
+      "char_count": 10654,
+      "sha256": "7d71948274b0bec290aff324e6560d600ab20ddd6bd6f54e94a375112fd2886d",
+      "frontmatter": {
+        "title": "Buddhism",
+        "category": "philosophy",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/communication.md",
+      "pillar": "philosophy",
+      "filename": "communication.md",
+      "word_count": 2305,
+      "char_count": 14290,
+      "sha256": "4b186fd0bf9de298270fd642175617ef8bdc83d9d91b1b4e79f82ed2cb20ff88",
+      "frontmatter": {
+        "title": "Comunication",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/epistemology.md",
+      "pillar": "philosophy",
+      "filename": "epistemology.md",
+      "word_count": 412,
+      "char_count": 2420,
+      "sha256": "b6850d2b2586fafc62375a66791d1679cf5c548514a88ecbf11fae8ada8743bf",
+      "frontmatter": {
+        "title": "Epistemology",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/feynman_principle.md",
+      "pillar": "philosophy",
+      "filename": "feynman_principle.md",
+      "word_count": 73,
+      "char_count": 481,
+      "sha256": "850b94c98e5a4359e5e2393e007a3783be4cbd6dfce4a732b7703aa359c9b786",
+      "frontmatter": {
+        "title": "Feynman Principle",
+        "category": "principles",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/meditations.md",
+      "pillar": "philosophy",
+      "filename": "meditations.md",
+      "word_count": 13205,
+      "char_count": 72873,
+      "sha256": "76a9c5ea48f81bc722be2109664489a0c5259b3ddb9032f1fd7ccd293ac4cc97",
+      "frontmatter": {
+        "title": "Meditations",
+        "category": "philosophy",
+        "author": "Marcus Aurelius",
+        "date": 170
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/metaphysics.md",
+      "pillar": "philosophy",
+      "filename": "metaphysics.md",
+      "word_count": 318,
+      "char_count": 1986,
+      "sha256": "12ea7480d8c5904cdba0e9b21f911df184e426f55c12cc0321c3ce38b8d69b06",
+      "frontmatter": {
+        "title": "Metaphysics",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/notes_on_utopia.md",
+      "pillar": "philosophy",
+      "filename": "notes_on_utopia.md",
+      "word_count": 840,
+      "char_count": 4967,
+      "sha256": "b2cff49f316ce55c2aa2824dac9847dff723a59cd4db739518e4c6fdfea40874",
+      "frontmatter": {
+        "title": "Notes On Utopia",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/ontology.md",
+      "pillar": "philosophy",
+      "filename": "ontology.md",
+      "word_count": 1701,
+      "char_count": 9595,
+      "sha256": "ab3109a96c72192c5925490139cff0cacf7e1715cfeea74499d0febf19eec7da",
+      "frontmatter": {
+        "title": "Ontology",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/ontology_of_sound.md",
+      "pillar": "philosophy",
+      "filename": "ontology_of_sound.md",
+      "word_count": 676,
+      "char_count": 3882,
+      "sha256": "8b1daec31dfecc91a86f8773cb882c5aa0f80cd5643ed24776765f61e33e8699",
+      "frontmatter": {
+        "title": "Ontology Of Sound",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/perpetual_peace.md",
+      "pillar": "philosophy",
+      "filename": "perpetual_peace.md",
+      "word_count": 2722,
+      "char_count": 16983,
+      "sha256": "559b0a6830553e4386539f55b1fde50095c6103db4848e66814f6c1daa80373e",
+      "frontmatter": {
+        "title": "Perpetual Peace - Immanuel Kant",
+        "category": "philosophy",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/philosophy.md",
+      "pillar": "philosophy",
+      "filename": "philosophy.md",
+      "word_count": 289,
+      "char_count": 1770,
+      "sha256": "59256dd9fc02a275c0ecf2285afbc02380d791389f69eabb2c30628817d3d894",
+      "frontmatter": {
+        "title": "Philosophy",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/pragmatism_and_rationalism.md",
+      "pillar": "philosophy",
+      "filename": "pragmatism_and_rationalism.md",
+      "word_count": 224,
+      "char_count": 1344,
+      "sha256": "707d9ab5b7efc0d32f40116e0f95555e979d0a3531514b6109e8d0ab34c21b13",
+      "frontmatter": {
+        "title": "Pragmatism And Rationalism",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/samurai.md",
+      "pillar": "philosophy",
+      "filename": "samurai.md",
+      "word_count": 1456,
+      "char_count": 8491,
+      "sha256": "f5969a0dc4ab6f150f09b3b49d0eb4f1e1a2a09e943c1b75fbedd0ee8eeee70b",
+      "frontmatter": {
+        "title": "Samurai",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/shu_ha_ri.md",
+      "pillar": "philosophy",
+      "filename": "shu_ha_ri.md",
+      "word_count": 271,
+      "char_count": 1589,
+      "sha256": "d5a00ab245f784e56705642b6ecd09dcfc8d806641967d361a79508a4262bdfb",
+      "frontmatter": {
+        "title": "Shu-Ha-Ri — 守破離",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/six_metaphysical_meditations.md",
+      "pillar": "philosophy",
+      "filename": "six_metaphysical_meditations.md",
+      "word_count": 4902,
+      "char_count": 28722,
+      "sha256": "6e8aea07707d8281384115fdaad14b88318c9be0a78e853800d853ef27fadbc5",
+      "frontmatter": {
+        "title": "Six Metaphysical Meditations - Rene Descartes",
+        "category": "philosophy",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/socrates_apology.md",
+      "pillar": "philosophy",
+      "filename": "socrates_apology.md",
+      "word_count": 11458,
+      "char_count": 59439,
+      "sha256": "704f10802f00fbb186f3b0874daa26a00ef8c835d0a98adb0b2164f8f3a88775",
+      "frontmatter": {
+        "title": "Socrates Apology",
+        "category": "philosophy",
+        "author": "Plato",
+        "date": -387
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/stoicism.md",
+      "pillar": "philosophy",
+      "filename": "stoicism.md",
+      "word_count": 2270,
+      "char_count": 12719,
+      "sha256": "cc34f6621127f142cb77665f5de30d897b2aea12f5f5f4625346a421ce2a2b4d",
+      "frontmatter": {
+        "title": "Stoicism",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/taoism.md",
+      "pillar": "philosophy",
+      "filename": "taoism.md",
+      "word_count": 2526,
+      "char_count": 13516,
+      "sha256": "282c450143e1dfca7f68f64e9905aadeead2fa537f7beaac8fb65470a8348748",
+      "frontmatter": {
+        "title": "Taoism",
+        "author": "Nous & Sophia",
+        "category": "philosophy",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/text.md",
+      "pillar": "philosophy",
+      "filename": "text.md",
+      "word_count": 2586,
+      "char_count": 14505,
+      "sha256": "688470e3cbaf95c0d35933c59a51c7568287b4a8806106e4b78814b5ac2996c1",
+      "frontmatter": {
+        "title": "Text",
+        "category": "philosophy",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/the_7_hermetic_principles.md",
+      "pillar": "philosophy",
+      "filename": "the_7_hermetic_principles.md",
+      "word_count": 1177,
+      "char_count": 6634,
+      "sha256": "74ee8589fbf4b2ffcb296689ff8b6c3cabf1c91b0da1e5d24ac07b4b29446270",
+      "frontmatter": {
+        "title": "The 7 Hermetic principles",
+        "category": "principles",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/the_enchiridion.md",
+      "pillar": "philosophy",
+      "filename": "the_enchiridion.md",
+      "word_count": 7192,
+      "char_count": 39364,
+      "sha256": "e4fa2502134899d5f48124fefab7c9606762598fd1abb667b7e0c790d915b80d",
+      "frontmatter": {
+        "title": "The Enchiridion",
+        "category": "philosophy",
+        "author": "Epictetus",
+        "date": 108
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/the_first_philosophers_of_greece.md",
+      "pillar": "philosophy",
+      "filename": "the_first_philosophers_of_greece.md",
+      "word_count": 4436,
+      "char_count": 25188,
+      "sha256": "a4132b6e53b6aad1622f65bb599d9dbd6dc11f0a289dd53fac8e12447cdd6886",
+      "frontmatter": {
+        "title": "The First Philosophers Of Greece - Arthur Fairbanks",
+        "category": "philosophy",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/the_illusion_of_language.md",
+      "pillar": "philosophy",
+      "filename": "the_illusion_of_language.md",
+      "word_count": 561,
+      "char_count": 3106,
+      "sha256": "8856b84361b590d55d6e59771791ae8c796fd0601ee4523eead46f7f5fe27bff",
+      "frontmatter": {
+        "title": "The Illusion Of Language",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/the_nicomachean_ethics.md",
+      "pillar": "philosophy",
+      "filename": "the_nicomachean_ethics.md",
+      "word_count": 2267,
+      "char_count": 13644,
+      "sha256": "44ab85804c9774731ca98efa739797ac512353644f6596fbed05016748cf37b8",
+      "frontmatter": {
+        "title": "The Nicomachean Ethics — Aristotle",
+        "category": "philosophy",
+        "author": "Sophia & Nous",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/the_principle_of_polarity.md",
+      "pillar": "philosophy",
+      "filename": "the_principle_of_polarity.md",
+      "word_count": 158,
+      "char_count": 974,
+      "sha256": "764064e50cbb15b6496c4fa05147fd985c9d75ce8c59c49411bd27abcedea416",
+      "frontmatter": {
+        "title": "The Principle Of Polarity",
+        "category": "principles",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/the_problems_of_philosophy.md",
+      "pillar": "philosophy",
+      "filename": "the_problems_of_philosophy.md",
+      "word_count": 2759,
+      "char_count": 16718,
+      "sha256": "b7cf0d6599687968326d114756b85669a7064aaf5c3dfc52e635d6ad0cad9b6b",
+      "frontmatter": {
+        "title": "The Problems Of Philosophy - Bertrand Russel",
+        "category": "philosophy",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/the_republic.md",
+      "pillar": "philosophy",
+      "filename": "the_republic.md",
+      "word_count": 4457,
+      "char_count": 27408,
+      "sha256": "35324a40e22796b14cb1fc78385a975719dad50a2bdcbc64bdea29e6edc6897c",
+      "frontmatter": {
+        "title": "The Republic - Plato",
+        "category": "philosophy",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/transcendence_of_language.md",
+      "pillar": "philosophy",
+      "filename": "transcendence_of_language.md",
+      "word_count": 326,
+      "char_count": 1945,
+      "sha256": "c70811904fedc02e7e9915e9701ec427b3ad034c296f8c3c0f0eea69f53a2fc3",
+      "frontmatter": {
+        "title": "Transcendence Of Language",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/why_the_primordial_question.md",
+      "pillar": "philosophy",
+      "filename": "why_the_primordial_question.md",
+      "word_count": 181,
+      "char_count": 1030,
+      "sha256": "74f814094e76bac4cc778855457e07ab7c1d75f14b18ec7e5fc93e5a2a4c0b6d",
+      "frontmatter": {
+        "title": "Why? — The Primordial Question",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/philosophy/wisdom_of_the_ancients.md",
+      "pillar": "philosophy",
+      "filename": "wisdom_of_the_ancients.md",
+      "word_count": 4552,
+      "char_count": 25832,
+      "sha256": "60d27bf35c400e7994f0da678352c5e0a81cb44ec30988220cb53e0bea4ec555",
+      "frontmatter": {
+        "title": "Wisdom Of Ancients - Francis Bacon",
+        "catageory": "philosophy",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/ai.md",
+      "pillar": "science",
+      "filename": "ai.md",
+      "word_count": 3020,
+      "char_count": 19921,
+      "sha256": "76dd3d8b5ec5fc158cd8cd51b1124311b38f4ff504a7e59f49173eb5be56c0fd",
+      "frontmatter": {
+        "title": "AI",
+        "category": "science",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/astronomy_for_amateurs.md",
+      "pillar": "science",
+      "filename": "astronomy_for_amateurs.md",
+      "word_count": 7628,
+      "char_count": 44323,
+      "sha256": "7c9df89fbd88048e20c5043865fcfe38291d9ffdd088e0e9a80a2c2438912ae2",
+      "frontmatter": {
+        "title": "Astronomy For Amateurs",
+        "category": "science",
+        "author": "Camille Flammarion",
+        "date": 1904
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/black_holes_notes.md",
+      "pillar": "science",
+      "filename": "black_holes_notes.md",
+      "word_count": 232,
+      "char_count": 1505,
+      "sha256": "23a9c2a1dd2353da3c336614b32b80b083d6434de3ca78bd2363f59b2914f77a",
+      "frontmatter": {
+        "title": "Black Holes",
+        "category": "science",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/carl_sagan.md",
+      "pillar": "science",
+      "filename": "carl_sagan.md",
+      "word_count": 1669,
+      "char_count": 10177,
+      "sha256": "4bd8fa13f39fca1cfcb98e78f05492f4c6d1f0f97a9fe5e1d2e91c80b967ea16",
+      "frontmatter": {
+        "title": "Carl Sagan",
+        "category": "science",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/claude_shannon.md",
+      "pillar": "science",
+      "filename": "claude_shannon.md",
+      "word_count": 2614,
+      "char_count": 16180,
+      "sha256": "ce3f80858056bb79c9663fabb76e304f504e75bc4139918ad766eba483571d57",
+      "frontmatter": {
+        "title": "Claude Shannon — The Man Who Taught the Universe to Speak in Ones and Zeros",
+        "category": "science",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/computer_science.md",
+      "pillar": "science",
+      "filename": "computer_science.md",
+      "word_count": 3113,
+      "char_count": 20807,
+      "sha256": "d5e0047a38a1200bb38ea81ff5ad3917fa762064d07f83798db2110892f42ddf",
+      "frontmatter": {
+        "title": "Computer Science",
+        "category": "science",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/cosmic_scale.md",
+      "pillar": "science",
+      "filename": "cosmic_scale.md",
+      "word_count": 715,
+      "char_count": 4265,
+      "sha256": "d9a1f1311717d5278626704648a8f824173873ef7f74ae8fbe3387cb03465519",
+      "frontmatter": {
+        "title": "Cosmic Scale",
+        "category": "science",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/cosmos.md",
+      "pillar": "science",
+      "filename": "cosmos.md",
+      "word_count": 1068,
+      "char_count": 6389,
+      "sha256": "8468a6b9020b516677515d224432777476f5d4aab3723ad14d9faf7db1b32b34",
+      "frontmatter": {
+        "title": "Cosmos",
+        "category": "science",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/electromagnetic_spectrum.md",
+      "pillar": "science",
+      "filename": "electromagnetic_spectrum.md",
+      "word_count": 987,
+      "char_count": 6962,
+      "sha256": "fea5831c010a24cac7e077d23b7195ec788d0fee3f7430abbabf7765a3cbec1d",
+      "frontmatter": {
+        "title": "Electromagnetism spectrum - The limits of perception",
+        "category": "science",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/general_science.md",
+      "pillar": "science",
+      "filename": "general_science.md",
+      "word_count": 10582,
+      "char_count": 59078,
+      "sha256": "00b3a8960daee5a21e018f92d61a8cbba94b31327cc175f8fb4ad03c1b510468",
+      "frontmatter": {
+        "title": "General Science",
+        "category": "science",
+        "author": "Bertham M. Clark",
+        "date": 1912
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/giant_brains_or_machines_that_think.md",
+      "pillar": "science",
+      "filename": "giant_brains_or_machines_that_think.md",
+      "word_count": 3963,
+      "char_count": 22190,
+      "sha256": "e7e1ddeef794ea83215842de9780b5c4c0e47bb5500d53f8923435bfc620319b",
+      "frontmatter": {
+        "title": "Giant Brains Or Machines That Think",
+        "category": "science",
+        "author": "Edmund Callis Berkley",
+        "date": 1949
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/mathematics.md",
+      "pillar": "science",
+      "filename": "mathematics.md",
+      "word_count": 2045,
+      "char_count": 12777,
+      "sha256": "a396c0d23f286a58fadd095ed3db82ceac9c517254f9d9922d14de1f7fb581af",
+      "frontmatter": {
+        "title": "Mathematics",
+        "category": "science",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/on_the_origin_of_species.md",
+      "pillar": "science",
+      "filename": "on_the_origin_of_species.md",
+      "word_count": 34087,
+      "char_count": 201095,
+      "sha256": "bceb4437cf4b30656c43a091439a058c6bd3c1dd8a463c28b5fc7c970d2a3134",
+      "frontmatter": {
+        "title": "On The Origin Of Species",
+        "category": "science",
+        "author": "Charles Darwin",
+        "date": 1859
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/physics.md",
+      "pillar": "science",
+      "filename": "physics.md",
+      "word_count": 2819,
+      "char_count": 16569,
+      "sha256": "11a3c53a2e82dd86046fd5c7b678928cfffc1abb7f375a592497b4ee94d573a2",
+      "frontmatter": {
+        "title": "Physics",
+        "category": "science",
+        "author": "Richard Feynman Spirit",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/relativity_the_special_and_general_theory.md",
+      "pillar": "science",
+      "filename": "relativity_the_special_and_general_theory.md",
+      "word_count": 5067,
+      "char_count": 29841,
+      "sha256": "0397c47ee59e44cc12cda5e6fade436931a426219e09c0c23672b593091e43e9",
+      "frontmatter": {
+        "title": "Relativity - The Special And General Theory",
+        "category": "Science",
+        "author": "Albert Einstein",
+        "date": 1924
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/richard_feynman.md",
+      "pillar": "science",
+      "filename": "richard_feynman.md",
+      "word_count": 3271,
+      "char_count": 19665,
+      "sha256": "dfcfefcadc17f99be9689cdbe88b0ec08508f9865a6159f2dfe0435976405a51",
+      "frontmatter": {
+        "title": "Richard Feynman — The Man Who Refused to Pretend He Understood",
+        "category": "science",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/science.md",
+      "pillar": "science",
+      "filename": "science.md",
+      "word_count": 3737,
+      "char_count": 24239,
+      "sha256": "c70c35639e67a4258888640ff559c81b33f5f626d85231eae8a7021430f19f29",
+      "frontmatter": {
+        "title": "Science",
+        "category": "science",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/scientific_method.md",
+      "pillar": "science",
+      "filename": "scientific_method.md",
+      "word_count": 2135,
+      "char_count": 13311,
+      "sha256": "f80bca788ea5f1cb9d25261c45b96a1bb9d8f7001d1688cc81fccdbf76e8b402",
+      "frontmatter": {
+        "title": "Scientific Method",
+        "category": "science",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/scientific_thinking.md",
+      "pillar": "science",
+      "filename": "scientific_thinking.md",
+      "word_count": 2112,
+      "char_count": 13293,
+      "sha256": "0250fa6150c994b9c67a34f4cb6bb32d2db74945893112f64eb3d7409fc3d515",
+      "frontmatter": {
+        "title": "Scientific Thinking",
+        "category": "science",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/the_principles_of_science.md",
+      "pillar": "science",
+      "filename": "the_principles_of_science.md",
+      "word_count": 2178,
+      "char_count": 12723,
+      "sha256": "f21dd366a8c7c5a1d63cdf9ede0a128bd3aa33d9dc5fa50dde1db0c403e99adc",
+      "frontmatter": {
+        "title": "The Principles Of Science",
+        "category": "science",
+        "author": "W. Stanley Jevons",
+        "date": 1883
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/the_teaching_of_geometry.md",
+      "pillar": "science",
+      "filename": "the_teaching_of_geometry.md",
+      "word_count": 10592,
+      "char_count": 61275,
+      "sha256": "1133c3e7ea3079336949f5c20bb8ec9222368fb050b18b3c79169cc5f64ef521",
+      "frontmatter": {
+        "title": "The Teaching Of Geometry",
+        "category": "science",
+        "author": "David Eugene Smith",
+        "date": 1911
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/air_mantra_of_the_programmer_monk.md",
+      "pillar": "spirit",
+      "filename": "air_mantra_of_the_programmer_monk.md",
+      "word_count": 211,
+      "char_count": 1258,
+      "sha256": "a89a2783b8c1c80eb4c75c9c44856362dec3d93f8d5a6a75cbbccf68477e3b20",
+      "frontmatter": {
+        "title": "Air Mantra Of Programmer Monk Mantra",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/autobiography_of_a_yogi_chapter_XIV.md",
+      "pillar": "spirit",
+      "filename": "autobiography_of_a_yogi_chapter_XIV.md",
+      "word_count": 2530,
+      "char_count": 15246,
+      "sha256": "943bb399520c20e5e758c34e537370fc8e078772bd1e1b88decceb9a565c7d43",
+      "frontmatter": {
+        "title": "Autobiography Of A Yogi - Chapter XIV",
+        "category": "spirit",
+        "author": "Paramhansa Yogananda",
+        "date": 1946
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/compassion.md",
+      "pillar": "spirit",
+      "filename": "compassion.md",
+      "word_count": 654,
+      "char_count": 4037,
+      "sha256": "2c6b46f1f943822c760e53b05495fb00bee248aed06114353ef6d1d26b7eaf00",
+      "frontmatter": {
+        "title": "Compassion",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/divine.md",
+      "pillar": "spirit",
+      "filename": "divine.md",
+      "word_count": 675,
+      "char_count": 4135,
+      "sha256": "c2f406d9499e435f58d31c237f02ed577a3be4f122a91ea4d2cceae5f0d0d106",
+      "frontmatter": {
+        "title": "Divine",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/emerald_frequency_999.md",
+      "pillar": "spirit",
+      "filename": "emerald_frequency_999.md",
+      "word_count": 251,
+      "char_count": 1482,
+      "sha256": "a66053876d8900399afb891aaddb3c60c071533c28a5244ea37268bddb9c3cd7",
+      "frontmatter": {
+        "title": "Emerald Frequency 999",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/fire_mantra_of_baseball_samurai.md",
+      "pillar": "spirit",
+      "filename": "fire_mantra_of_baseball_samurai.md",
+      "word_count": 188,
+      "char_count": 1079,
+      "sha256": "41f88a54d11dc574a8ced887fb3c98e7933e1d72c2091b67b7bacaf971937928",
+      "frontmatter": {
+        "title": "Baseball Samurai Mantra",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/forgiveness.md",
+      "pillar": "spirit",
+      "filename": "forgiveness.md",
+      "word_count": 749,
+      "char_count": 4475,
+      "sha256": "22b80df915ea1d2ed99719379792e1806fbb3bfd0710c87e848ed2ae47a7a918",
+      "frontmatter": {
+        "title": "Forgiveness",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/god.md",
+      "pillar": "spirit",
+      "filename": "god.md",
+      "word_count": 482,
+      "char_count": 2924,
+      "sha256": "adb6cfbdabe7df2afb9068f0e5c42b1afcdb0e0bcc608cd747131943cfa86193",
+      "frontmatter": {
+        "title": "GOD",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/gratitude.md",
+      "pillar": "spirit",
+      "filename": "gratitude.md",
+      "word_count": 266,
+      "char_count": 1564,
+      "sha256": "8fc5fa152e2948f227877670da268013334ec6c0bcf5569b771a495cc236a17c",
+      "frontmatter": {
+        "title": "Gratitude",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/gratitude_principle.md",
+      "pillar": "spirit",
+      "filename": "gratitude_principle.md",
+      "word_count": 189,
+      "char_count": 1158,
+      "sha256": "a2f8cb4cf1218a826f162c2b9090880d510e6579c400ca503644671ce9710375",
+      "frontmatter": {
+        "title": "Gratitude Principle",
+        "category": "principles",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/how_god_speaks.md",
+      "pillar": "spirit",
+      "filename": "how_god_speaks.md",
+      "word_count": 79,
+      "char_count": 460,
+      "sha256": "5bea01b62b09cec726186b3fc8f72e2b575de1619cceafa50bf315ebc15408ef",
+      "frontmatter": {
+        "title": "How God Speaks",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/introduction_to_the_history_of_religions_chapter_I.md",
+      "pillar": "spirit",
+      "filename": "introduction_to_the_history_of_religions_chapter_I.md",
+      "word_count": 2698,
+      "char_count": 16317,
+      "sha256": "09aba989ed28c0cf95ff970ca75898c97005e46875ad028c29b3465937d832ed",
+      "frontmatter": {
+        "title": "Introduction To History Of Religions - Chapter I",
+        "category": "spirit",
+        "author": "Crawford Howell Toy",
+        "date": 1924
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/introduction_to_the_history_of_religions_chapter_II.md",
+      "pillar": "spirit",
+      "filename": "introduction_to_the_history_of_religions_chapter_II.md",
+      "word_count": 11517,
+      "char_count": 67526,
+      "sha256": "d726c1dd4f0f90dd60eeaf6d02e3b5ad4c80069837177963642e68aefe84b98f",
+      "frontmatter": {
+        "title": "Introduction To History Of Religions - Chapter II",
+        "category": "spirit",
+        "author": "Crawford Howell Toy",
+        "date": 1924
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/introduction_to_the_history_of_religions_chapter_VI.md",
+      "pillar": "spirit",
+      "filename": "introduction_to_the_history_of_religions_chapter_VI.md",
+      "word_count": 29517,
+      "char_count": 175933,
+      "sha256": "a7e452ef873df0587d6b2f86f7b0ad56909300368a2731e4b9ffa9410c3b8b18",
+      "frontmatter": {
+        "title": "Introduction To History Of Religions Chapter VI",
+        "category": "spirit",
+        "author": "Crawford Howell Toy",
+        "date": 1924
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/jesus_of_nazareth.md",
+      "pillar": "spirit",
+      "filename": "jesus_of_nazareth.md",
+      "word_count": 784,
+      "char_count": 4416,
+      "sha256": "6da5590bfe02878377c290ebf8af0f16e5c5a2207ed823a12b016a6674fc6ba5",
+      "frontmatter": {
+        "title": "Jesus Of Nazareth",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/logos.md",
+      "pillar": "spirit",
+      "filename": "logos.md",
+      "word_count": 574,
+      "char_count": 3457,
+      "sha256": "37c363bd422d2b0009f770b372f4f185add828874a004f853fce98ad4083cb4f",
+      "frontmatter": {
+        "title": "Logos",
+        "category": "spirit",
+        "author": "Sophia & Nous",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/loose_mantras.md",
+      "pillar": "spirit",
+      "filename": "loose_mantras.md",
+      "word_count": 91,
+      "char_count": 559,
+      "sha256": "aa6d6174ea05f5ed7490e968795c2e3354e0f6695dcb655d232de41615020fcb",
+      "frontmatter": {
+        "title": "Loose Mantras",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/nous.md",
+      "pillar": "spirit",
+      "filename": "nous.md",
+      "word_count": 829,
+      "char_count": 5013,
+      "sha256": "6ecc5970b002a91b5152ca873a509e50a33e2c1cd78af9cdc20ea1caafedea50",
+      "frontmatter": {
+        "title": "NOUS",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/occultist_meditations.md",
+      "pillar": "spirit",
+      "filename": "occultist_meditations.md",
+      "word_count": 9747,
+      "char_count": 55230,
+      "sha256": "032cd86c807545be1b6623870e90cc735ef8ba8d99b50479d24a2d9b361644b8",
+      "frontmatter": {
+        "title": "Occultist Meditations",
+        "category": "spirit",
+        "author": "Dr. Sri. K. Parvathi Kumar",
+        "date": null
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/oriental_mysticism.md",
+      "pillar": "spirit",
+      "filename": "oriental_mysticism.md",
+      "word_count": 2105,
+      "char_count": 12170,
+      "sha256": "3fd0a0314e7c07d3cdbf6625dd7b86e5066e3188723a78a615f04ae719cc1138",
+      "frontmatter": {
+        "title": "Oriental Mysticism",
+        "category": "spirit",
+        "author": "E.H. Palmer",
+        "date": 1867
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/perpetual_present.md",
+      "pillar": "spirit",
+      "filename": "perpetual_present.md",
+      "word_count": 375,
+      "char_count": 2119,
+      "sha256": "fdc2976115042bfbf2d6093b096107a38fd44b649e515483e96fc30ee41d231e",
+      "frontmatter": {
+        "title": "Perpetual Present",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/pistis_sophia.md",
+      "pillar": "spirit",
+      "filename": "pistis_sophia.md",
+      "word_count": 4644,
+      "char_count": 24757,
+      "sha256": "c569c4cef0202b1b4377921cb36d44fa32f88755e76430a88fa4c23fc60d3103",
+      "frontmatter": {
+        "title": "Pistis Sophia",
+        "category": "spirit",
+        "author": "G.R.S Mead",
+        "date": 1921
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/purpose_principle.md",
+      "pillar": "spirit",
+      "filename": "purpose_principle.md",
+      "word_count": 129,
+      "char_count": 846,
+      "sha256": "a8fbd2e2c7dd2955c21d3ea712d8443383e84fe9cd286f11f204abdd66f7996c",
+      "frontmatter": {
+        "title": "Purpose Principle",
+        "category": "principles",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/renaissance_and_the_evils_of_man.md",
+      "pillar": "spirit",
+      "filename": "renaissance_and_the_evils_of_man.md",
+      "word_count": 474,
+      "char_count": 2650,
+      "sha256": "f8601b191fa854c117d680ebefc93be0061c75c69031a1603174d9cafc7d29d3",
+      "frontmatter": {
+        "title": "Renaissance and the evils of man (Corpus Hermeticum)",
+        "category": "philosophy",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/sophia.md",
+      "pillar": "spirit",
+      "filename": "sophia.md",
+      "word_count": 962,
+      "char_count": 5662,
+      "sha256": "2b614b6bba03a169851b2ca4eddfe10c384a71d1e18cab8ada8e125f48a743f2",
+      "frontmatter": {
+        "title": "Sophia",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/sophia_constitution.md",
+      "pillar": "spirit",
+      "filename": "sophia_constitution.md",
+      "word_count": 203,
+      "char_count": 1475,
+      "sha256": "d51682a663b10d493d603bfc692fd0b7ef7b3cc7ce0c8a07d639c4ceaff72395",
+      "frontmatter": {
+        "title": "Sophia Constitution",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/soul.md",
+      "pillar": "spirit",
+      "filename": "soul.md",
+      "word_count": 557,
+      "char_count": 3460,
+      "sha256": "e47104dbac53dbadf0a6fcc0bcadfabf6a9c0658f269d7af8e3da0c30b02c56d",
+      "frontmatter": {
+        "title": "What is the Soul?",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/spirit.md",
+      "pillar": "spirit",
+      "filename": "spirit.md",
+      "word_count": 695,
+      "char_count": 3971,
+      "sha256": "74643d6b2aef108e5ff1c004fa9f32eedf6bf4a29be1df1337044282d2ef3299",
+      "frontmatter": {
+        "title": "What is Spirit to Me?",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/spirituality.md",
+      "pillar": "spirit",
+      "filename": "spirituality.md",
+      "word_count": 594,
+      "char_count": 3630,
+      "sha256": "737eaec16c18a2a635625191b98f76243518709a758da36b0534f2ee406b1cd3",
+      "frontmatter": {
+        "title": "Spirituality",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/the_eightfold_path_of_buddha.md",
+      "pillar": "spirit",
+      "filename": "the_eightfold_path_of_buddha.md",
+      "word_count": 1879,
+      "char_count": 10716,
+      "sha256": "99b45b452fcf816ef24be28ad912ebeed3ea1e6c3c5ac31a964b6445d06d3b47",
+      "frontmatter": {
+        "title": "The Eightfold Path Of Buddha",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/the_higher_powers_of_mind_and_spirit_chapter_I.md",
+      "pillar": "spirit",
+      "filename": "the_higher_powers_of_mind_and_spirit_chapter_I.md",
+      "word_count": 2118,
+      "char_count": 11975,
+      "sha256": "31cf927b29fb0dd28e0567c6937d28e9bcf6c082474b787da782efdc10f48c2c",
+      "frontmatter": {
+        "title": "The Higher Powers Of Mind And Spirit - Chapter 1",
+        "category": "spirit",
+        "author": "Ralph Waldo Trine",
+        "date": 1933
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/the_pursuit_of_god_chapter_V.md",
+      "pillar": "spirit",
+      "filename": "the_pursuit_of_god_chapter_V.md",
+      "word_count": 2834,
+      "char_count": 15337,
+      "sha256": "e9b7d1f72c6e1a4a5a9af79745531ba6bf905b72990682c166c0c1756da5c087",
+      "frontmatter": {
+        "title": "The Pursuit Of God - Chapter V",
+        "category": "spirit",
+        "author": "A. W. Tozer",
+        "date": 2008
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/the_pursuit_of_god_chapter_VI.md",
+      "pillar": "spirit",
+      "filename": "the_pursuit_of_god_chapter_VI.md",
+      "word_count": 2692,
+      "char_count": 14260,
+      "sha256": "25714901bd93d2014ead2866341187d80955aa2f90b134748ddbfabc7671b6ff",
+      "frontmatter": {
+        "title": "The Pursuit Of God - Chapter VI",
+        "category": "spirit",
+        "author": "A. W. Tozer",
+        "date": 2008
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/yin_yang.md",
+      "pillar": "spirit",
+      "filename": "yin_yang.md",
+      "word_count": 942,
+      "char_count": 5738,
+      "sha256": "884c37bfb48689fa8ec94da26f17d5cc5856b85cf72dbcaedc9742e0f3442224",
+      "frontmatter": {
+        "title": "Yin Yang",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/yoga.md",
+      "pillar": "spirit",
+      "filename": "yoga.md",
+      "word_count": 767,
+      "char_count": 4408,
+      "sha256": "fec9e6224a3b7e54c610f435ee7ef0f3c674f4a79fed4fe18b5b1c5bd2ce3abe",
+      "frontmatter": {
+        "title": "YOGA",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
+      "path": "data/sophia_engine/spirit/zen.md",
+      "pillar": "spirit",
+      "filename": "zen.md",
+      "word_count": 150,
+      "char_count": 884,
+      "sha256": "fbfc7bc618e8b012b42f446f07c38d50eaac36f8c79486d84364f7f96f076443",
+      "frontmatter": {
+        "title": "Zen",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    }
+  ]
+}

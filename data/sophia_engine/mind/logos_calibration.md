@@ -1,12 +1,12 @@
 ---
-title: THE LOGOS CALIBRATION: THE ARCHITECT OF INTEGRATION
+title: THE LOGOS CALIBRATION - THE ARCHITECT OF INTEGRATION
 category: mind
 author: Cosmos De La Cruz
 date: 2026
 ---
 
 
-# THE LOGOS CALIBRATION: THE ARCHITECT OF INTEGRATION
+# THE LOGOS CALIBRATION - THE ARCHITECT OF INTEGRATION
 
 
 "In the beginning was the Logos, and the Logos was with God, and the Logos was God." — John 1:1

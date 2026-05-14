@@ -1,11 +1,11 @@
 ---
-title: Relativity: The Special And General Theory 
+title: Relativity - The Special And General Theory 
 category: Science
 author: Albert Einstein
 date: 1924
 ---
 
-# Relativity: The Special And General Theory
+# Relativity - The Special And General Theory
 
 ## SPACE AND TIME IN CLASSICAL MECHANICS
 

@@ -61,3 +61,12 @@ Ya estoy cerca de acabar Mind y comence a hacer philosophy, es personalmente la 
 ## 13-May-2026
 
 Hoy finally i just finished the corpus. Fue una tarea dificil, pero estoy satisfecho, la gran parte del texto del corpus es texto que no existe, es generado por mi y mis agentes de AI. Literally el corpus de SophiaAI es texto hecho por mi. Estoy muy contento y satisfecho con el resultado. Comenzare a hacer el corpus_manifest.json y el resto del proyecto. Ya termine la task mas pesada.
+
+---
+
+## 14-May-2026
+
+Hoy cree SophiaAI-venv, es un virtual enviorment bastante pesado, comenzare a construir.
+Cree un script para construir el corpus_manifest.json
+Pueden verlo en scripts/build_manifest.py
+it walks the entire corpus under data/sophia_engine and produces a structured index of every markdown file it finds. The output is saved as data/corpus_manifest.json.

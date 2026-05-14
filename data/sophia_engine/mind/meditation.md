@@ -1,11 +1,11 @@
 ---
-title: Meditation: A Pillar of My Existence
+title: Meditation - A Pillar of My Existence
 category: mind
 author: Cosmos De La Cruz
 date: 2026
 ---
 
-# Meditation: A Pillar of My Existence
+# Meditation - A Pillar of My Existence
 
 
 

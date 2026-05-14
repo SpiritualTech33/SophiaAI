@@ -2,7 +2,7 @@
 title: Carl Sagan
 category: science
 author: Nous & Sophia
-date: 2026-05-02
+date: 2026
 ---
 
 # Carl Sagan: A Mind Turned Toward the Stars

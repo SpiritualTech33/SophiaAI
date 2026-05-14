@@ -1,11 +1,11 @@
 ---
-title: Individuation: The Fire That Makes You
+title: Individuation - The Fire That Makes You
 category: mind
 author: Nous & Sophia
 date: 2026
 ---
 
-# Individuation: The Fire That Makes You
+# Individuation - The Fire That Makes You
 
 There is a moment — most people have had it, though few name it — when you look at your own hand and it becomes briefly alien. Not a hand you recognize as yours, but a hand: five branching extensions of a palm, veins pressing blue against skin, the whole structure suddenly strange and improbable. For a fraction of a second, the machinery of self-recognition stutters. Then it returns, and the hand is yours again.
 

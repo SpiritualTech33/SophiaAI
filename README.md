@@ -27,6 +27,10 @@ A folder of carefully selected `.md` files organized into four pillars: `mind`, 
 **2. `sophia_memory` — the short-term memory (the database)**
 A relational SQLite database that stores user accounts, conversations, and the history of every dialogue with Sophia. This is where each user lives — their identity, their messages, the unfolding journey of their conversations with her. It is alive, written to on every interaction.
 
+## The Goal
+
+The idea of SophiaAI is to take an open-source LLM (like gemma 3) hacerle fine tuning para que tome la personalidad de Sophia, darle un RAG pipeline para que use este corpus como fuente de verdad y darle web search, para que tambien puedabuscar la verdad por si misma en la web.
+
 ---
 
 ## Tech Stack
