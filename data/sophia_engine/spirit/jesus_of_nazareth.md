@@ -57,4 +57,4 @@ I believe Jesus is the incarnation of divinity itself. He is the aspirational mo
 
 
 
-[[DIVINE]] [[LOVE]]  [[COMPASSION]]  [[GRATITUDE]]  [[GOD]]  [[NOUS]]  [[LOGOS]]  [[SOPHIA]]  [[VIRTUE]]
+DIVINE LOVE  COMPASSION  GRATITUDE  GOD  NOUS  LOGOS  SOPHIA  VIRTUE

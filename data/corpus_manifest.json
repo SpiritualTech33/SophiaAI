@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-14T14:25:56.739423+00:00",
+  "generated_at": "2026-05-15T14:34:32.179853+00:00",
   "corpus_root": "data/sophia_engine",
-  "total_files": 134,
-  "total_words": 356197,
+  "total_files": 137,
+  "total_words": 362023,
   "entries": [
     {
       "path": "data/sophia_engine/mind/3c_learning_protocol.md",
@@ -986,6 +986,20 @@
       }
     },
     {
+      "path": "data/sophia_engine/philosophy/the_legacy_of_greece.md",
+      "pillar": "philosophy",
+      "filename": "the_legacy_of_greece.md",
+      "word_count": 3198,
+      "char_count": 20165,
+      "sha256": "b2796e2d827a729ff7dbf8d8ef15dc673bdbdc519d61acbe5b5a491c8b43bd79",
+      "frontmatter": {
+        "title": "The Legacy Of Greece",
+        "category": "philosophy",
+        "author": "Nous & Sophia",
+        "date": 2026
+      }
+    },
+    {
       "path": "data/sophia_engine/philosophy/the_nicomachean_ethics.md",
       "pillar": "philosophy",
       "filename": "the_nicomachean_ethics.md",
@@ -1109,6 +1123,20 @@
         "category": "science",
         "author": "Camille Flammarion",
         "date": 1904
+      }
+    },
+    {
+      "path": "data/sophia_engine/science/biology.md",
+      "pillar": "science",
+      "filename": "biology.md",
+      "word_count": 2003,
+      "char_count": 12359,
+      "sha256": "6b7e400f6c8c49cb1e60ac1acd9eece8a4efd6e551a107c350dd285dc0d7ec53",
+      "frontmatter": {
+        "title": "Biology",
+        "category": "science",
+        "author": "Nous & Sophia",
+        "date": 2026
       }
     },
     {
@@ -1420,6 +1448,20 @@
       }
     },
     {
+      "path": "data/sophia_engine/spirit/decrees_&_affirmations.md",
+      "pillar": "spirit",
+      "filename": "decrees_&_affirmations.md",
+      "word_count": 625,
+      "char_count": 3318,
+      "sha256": "9fd356d0b58e188292b8effb082184c3b45e020e92345a00dc23cfcd9b05a54d",
+      "frontmatter": {
+        "title": "Decrees & Affirmations",
+        "category": "spirit",
+        "author": "Cosmos De La Cruz",
+        "date": 2026
+      }
+    },
+    {
       "path": "data/sophia_engine/spirit/divine.md",
       "pillar": "spirit",
       "filename": "divine.md",
@@ -1578,8 +1620,8 @@
       "pillar": "spirit",
       "filename": "jesus_of_nazareth.md",
       "word_count": 784,
-      "char_count": 4416,
-      "sha256": "6da5590bfe02878377c290ebf8af0f16e5c5a2207ed823a12b016a6674fc6ba5",
+      "char_count": 4380,
+      "sha256": "a19c1a8ba2986de764b8923f3b3af3902430faaf7cbe4e0d02821144700f2df5",
       "frontmatter": {
         "title": "Jesus Of Nazareth",
         "category": "spirit",

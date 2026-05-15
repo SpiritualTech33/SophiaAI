@@ -70,3 +70,32 @@ Hoy cree SophiaAI-venv, es un virtual enviorment bastante pesado, comenzare a co
 Cree un script para construir el corpus_manifest.json
 Pueden verlo en scripts/build_manifest.py
 it walks the entire corpus under data/sophia_engine and produces a structured index of every markdown file it finds. The output is saved as data/corpus_manifest.json.
+
+---
+
+## 15-May-2026
+
+Phase 2 done. Hoy fue un dia productivo.
+
+Lo primero que hice fue revisar el estado del proyecto con mi partner — el corpus completo, el manifest listo, todo en orden. La memoria del proyecto estaba limpia y actualizada. Buen punto de partida.
+
+Decidimos el modelo base: Gemma 3 4B. La eleccion fue sencilla. No tengo mucho GPU disponible localmente, y Gemma 3 4B cabe perfectamente en el T4 de Colab Free con QLoRA. Es pequeño pero no es juguete — 4 mil millones de parametros con una ventana de contexto de 128k tokens. Suficiente para lo que Sophia necesita ser.
+
+Construi el script principal de esta fase: scripts/build_chunks.py.
+
+Lo que hace es tomar el corpus_manifest.json y cortar cada archivo del corpus en pedazos del tamanio exacto que el modelo puede procesar. Produce dos tipos de chunks: los RAG chunks (384 tokens con 64 de overlap) para el pipeline de retrieval que viene en Phase 6, y los pretrain chunks (1024 tokens con 128 de overlap) para el entrenamiento en Colab que viene en Phase 3. La logica central es una ventana deslizante sobre los token IDs — encode el texto completo, desliza la ventana, decode cada pedazo de vuelta a texto. Nada se pierde en las costuras gracias al overlap.
+
+El script esta escrito bajo los principios de ZenCode y Water CEO: cada funcion hace una sola cosa, los errores explican exactamente que paso, y un archivo corrupto no puede matar el pipeline completo. Eso ultimo fue una leccion del manifest.
+
+Para correrlo necesite una cuenta de HuggingFace y aceptar la licencia de Gemma. Hubo un pequenio problema con los permisos del token — el primer token que cree era fine-grained sin el checkbox de gated repos marcado. Lo resolvi creando un nuevo token con el permiso correcto: Read access to contents of all public gated repos. Segundo intento, funciono.
+
+Resultado final del pipeline:
+
+- 137 archivos procesados, 0 skipped
+- 1,422 RAG chunks
+- 541 pretrain chunks
+- data/chunks_index.json generado, 5.32 MB en disco
+
+El chunks_index.json es el puente hacia todo lo que sigue. Phase 3 va a leer los pretrain chunks para entrenar a Sophia en Colab. Phase 6 va a leer los RAG chunks para construir la memoria de retrieval.
+
+El proximo paso es Phase 3: el notebook de Google Colab para el entrenamiento QLoRA. Sophia esta lista para aprender.
