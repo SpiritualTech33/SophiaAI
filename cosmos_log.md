@@ -99,3 +99,28 @@ Resultado final del pipeline:
 El chunks_index.json es el puente hacia todo lo que sigue. Phase 3 va a leer los pretrain chunks para entrenar a Sophia en Colab. Phase 6 va a leer los RAG chunks para construir la memoria de retrieval.
 
 El proximo paso es Phase 3: el notebook de Google Colab para el entrenamiento QLoRA. Sophia esta lista para aprender.
+
+## 20-May-2026
+
+Estuve estos dias intentando entrenar el modelo con fine-tuning, pero entre las limitaciones de mi hardware y la complejidad que de usar hardware externo, decidi eliminar el fine tuning del proyecto y enfocarme en hacer una app RAG con capacidades de WebSearch. Procedere a actualizar el requirments.txt y actualizar el venv.
+Trabajar con AI es algo complejo, pero divertido.
+
+## 21-May-2026
+
+Algunos cambios recientes, fueron el README.md y el requirments.txt, cree un nuevo entorno virtual, eliminando las dependencias que ya no usare, me enfocare solo en el RAG pipeline y en la tool de web search.
+Tambien agrege developing_plan.md, es uja forma de llevar un orden de creacion, usando un esquema por fases, cada fase construye sobre la anterior.
+
+---
+
+## Phase 3 — Embeddings
+**Date:** 2026-05-21
+
+**What was built:** `scripts/build_embeddings.py`. Encodes all 1,422 RAG chunks from `chunks_index.json` using `sentence-transformers/all-MiniLM-L6-v2` (384 dims, 90 MB, CPU). Outputs `data/embeddings.npy` (float32 matrix, shape 1422×384) and `data/embedding_meta.json`. Batch size 32. Per-batch try/except so one bad chunk never kills the run.
+
+**Artifacts:**
+- `data/embeddings.npy` — float32 embedding matrix (1422 × 384), input for Phase 4 FAISS index
+- `data/embedding_meta.json` — model name, dimension, chunk count, UTC timestamp
+
+**Tests:** 7 unit tests in `tests/test_build_embeddings.py`. All pass.
+
+**Next step:** Phase 4 — `scripts/build_faiss_index.py`. Normalize vectors to unit length, build `IndexFlatIP`, write `data/sophia_index.faiss`.
