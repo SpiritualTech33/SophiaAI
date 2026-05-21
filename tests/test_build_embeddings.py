@@ -116,6 +116,7 @@ def test_embed_chunks_in_batches_returns_correct_shape():
         texts=fake_texts,
         model=mock_model,
         batch_size=4,
+        dimension=384,
     )
 
     assert result.shape == (7, 384)
@@ -137,6 +138,7 @@ def test_embed_chunks_in_batches_skips_bad_batch():
         texts=fake_texts,
         model=mock_model,
         batch_size=2,
+        dimension=384,
     )
 
     assert result.shape[1] == 384

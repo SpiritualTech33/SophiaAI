@@ -195,6 +195,7 @@ def embed_chunks_in_batches(
     texts: list[str],
     model: SentenceTransformer,
     batch_size: int,
+    dimension: int,
 ) -> np.ndarray:
     """
     Mental Model:
@@ -204,12 +205,13 @@ def embed_chunks_in_batches(
         The tqdm bar shows real-time progress over batches.
 
         Result is np.vstack of all successful batch outputs.
-        If all batches fail, returns an empty (0, 384) array.
+        If all batches fail, returns an empty (0, dimension) array.
 
     Args:
         texts:      List of raw text strings to encode.
         model:      Loaded SentenceTransformer instance.
         batch_size: Number of texts per encoding call. Default 32.
+        dimension:  Embedding dimension — used for the empty fallback array shape.
 
     Returns:
         np.ndarray: Float32 array of shape (n_successful, dim).
@@ -237,7 +239,7 @@ def embed_chunks_in_batches(
 
     if not all_vectors:
         logger.error("All batches failed. No embeddings produced.")
-        return np.empty((0, 384), dtype=np.float32)
+        return np.empty((0, dimension), dtype=np.float32)
 
     return np.vstack(all_vectors).astype(np.float32)
 
@@ -316,9 +318,13 @@ def main() -> None:
     """
     args = parse_cli_arguments()
 
+    if args.batch_size < 1:
+        logger.error(f"--batch-size must be >= 1, got {args.batch_size}.")
+        sys.exit(1)
+
     try:
         rag_chunks = load_rag_chunks(args.chunks)
-    except (FileNotFoundError, ValueError, Exception) as error:
+    except Exception as error:
         logger.error(str(error))
         sys.exit(1)
 
@@ -326,7 +332,11 @@ def main() -> None:
         logger.error("chunks_index.json contains zero RAG chunks. Nothing to embed.")
         sys.exit(1)
 
-    texts = [chunk["text"] for chunk in rag_chunks]
+    try:
+        texts = [chunk["text"] for chunk in rag_chunks]
+    except KeyError as error:
+        logger.error(f"Chunk is missing required key {error}. Re-run build_chunks.py.")
+        sys.exit(1)
 
     logger.info(f"Loading model: {args.model} ...")
     try:
@@ -342,6 +352,7 @@ def main() -> None:
         texts=texts,
         model=model,
         batch_size=args.batch_size,
+        dimension=dimension,
     )
 
     if embedding_matrix.shape[0] == 0:
