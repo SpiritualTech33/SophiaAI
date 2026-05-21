@@ -1,0 +1,6 @@
+{
+  "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+  "dimension": 384,
+  "chunk_count": 1422,
+  "generated_at": "2026-05-21T14:21:48.584939+00:00"
+}

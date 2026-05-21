@@ -4,3 +4,6 @@
 SophiaAI-venv/
 __pycache__/
 *.pyc
+
+# Large binary artifacts — not tracked by git
+data/embeddings.npy
