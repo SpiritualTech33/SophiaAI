@@ -9,7 +9,7 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import numpy as np
 import pytest
@@ -69,7 +69,7 @@ def test_save_embeddings_writes_npy(tmp_path):
 
     build_embeddings.save_embeddings(matrix, output_path)
 
-    loaded = np.load(str(output_path))
+    loaded = np.load(output_path)
     assert loaded.shape == (5, 384)
     assert loaded.dtype == np.float32
     np.testing.assert_array_almost_equal(loaded, matrix)
@@ -81,7 +81,6 @@ def test_save_embeddings_writes_npy(tmp_path):
 
 def test_save_embedding_meta_writes_required_keys(tmp_path):
     """save_embedding_meta writes JSON with model_name, dimension, chunk_count, generated_at."""
-    from dataclasses import asdict
     meta = build_embeddings.EmbeddingMeta(
         model_name="sentence-transformers/all-MiniLM-L6-v2",
         dimension=384,
@@ -96,7 +95,7 @@ def test_save_embedding_meta_writes_required_keys(tmp_path):
     assert data["model_name"] == "sentence-transformers/all-MiniLM-L6-v2"
     assert data["dimension"] == 384
     assert data["chunk_count"] == 1422
-    assert "generated_at" in data
+    assert data["generated_at"] == "2026-05-21T00:00:00+00:00"
 
 
 # ---------------------------------------------------------------------------
@@ -131,13 +130,13 @@ def test_embed_chunks_in_batches_skips_bad_batch():
     mock_model = MagicMock()
     mock_model.encode.side_effect = [
         RuntimeError("GPU exploded"),
-        np.random.rand(2, 384).astype(np.float32),
+        np.random.rand(1, 384).astype(np.float32),
     ]
 
     result = build_embeddings.embed_chunks_in_batches(
         texts=fake_texts,
         model=mock_model,
-        batch_size=1,
+        batch_size=2,
     )
 
     assert result.shape[1] == 384
