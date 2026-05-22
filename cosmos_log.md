@@ -110,10 +110,7 @@ Trabajar con AI es algo complejo, pero divertido.
 Algunos cambios recientes, fueron el README.md y el requirments.txt, cree un nuevo entorno virtual, eliminando las dependencias que ya no usare, me enfocare solo en el RAG pipeline y en la tool de web search.
 Tambien agrege developing_plan.md, es uja forma de llevar un orden de creacion, usando un esquema por fases, cada fase construye sobre la anterior.
 
----
-
-## Phase 3 — Embeddings
-**Date:** 2026-05-21
+### Phase 3 — Embeddings
 
 **What was built:** `scripts/build_embeddings.py`. Encodes all 1,422 RAG chunks from `chunks_index.json` using `sentence-transformers/all-MiniLM-L6-v2` (384 dims, 90 MB, CPU). Outputs `data/embeddings.npy` (float32 matrix, shape 1422×384) and `data/embedding_meta.json`. Batch size 32. Per-batch try/except so one bad chunk never kills the run.
 
@@ -124,3 +121,25 @@ Tambien agrege developing_plan.md, es uja forma de llevar un orden de creacion, 
 **Tests:** 7 unit tests in `tests/test_build_embeddings.py`. All pass.
 
 **Next step:** Phase 4 — `scripts/build_faiss_index.py`. Normalize vectors to unit length, build `IndexFlatIP`, write `data/sophia_index.faiss`.
+
+---
+
+## 22-May-2026
+
+### Phase 4 — FAISS Index
+
+**What was built:** `scripts/build_faiss_index.py`. Loads `data/embeddings.npy`, normalizes every vector to unit length with `faiss.normalize_L2`, builds an `IndexFlatIP` (exact inner-product search = cosine similarity on unit vectors), and writes `data/sophia_index.faiss` plus `data/faiss_index_meta.json`.
+
+**Artifacts:**
+- `data/sophia_index.faiss` — 1422 × 384 IndexFlatIP, 2.08 MB binary, gitignored
+- `data/faiss_index_meta.json` — index_type, dimension, total_vectors, generated_at, embeddings_source
+
+**Why IndexFlatIP:** Exact search. 1,422 vectors is trivial size — no approximation needed. Inner product on L2-normalized vectors equals cosine similarity, the standard metric for sentence embeddings.
+
+**Tests:** 9 unit tests in `tests/test_build_faiss_index.py`. All pass.
+
+**Smoke test:** Query "What is wisdom?" returned top-5 scores `[0.78, 0.73, 0.71, 0.61, 0.58]` with ids spread across the corpus. Retrieval works end to end.
+
+**Next step:** Phase 5 — build `sophia/rag/retriever.py` with the `SophiaRetriever` class that loads the FAISS index, the embedding model, and `chunks_index.json` once at startup and exposes `retrieve(query, top_k)`.
+
+

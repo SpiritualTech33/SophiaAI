@@ -7,3 +7,4 @@ __pycache__/
 
 # Large binary artifacts — not tracked by git
 data/embeddings.npy
+data/sophia_index.faiss
