@@ -4,7 +4,6 @@
 
 SophiaAI is an AI assistant grounded in a hand-curated corpus of wisdom literature. A base LLM downloaded from HuggingFace, connected to two capabilities: a RAG pipeline that uses sophia_engine as source of truth, and a web search tool for when the answer lives beyond the corpus. Wrapped in a FastAPI web app with user login and persistent conversation memory. This is the technical anchor of Spiritual Tech — a bridge between the Divine and Technology.
 
-Fine-tuning is not part of this project. No QLoRA, no training. The model is used as-is.
 
 ## Architecture
 
@@ -16,31 +15,48 @@ LLM inference: Groq free tier (Llama 3 or Gemma). Not local — API calls to Gro
 
 Web app: FastAPI + Jinja2 templates + SQLite (sophia_memory DB) + JWT login.
 
+
 ## Project State
 
-Phase 0 — Corpus: DONE. 137 .md files, 362,023 words, four pillars: mind, philosophy, spirit, science. Lives in data/sophia_engine/.
-
-Phase 1 — Manifest: DONE. scripts/build_manifest.py -> data/corpus_manifest.json. Top-level key is entries (not files).
-
-Phase 2 — Chunking: DONE. scripts/build_chunks.py -> data/chunks_index.json. 1,422 RAG chunks at 384 tokens with 64-token overlap. This is the input to the embedding step.
-
-Next step: embed the chunks with sentence-transformers and build the FAISS index.
+Starting Phase 5 - Retrieval Module (SophiaRetriever class)
 
 ## Repository Layout
 
 ```
 SophiaAI/
 ├── data/
-│   ├── sophia_engine/          <- 137 .md files, the corpus, source of truth
-│   ├── corpus_manifest.json    <- Phase 1 output
-│   └── chunks_index.json       <- Phase 2 output, 1422 RAG chunks, ready to embed
+│   ├── sophia_engine/                    <- 137 .md files, the corpus, source of truth
+│   │   ├── mind/                         <- 45 files — consciousness, psychology, cognition
+│   │   ├── philosophy/                   <- 33 files — philosophy corpus
+│   │   ├── science/                      <- 22 files — science corpus
+│   │   └── spirit/                       <- 37 files — spirituality corpus
+│   ├── corpus_manifest.json              <- Phase 1 output
+│   ├── chunks_index.json                 <- Phase 2 output, 1422 RAG chunks
+│   ├── embedding_meta.json               <- Phase 3 output, embedding metadata
+│   ├── embeddings.npy                    <- Phase 3 output, 1422 vectors at 384 dims (gitignored)
+│   ├── faiss_index_meta.json             <- Phase 4 output, FAISS index metadata
+│   └── sophia_index.faiss                <- Phase 4 output, IndexFlatIP (gitignored)
+├── docs/
+│   └── superpowers/
+│       └── plans/
+│           ├── phase3-embeddings.md
+│           └── phase4-FAISS-Index.md
 ├── scripts/
-│   ├── build_manifest.py
-│   ├── build_chunks.py
+│   ├── build_manifest.py                 <- Phase 1 script
+│   ├── build_chunks.py                   <- Phase 2 script
+│   ├── build_embeddings.py               <- Phase 3 script
+│   ├── build_faiss_index.py              <- Phase 4 script
 │   └── sophia_engine_word_counter.py
-├── SophiaAI-venv/              <- local venv, activate: SophiaAI-venv\Scripts\Activate.ps1
-├── cosmos_log.md               <- living development log
+├── tests/
+│   ├── test_build_embeddings.py          <- 7 tests, all pass
+│   └── test_build_faiss_index.py         <- 9 tests, all pass
+├── SophiaAI-venv/                        <- local venv, activate: SophiaAI-venv\Scripts\Activate.ps1
+├── .env                                  <- secrets (GROQ_API_KEY etc.)
+├── .env.example
+├── cosmos_log.md                         <- living development log
+├── developing_plan.md
 ├── requirements.txt
+├── setup.sh
 ├── README.md
 └── CLAUDE.md
 ```
