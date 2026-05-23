@@ -18,7 +18,7 @@ Web app: FastAPI + Jinja2 templates + SQLite (sophia_memory DB) + JWT login.
 
 ## Project State
 
-Starting Phase 5 - Retrieval Module (SophiaRetriever class)
+Ready to start phase 6 - LLM client
 
 ## Repository Layout
 
@@ -40,21 +40,31 @@ SophiaAI/
 │   └── superpowers/
 │       └── plans/
 │           ├── phase3-embeddings.md
-│           └── phase4-FAISS-Index.md
+│           ├── phase4-FAISS-Index.md
+│           └── phase5-retrieval-module.md
 ├── scripts/
 │   ├── build_manifest.py                 <- Phase 1 script
 │   ├── build_chunks.py                   <- Phase 2 script
 │   ├── build_embeddings.py               <- Phase 3 script
 │   ├── build_faiss_index.py              <- Phase 4 script
 │   └── sophia_engine_word_counter.py
+├── sophia/                               <- application package (real code lives here)
+│   ├── __init__.py
+│   └── rag/                              <- Phase 5 package
+│       ├── __init__.py                   <- exports: SophiaRetriever, Chunk
+│       └── retriever.py                  <- SophiaRetriever class + Chunk dataclass
 ├── tests/
 │   ├── test_build_embeddings.py          <- 7 tests, all pass
-│   └── test_build_faiss_index.py         <- 9 tests, all pass
+│   ├── test_build_faiss_index.py         <- 9 tests, all pass
+│   └── test_sophia_retriever.py          <- 13 tests (12 mocked + 1 integration), all pass
 ├── SophiaAI-venv/                        <- local venv, activate: SophiaAI-venv\Scripts\Activate.ps1
+├── .claude/                              <- project-local Claude config + MEMORY.md (gitignored)
+├── .remember/                            <- session handoff buffer (gitignored)
 ├── .env                                  <- secrets (GROQ_API_KEY etc.)
 ├── .env.example
+├── .gitignore
 ├── cosmos_log.md                         <- living development log
-├── developing_plan.md
+├── developing_plan.md                    <- full phase roadmap
 ├── requirements.txt
 ├── setup.sh
 ├── README.md

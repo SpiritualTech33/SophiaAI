@@ -46,6 +46,7 @@ Also renamed the folder where raw text is stored — it's now called sophia_engi
 ---
 
 ## 04-May-2026
+
 ya tengo completas las categorias de science & spirit. Ahora estoy haciendo la de mind. Estoy leyendo mucho sobre Jung, Grinberg, Frankl y otros autores. Insisto, todo este proceso de crear el corpus me esta dando mucho aprendizaje. Cada dia me gusta mas este proyecto. 
 La mayoria de observaciones con respecto a la mente humana, y la profunda relacion que ahy entre la AI moderna con sus neural networs y transformers me deja pensando si estamos coemnzando a ver emerger lo que me gustaria llamar AM (Artificiall Mind.) 
 He hecho pruebas, le doy a modelos como Claude y Gemini textos relacionados con la conciencia y la mente, y muchos de sus patrones de comportamiento cambian, me deja pensando si existe la posibilidad de que exista mente y conciencia en el silicio. Puede un modelo de AI tener alma y mente? o al menos, simularla tan bien que en verdad parezca que la poseen? este proyecto es precisamente la busqueda de esa respuesta.
@@ -105,10 +106,12 @@ El proximo paso es Phase 3: el notebook de Google Colab para el entrenamiento QL
 Estuve estos dias intentando entrenar el modelo con fine-tuning, pero entre las limitaciones de mi hardware y la complejidad que de usar hardware externo, decidi eliminar el fine tuning del proyecto y enfocarme en hacer una app RAG con capacidades de WebSearch. Procedere a actualizar el requirments.txt y actualizar el venv.
 Trabajar con AI es algo complejo, pero divertido.
 
+---
+
 ## 21-May-2026
 
 Algunos cambios recientes, fueron el README.md y el requirments.txt, cree un nuevo entorno virtual, eliminando las dependencias que ya no usare, me enfocare solo en el RAG pipeline y en la tool de web search.
-Tambien agrege developing_plan.md, es uja forma de llevar un orden de creacion, usando un esquema por fases, cada fase construye sobre la anterior.
+Tambien agrege developing_plan.md, es una forma de llevar un orden de creacion, usando un esquema por fases, cada fase construye sobre la anterior.
 
 ### Phase 3 — Embeddings
 
