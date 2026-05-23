@@ -142,4 +142,50 @@ Tambien agrege developing_plan.md, es uja forma de llevar un orden de creacion, 
 
 **Next step:** Phase 5 — build `sophia/rag/retriever.py` with the `SophiaRetriever` class that loads the FAISS index, the embedding model, and `chunks_index.json` once at startup and exposes `retrieve(query, top_k)`.
 
+---
+
+## 23-May-2026
+
+### Phase 5 — Retrieval Module
+
+**What was built:** Package `sophia/rag/` with class `SophiaRetriever` and
+dataclass `Chunk`. The class loads the FAISS index, the SentenceTransformer
+model, and `chunks_index.json` once at startup. The `retrieve(query, top_k)`
+method embeds the query, normalizes it to unit length, searches the index,
+and returns a ranked list of Chunk dataclasses with text, source file,
+pillar, chunk_id, and cosine score.
+
+**Artifacts:**
+- `sophia/__init__.py` — top-level package marker
+- `sophia/rag/__init__.py` — public exports: SophiaRetriever, Chunk
+- `sophia/rag/retriever.py` — class, dataclass, private loaders
+- `tests/test_sophia_retriever.py` — 12 mocked unit tests + 1 real-corpus integration test (13/13 pass)
+
+**Why a class:** loading FAISS plus the embedding model is a one-time cost
+of about two seconds on CPU. A class with state pays that cost once when
+the FastAPI app boots, not on every user message. Stateless functions would
+re-load the model on every call and turn the app into molasses.
+
+**Why a separate dataclass:** `Chunk` is the contract between the retrieval
+layer and the orchestrator that will be built in Phase 8. Returning raw
+dicts would force every consumer to remember the key names. A dataclass
+with explicit fields gives the rest of the app type safety and IDE
+autocompletion, and it documents the public API at a glance.
+
+**Smoke test:** Query "What is wisdom?" returned top-5 scores
+`[0.780, 0.727, 0.710, 0.614, 0.580]` with results from `mind/wisdom.md`
+and `spirit/sophia.md`. The numbers match the Phase 4 baseline exactly
+because the underlying math is identical — the retriever is a thin layer
+on top of the same FAISS index and the same embedding model.
+
+**Lesson learned:** sentence-transformers 5.x renamed
+`get_sentence_embedding_dimension` to `get_embedding_dimension`. The old
+name still works but emits a `FutureWarning`. The retriever prefers the
+new name and falls back to the old one, so the code survives both
+versions without spamming warnings.
+
+**Next step:** Phase 6 — `sophia/llm/groq_client.py` with class
+`GroqClient`. Reads `GROQ_API_KEY` from `.env` via python-dotenv, exposes
+`chat(messages, model)`, wraps Groq exceptions in a custom
+`SophiaLLMError`.
 
