@@ -72,6 +72,7 @@ def _patch_dependencies(index_dim: int = 384, model_dim: int = 384, ntotal: int 
     fake_index.ntotal = ntotal
 
     fake_model = MagicMock()
+    fake_model.get_embedding_dimension.return_value = model_dim
     fake_model.get_sentence_embedding_dimension.return_value = model_dim
     fake_model.encode.return_value = np.ones((1, model_dim), dtype=np.float32)
 
@@ -275,3 +276,32 @@ def test_retrieve_maps_source_path_to_source_file(tmp_path):
 
     assert results[0].source_file == "data/sophia_engine/mind/file_1.md"
     assert results[0].pillar == "mind"
+
+
+# ---------------------------------------------------------------------------
+# Real-data integration test (skips if Phase 4 artifacts are missing)
+# ---------------------------------------------------------------------------
+
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+_REAL_INDEX = _PROJECT_ROOT / "data" / "sophia_index.faiss"
+_REAL_CHUNKS = _PROJECT_ROOT / "data" / "chunks_index.json"
+
+
+@pytest.mark.skipif(
+    not _REAL_INDEX.exists() or not _REAL_CHUNKS.exists(),
+    reason="Phase 4 artifacts not built locally; skipping integration test.",
+)
+def test_retrieve_against_real_corpus_returns_top_k_chunks():
+    """End-to-end: real FAISS index + real model + real chunks → 5 results."""
+    retriever = SophiaRetriever()
+    results = retriever.retrieve("What is wisdom?", top_k=5)
+
+    assert len(results) == 5
+    assert all(isinstance(c, Chunk) for c in results)
+    assert all(c.pillar in {"mind", "philosophy", "science", "spirit"} for c in results)
+    # Scores should be sorted descending.
+    assert list(c.score for c in results) == sorted(
+        (c.score for c in results), reverse=True
+    )
+    # Top score on this query is empirically > 0.4 on the curated corpus.
+    assert results[0].score > 0.4

@@ -188,9 +188,9 @@ def _model_embedding_dimension(model: SentenceTransformer) -> int:
     Returns:
         int: Embedding dimension (384 for all-MiniLM-L6-v2).
     """
-    if hasattr(model, "get_sentence_embedding_dimension"):
-        return int(model.get_sentence_embedding_dimension())
-    return int(model.get_embedding_dimension())
+    if hasattr(model, "get_embedding_dimension"):
+        return int(model.get_embedding_dimension())
+    return int(model.get_sentence_embedding_dimension())
 
 
 # ---------------------------------------------------------------------------
