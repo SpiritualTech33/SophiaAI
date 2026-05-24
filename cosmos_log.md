@@ -192,3 +192,34 @@ versions without spamming warnings.
 `chat(messages, model)`, wraps Groq exceptions in a custom
 `SophiaLLMError`.
 
+
+## Phase 6 — LLM Client
+
+**What was built:** Package `sophia/llm/` with class `GroqClient` and custom
+exception `SophiaLLMError`. The class reads GROQ_API_KEY from the environment
+(via python-dotenv), instantiates the Groq Python SDK client once, and exposes
+one method: `chat(messages, model) -> str`. All Groq-specific exceptions
+(connection failures, rate limits, HTTP errors) are caught and re-raised as
+`SophiaLLMError` so the orchestrator never imports the groq library directly.
+
+**Artifacts:**
+- `sophia/llm/__init__.py` — public exports: GroqClient, SophiaLLMError
+- `sophia/llm/groq_client.py` — class + exception + constants
+- `tests/test_groq_client.py` — 14 mocked unit tests + 1 live-API integration test
+
+**Why a wrapper:** Single responsibility. The orchestrator asks for an answer
+and gets a string or a SophiaLLMError. It does not know about groq.RateLimitError,
+ChatCompletion objects, or response.choices[0].message.content parsing. If Groq
+shuts down tomorrow, you change one file and the rest of SophiaAI keeps running.
+
+**Why SophiaLLMError:** The alternative is letting groq exceptions leak into
+the orchestrator, which then needs to import groq just to catch them. That
+defeats the purpose of the wrapper. One custom exception = one clean catch target.
+
+**Default model:** llama-3.1-8b-instant (Groq free tier, fast, good enough for
+a RAG assistant). The model argument is explicit so Phase 8 can experiment with
+other models without touching this file.
+
+**Next step:** Phase 7 — `sophia/tools/web_search.py` with function web_search().
+DuckDuckGo wrapper for when the corpus does not have the answer.
+
