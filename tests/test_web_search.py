@@ -204,3 +204,27 @@ def test_web_search_wraps_unexpected_exception(mock_ddgs_class):
 
     assert exc_info.value.__cause__ is not None
     assert isinstance(exc_info.value.__cause__, RuntimeError)
+
+
+# ---------------------------------------------------------------------------
+# Real-network integration test (skips in CI / offline environments)
+# ---------------------------------------------------------------------------
+
+import os
+
+_RUN_LIVE_SEARCH = os.environ.get("SOPHIA_LIVE_SEARCH", "1") == "1"
+
+
+@pytest.mark.skipif(
+    not _RUN_LIVE_SEARCH,
+    reason="SOPHIA_LIVE_SEARCH != 1; skipping live search test.",
+)
+def test_web_search_live_returns_results():
+    """End-to-end: real DuckDuckGo query -> non-empty list of SearchResult."""
+    results = web_search(query="Lao Tzu Tao Te Ching", max_results=3)
+    assert isinstance(results, list)
+    assert len(results) > 0
+    assert all(isinstance(r, SearchResult) for r in results)
+    assert all(r.title for r in results)
+    assert all(r.url.startswith("http") for r in results)
+    assert all(r.snippet for r in results)

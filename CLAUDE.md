@@ -18,7 +18,7 @@ Web app: FastAPI + Jinja2 templates + SQLite (sophia_memory DB) + JWT login.
 
 ## Project State
 
-Ready to start phase 7 - Web Search Tool
+Ready to start Phase 8 - Sophia Orchestrator
 
 
 

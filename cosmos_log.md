@@ -193,7 +193,7 @@ versions without spamming warnings.
 `SophiaLLMError`.
 
 
-## Phase 6 — LLM Client
+### Phase 6 — LLM Client
 
 **What was built:** Package `sophia/llm/` with class `GroqClient` and custom
 exception `SophiaLLMError`. The class reads GROQ_API_KEY from the environment
@@ -223,3 +223,37 @@ other models without touching this file.
 **Next step:** Phase 7 — `sophia/tools/web_search.py` with function web_search().
 DuckDuckGo wrapper for when the corpus does not have the answer.
 
+---
+## 24-May-2026
+
+### Phase 7 — Web Search Tool
+
+
+**What was built:** Package `sophia/tools/` with function `web_search()`, dataclass
+`SearchResult`, and custom exception `SophiaSearchError`. The function calls
+`DDGS().text()` from the duckduckgo-search library, maps raw result dicts into
+immutable SearchResult dataclasses (title, url, snippet), and wraps all network
+and library failures in SophiaSearchError. Malformed results are silently skipped
+with a warning — one bad result never crashes the search.
+
+**Artifacts:**
+- `sophia/tools/__init__.py` — public exports: web_search, SearchResult, SophiaSearchError
+- `sophia/tools/web_search.py` — function + dataclass + exception
+- `tests/test_web_search.py` — 14 mocked unit tests + 1 live integration test
+
+**Why a function and not a class:** Unlike the retriever or LLM client, web_search
+has no expensive initialization. No model to load, no index to read, no API key to
+validate at startup. A stateless function is simpler and sufficient. The orchestrator
+calls web_search(query) and gets results or an error. No state, no lifecycle.
+
+**Why SophiaSearchError:** Same pattern as SophiaLLMError in Phase 6. The orchestrator
+catches one exception type per capability. It does not need to know whether the failure
+was a DNS timeout, a DuckDuckGo rate limit, or a parsing bug — it needs to know the
+search failed and fall back gracefully.
+
+**Field mapping from DuckDuckGo:** The raw API returns dicts with keys 'title', 'href',
+'body'. SearchResult maps these to 'title', 'url', 'snippet' — names that make sense
+in the context of SophiaAI's prompt construction.
+
+**Next step:** Phase 8 — `sophia/core/orchestrator.py` with class Sophia. The brain
+that ties retrieval, web search, and LLM together.
