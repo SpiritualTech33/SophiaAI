@@ -253,3 +253,28 @@ def test_chat_raises_on_no_choices(mock_groq_class):
     client = GroqClient()
     with pytest.raises(SophiaLLMError, match="empty"):
         client.chat(messages=[{"role": "user", "content": "hi"}])
+
+
+# ---------------------------------------------------------------------------
+# Real-API integration test (skips if GROQ_API_KEY is not set)
+# ---------------------------------------------------------------------------
+
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+_HAS_API_KEY = bool(os.environ.get("GROQ_API_KEY"))
+
+
+@pytest.mark.skipif(
+    not _HAS_API_KEY,
+    reason="GROQ_API_KEY not set; skipping live API test.",
+)
+def test_chat_live_api_returns_nonempty_string():
+    """End-to-end: real API key + real Groq endpoint → non-empty response."""
+    client = GroqClient()
+    result = client.chat(
+        messages=[{"role": "user", "content": "Say hello in exactly three words."}]
+    )
+    assert isinstance(result, str)
+    assert len(result) > 0
