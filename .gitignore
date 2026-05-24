@@ -1,4 +1,5 @@
 .env
+.remember/
 SophiaAI-venv/
 __pycache__/
 *.pyc

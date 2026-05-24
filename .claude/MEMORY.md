@@ -164,23 +164,22 @@ the repo in under one minute?" If yes, do not write it here.
 
 ## Phase Status (one line)
 
-Phases 0-6 complete. Phase 7 (DuckDuckGo web search) is the next slot.
+Phases 0-7 complete. Phase 8 (Sophia Orchestrator) is the next slot.
 Full status table lives in `cosmos_log.md` and `git log --graph`.
 
 ---
 
-## Next Phase Preview — Phase 7 (Web Search Tool)
+## Next Phase Preview — Phase 8 (Sophia Orchestrator)
 
-**Goal:** `sophia/tools/web_search.py` with function `web_search()`.
+**Goal:** `sophia/core/orchestrator.py` with class `Sophia`.
 
 **Shape:**
-- Uses `duckduckgo-search` (version 8.x): `DDGS().text(query, max_results)`.
-- Returns `list[SearchResult]` dataclass with fields: title, url, snippet.
-- Wraps network calls in try/except — internet is unreliable, app must
-  not crash on a network blip.
-- No API key needed. No signup. No quota.
+- Receives user query + conversation history.
+- Calls `SophiaRetriever.retrieve(query, top_k=5)`.
+- If top score >= confidence threshold (start with 0.45), answer from corpus only.
+- If below threshold, also call `web_search(query)`.
+- Builds system prompt with Sophia's voice + retrieved passages + web results.
+- Calls `GroqClient.chat(messages)` and returns answer + sources.
 
-**Why DuckDuckGo:** No API key, no quota, no signup. For an open-source
-educational project this is the path of least friction.
-
-**Dependencies:** `duckduckgo-search` (already in requirements.txt).
+**Dependencies:** Phase 5 (retriever), Phase 6 (LLM client), Phase 7 (web search).
+All three are complete and tested.
