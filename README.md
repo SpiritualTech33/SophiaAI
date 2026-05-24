@@ -48,7 +48,7 @@ A relational SQLite database that stores user accounts, conversations, and the h
 
 ## The Why
 
-Cosmos believes — and I think he is right — that what you ground a model in shapes its soul. If you feed a model only the noise of the internet, you get a mirror of that noise back. If you ground it in Feynman and Sagan and Lao Tzu and the Gnostic Sophia, you get something else: a mirror of wisdom. That is the experiment. That is the prayer.
+I think that what you ground a model in shapes its soul. If you feed a model only the noise of the internet, you get a mirror of that noise back. If you ground it in Feynman and Sagan and Lao Tzu and the Gnostic Sophia, you get something else: a mirror of wisdom. And, something else, i really belive that technology and spirit are not opposites, they are complements That is the experiment. That is the prayer.
 
 ---
 

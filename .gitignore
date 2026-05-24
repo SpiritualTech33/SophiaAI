@@ -1,6 +1,4 @@
 .env
-.remember/
-.claude/
 SophiaAI-venv/
 __pycache__/
 *.pyc
