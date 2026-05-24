@@ -1,4 +1,3 @@
-# sophia/tools/__init__.py
 """
 SophiaAI — Tools package.
 
@@ -14,6 +13,8 @@ Anything else inside this package is implementation detail and may change.
 
 Author: Cosmos De La Cruz — SophiaAI Phase 7
 """
+
+from __future__ import annotations
 
 from sophia.tools.web_search import SearchResult, SophiaSearchError, web_search
 
