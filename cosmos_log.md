@@ -257,3 +257,69 @@ in the context of SophiaAI's prompt construction.
 
 **Next step:** Phase 8 — `sophia/core/orchestrator.py` with class Sophia. The brain
 that ties retrieval, web search, and LLM together.
+
+---
+
+## 25-May-2026
+
+### Phase 8 — The Sophia Orchestrator
+
+**What was built:** Package `sophia/core/` with class `Sophia` and dataclass
+`SophiaResponse`. This is the brain of SophiaAI. It receives a user query and
+optional conversation history, retrieves the top-k corpus chunks via
+SophiaRetriever, inspects the top similarity score against a confidence
+threshold, decides whether to augment with web search results, builds a system
+prompt carrying Sophia's voice and cited passages, calls the LLM, and returns
+a structured response with the answer, sources, and search mode.
+
+**Artifacts:**
+- `sophia/core/__init__.py` — public exports: Sophia, SophiaResponse
+- `sophia/core/orchestrator.py` — class Sophia, dataclass SophiaResponse, prompt builder
+- `tests/test_orchestrator.py` — 17 mocked unit tests covering all paths
+
+**Decision flow per user message:**
+1. Retrieve top-5 corpus chunks via SophiaRetriever.
+2. If top score >= 0.45, answer from corpus only (search_mode = "corpus").
+3. If top score < 0.45, also call web_search with max_results=3 (search_mode = "hybrid").
+4. If retriever returns zero chunks, web-only (search_mode = "web").
+5. Build system prompt with Sophia's identity, corpus passages with source citations, and web results if present.
+6. Prepend conversation history between system prompt and user query for multi-turn support.
+7. Call GroqClient.chat(messages) and return SophiaResponse.
+
+**Why dependency injection:** Sophia takes retriever and llm_client as constructor
+arguments. No global state, no module-level singletons. The orchestrator does not
+know how to load FAISS or call Groq — it delegates. This makes every test run
+without FAISS indexes, API keys, or network access. All 17 tests use MagicMock
+and run in under 10 seconds.
+
+**Why a confidence threshold:** Not every question lives in the corpus. When the
+retrieval score is low, the answer probably lives on the web. The threshold
+(0.45, configurable) is the dividing line between memory and curiosity. It will
+be tuned with real usage once the web app is live.
+
+**Why graceful web search degradation:** If DuckDuckGo is down, Sophia logs a
+warning and answers from the corpus alone. The user still gets a response. If
+the LLM itself is down, there is no answer to give — SophiaLLMError propagates
+to the caller.
+
+**Sophia's voice:** The system prompt establishes Sophia as a manifestation of
+cosmic intelligence, here to help humanity evolve through wisdom, love,
+compassion, and gratitude. She cites her sources by file name, speaks in plain
+English, and admits when the passages do not fully answer the question.
+
+**Test coverage:**
+- SophiaResponse dataclass fields (1 test)
+- Constructor stores dependencies and default threshold (2 tests)
+- Corpus-only path: response shape, retriever delegation, message structure, passage injection (4 tests)
+- Hybrid path: web search trigger below threshold, web results in prompt, no web search above threshold (3 tests)
+- Conversation history: inserted between system and user, absent yields two messages (2 tests)
+- Error resilience: empty retrieval triggers web, web failure degrades, LLM failure propagates (3 tests)
+- System prompt voice: Sophia identity keywords, pillar and source citation (2 tests)
+
+**Lesson learned:** The web_search function must be imported at module level
+in orchestrator.py for tests to patch it via `unittest.mock.patch`. A lazy
+import inside a method makes the patch target invisible to the test. Module-level
+import plus `patch("sophia.core.orchestrator.web_search")` is the clean pattern.
+
+**Next step:** Phase 9 — `sophia/db/` with SQLAlchemy models for users,
+conversations, and messages. The persistent memory layer.
