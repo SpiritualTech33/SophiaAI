@@ -18,7 +18,7 @@ Web app: FastAPI + Jinja2 templates + SQLite (sophia_memory DB) + JWT login.
 
 ## Project State
 
-Ready to start Phase 8 - Sophia Orchestrator
+Phase 8 complete. Ready to start Phase 9 - Database Layer
 
 
 
@@ -210,23 +210,21 @@ the repo in under one minute?" If yes, do not write it here.
 
 ## Phase Status (one line)
 
-Phases 0-7 complete. Phase 8 (Sophia Orchestrator) is the next slot.
+Phases 0-8 complete. Phase 9 (Database Layer) is the next slot.
 Full status table lives in `cosmos_log.md` and `git log --graph`.
 
 ---
 
-## Next Phase Preview — Phase 8 (Sophia Orchestrator)
+## Next Phase Preview — Phase 9 (Database Layer)
 
-**Goal:** `sophia/core/orchestrator.py` with class `Sophia`.
+**Goal:** `sophia/db/` package with SQLAlchemy models.
 
 **Shape:**
-- Receives user query + conversation history.
-- Calls `SophiaRetriever.retrieve(query, top_k=5)`.
-- If top score >= confidence threshold (start with 0.45), answer from corpus only.
-- If below threshold, also call `web_search(query)`.
-- Builds system prompt with Sophia's voice + retrieved passages + web results.
-- Calls `GroqClient.chat(messages)` and returns answer + sources.
+- `database.py` — engine, session factory, SQLite at `sophia_memory.db`
+- `models.py` — User, Conversation, Message (ORM models)
+- Tables: users, conversations, messages
+- SQLAlchemy 2.0 DeclarativeBase style
 
-**Dependencies:** Phase 5 (retriever), Phase 6 (LLM client), Phase 7 (web search).
-All three are complete and tested.
+**Dependencies:** None from AI side. Independent of Phases 3-8.
+Satisfies school requirement #1 (database) and #2 (OOP).
 
