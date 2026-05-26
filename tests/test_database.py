@@ -282,3 +282,108 @@ def test_message_repr():
     """Message.__repr__ returns a readable string."""
     message = Message(id=3, role="sophia")
     assert "sophia" in repr(message)
+
+
+from sophia.db.service import (
+    create_user,
+    get_user_by_email,
+    create_conversation,
+    get_conversations_for_user,
+    add_message,
+    get_conversation_with_messages,
+)
+
+
+def test_create_user_service(db_session):
+    """create_user inserts a User and returns it with an id."""
+    user = create_user(db_session, email="svc@test.com", hashed_password="hash123")
+    assert user.id is not None
+    assert user.email == "svc@test.com"
+
+
+def test_get_user_by_email_found(db_session):
+    """get_user_by_email returns the user when email exists."""
+    create_user(db_session, email="find@test.com", hashed_password="hash")
+    found = get_user_by_email(db_session, "find@test.com")
+    assert found is not None
+    assert found.email == "find@test.com"
+
+
+def test_get_user_by_email_not_found(db_session):
+    """get_user_by_email returns None when email does not exist."""
+    result = get_user_by_email(db_session, "ghost@test.com")
+    assert result is None
+
+
+def test_create_conversation_service(db_session):
+    """create_conversation creates a Conversation tied to a user."""
+    user = create_user(db_session, email="conv_svc@test.com", hashed_password="hash")
+    conversation = create_conversation(db_session, user_id=user.id, title="Service Talk")
+    assert conversation.id is not None
+    assert conversation.user_id == user.id
+    assert conversation.title == "Service Talk"
+
+
+def test_get_conversations_for_user_service(db_session):
+    """get_conversations_for_user returns all conversations for a user."""
+    user = create_user(db_session, email="list@test.com", hashed_password="hash")
+    create_conversation(db_session, user_id=user.id, title="Alpha")
+    create_conversation(db_session, user_id=user.id, title="Beta")
+    conversations = get_conversations_for_user(db_session, user_id=user.id)
+    assert len(conversations) == 2
+
+
+def test_add_message_service(db_session):
+    """add_message appends a message to a conversation."""
+    user = create_user(db_session, email="addmsg@test.com", hashed_password="hash")
+    conversation = create_conversation(db_session, user_id=user.id)
+    message = add_message(
+        db_session,
+        conversation_id=conversation.id,
+        role="user",
+        content="What is the meaning of life?",
+    )
+    assert message.id is not None
+    assert message.conversation_id == conversation.id
+    assert message.role == "user"
+
+
+def test_add_message_with_sources(db_session):
+    """add_message stores sources_json when provided."""
+    import json
+
+    user = create_user(db_session, email="srcsvc@test.com", hashed_password="hash")
+    conversation = create_conversation(db_session, user_id=user.id)
+    sources = json.dumps([{"file": "plato.md", "score": 0.92}])
+    message = add_message(
+        db_session,
+        conversation_id=conversation.id,
+        role="sophia",
+        content="To live well is to live wisely.",
+        sources_json=sources,
+    )
+    assert message.sources_json is not None
+    parsed = json.loads(message.sources_json)
+    assert parsed[0]["file"] == "plato.md"
+
+
+def test_get_conversation_with_messages_service(db_session):
+    """get_conversation_with_messages returns conversation and its messages."""
+    user = create_user(db_session, email="full@test.com", hashed_password="hash")
+    conversation = create_conversation(db_session, user_id=user.id, title="Full Flow")
+    add_message(db_session, conversation_id=conversation.id, role="user", content="Q1")
+    add_message(db_session, conversation_id=conversation.id, role="sophia", content="A1")
+    add_message(db_session, conversation_id=conversation.id, role="user", content="Q2")
+
+    result = get_conversation_with_messages(db_session, conversation_id=conversation.id)
+    assert result is not None
+    assert result.title == "Full Flow"
+    assert len(result.messages) == 3
+    assert result.messages[0].content == "Q1"
+    assert result.messages[2].content == "Q2"
+
+
+def test_get_conversation_with_messages_not_found(db_session):
+    """get_conversation_with_messages returns None for nonexistent id."""
+    result = get_conversation_with_messages(db_session, conversation_id=9999)
+    assert result is None
