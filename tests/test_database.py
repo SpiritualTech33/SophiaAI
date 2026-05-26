@@ -44,7 +44,7 @@ def test_base_has_metadata():
     assert Base.metadata is not None
 
 
-from sophia.db.models import User
+from sophia.db.models import User, Conversation, Message
 
 
 @pytest.fixture
@@ -102,3 +102,93 @@ def test_user_repr():
     """User.__repr__ returns a readable string."""
     user = User(id=1, email="test@example.com", hashed_password="x")
     assert "test@example.com" in repr(user)
+
+
+def test_conversations_table_exists_after_create_all():
+    """create_all produces a 'conversations' table."""
+    engine = build_engine("sqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    inspector = inspect(engine)
+    assert "conversations" in inspector.get_table_names()
+    engine.dispose()
+
+
+def test_messages_table_exists_after_create_all():
+    """create_all produces a 'messages' table."""
+    engine = build_engine("sqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    inspector = inspect(engine)
+    assert "messages" in inspector.get_table_names()
+    engine.dispose()
+
+
+def test_create_conversation_linked_to_user(db_session):
+    """A Conversation belongs to a User via user_id."""
+    user = User(email="conv@test.com", hashed_password="hash")
+    db_session.add(user)
+    db_session.commit()
+
+    conversation = Conversation(user_id=user.id, title="On the Nature of Being")
+    db_session.add(conversation)
+    db_session.commit()
+
+    fetched = db_session.query(Conversation).first()
+    assert fetched is not None
+    assert fetched.user_id == user.id
+    assert fetched.title == "On the Nature of Being"
+    assert fetched.created_at is not None
+    assert fetched.updated_at is not None
+
+
+def test_create_message_linked_to_conversation(db_session):
+    """A Message belongs to a Conversation via conversation_id."""
+    user = User(email="msg@test.com", hashed_password="hash")
+    db_session.add(user)
+    db_session.commit()
+
+    conversation = Conversation(user_id=user.id, title="First Talk")
+    db_session.add(conversation)
+    db_session.commit()
+
+    message = Message(
+        conversation_id=conversation.id,
+        role="user",
+        content="What is wisdom?",
+    )
+    db_session.add(message)
+    db_session.commit()
+
+    fetched = db_session.query(Message).first()
+    assert fetched is not None
+    assert fetched.role == "user"
+    assert fetched.content == "What is wisdom?"
+    assert fetched.sources_json is None
+    assert fetched.created_at is not None
+
+
+def test_message_stores_sources_json(db_session):
+    """sources_json stores a JSON string of citation data."""
+    import json
+
+    user = User(email="src@test.com", hashed_password="hash")
+    db_session.add(user)
+    db_session.commit()
+
+    conversation = Conversation(user_id=user.id)
+    db_session.add(conversation)
+    db_session.commit()
+
+    sources = json.dumps([{"file": "lao_tzu.md", "score": 0.87}])
+    message = Message(
+        conversation_id=conversation.id,
+        role="sophia",
+        content="The Tao that can be told is not the eternal Tao.",
+        sources_json=sources,
+    )
+    db_session.add(message)
+    db_session.commit()
+
+    fetched = db_session.query(Message).first()
+    parsed = json.loads(fetched.sources_json)
+    assert parsed[0]["file"] == "lao_tzu.md"
+    assert parsed[0]["score"] == 0.87
