@@ -140,7 +140,7 @@ module under `sophia/`.
 ## Process & Workflow
 
 **Per phase:**
-1. Write a plan at `docs/superpowers/plans/phase-N-name.md` BEFORE coding,
+1. Write a plan at `documentation/plans/phase-N-name.md` BEFORE coding,
    using the `superpowers:writing-plans` skill conventions
    (checkboxes, exact commands, expected output, self-review section).
 2. Branch `feat/phase-N-name`, work there.
@@ -210,21 +210,19 @@ the repo in under one minute?" If yes, do not write it here.
 
 ## Phase Status (one line)
 
-Phases 0-8 complete. Phase 9 (Database Layer) is the next slot.
+Phases 0-9 complete. Phase 10 (Auth Layer) is the next slot.
 Full status table lives in `cosmos_log.md` and `git log --graph`.
 
 ---
 
-## Next Phase Preview — Phase 9 (Database Layer)
+## Next Phase Preview — Phase 10 (Auth Layer)
 
-**Goal:** `sophia/db/` package with SQLAlchemy models.
+**Goal:** Password hashing + JWT authentication.
 
 **Shape:**
-- `database.py` — engine, session factory, SQLite at `sophia_memory.db`
-- `models.py` — User, Conversation, Message (ORM models)
-- Tables: users, conversations, messages
-- SQLAlchemy 2.0 DeclarativeBase style
+- Password hashing with passlib (bcrypt)
+- JWT token creation and verification with python-jose
+- Integration with User model from Phase 9
 
-**Dependencies:** None from AI side. Independent of Phases 3-8.
-Satisfies school requirement #1 (database) and #2 (OOP).
+**Dependencies:** Phase 9 (User model). Satisfies school requirement #4 (login).
 
