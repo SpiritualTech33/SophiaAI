@@ -18,7 +18,7 @@ Web app: FastAPI + Jinja2 templates + SQLite (sophia_memory DB) + JWT login.
 
 ## Project State
 
-Phase 8 complete. Ready to start Phase 9 - Database Layer
+Phase 9 complete. Ready to start Phase 10 - Auth Layer
 
 
 

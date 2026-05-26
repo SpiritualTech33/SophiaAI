@@ -323,3 +323,75 @@ import plus `patch("sophia.core.orchestrator.web_search")` is the clean pattern.
 
 **Next step:** Phase 9 — `sophia/db/` with SQLAlchemy models for users,
 conversations, and messages. The persistent memory layer.
+
+---
+
+## 26-May-2026
+
+### Phase 9 — Database Layer
+
+**What was built:** Package `sophia/db/` with four modules: `database.py`
+(engine, session factory, DeclarativeBase), `models.py` (User, Conversation,
+Message ORM models), `service.py` (six CRUD functions), and `__init__.py`
+(clean public API exporting everything). This gives Sophia persistent memory
+of who is talking, what conversations exist, and what was said in each one.
+
+**Artifacts:**
+- `sophia/db/__init__.py` — public exports: Base, build_engine, build_session_factory, User, Conversation, Message, and six service functions
+- `sophia/db/database.py` — SQLAlchemy 2.0 engine configuration with SQLite defaults
+- `sophia/db/models.py` — three ORM models with relationships and cascade deletes
+- `sophia/db/service.py` — create_user, get_user_by_email, create_conversation, get_conversations_for_user, add_message, get_conversation_with_messages
+- `tests/test_database.py` — 27 unit tests covering engine, models, relationships, cascades, and service layer
+
+**Three tables, one ownership graph:**
+- `users` — id, email (unique, indexed), hashed_password, created_at
+- `conversations` — id, user_id (FK to users, CASCADE), title, created_at, updated_at
+- `messages` — id, conversation_id (FK to conversations, CASCADE), role, content, sources_json (nullable), created_at
+
+User owns Conversations. Conversation owns Messages. Delete a User and
+everything below cascades. Delete a Conversation and its Messages disappear
+but the User survives. The `cascade="all, delete-orphan"` on both
+relationships enforces this at the ORM level, and `ondelete="CASCADE"` on
+the foreign keys enforces it at the database level.
+
+**Why DeclarativeBase (SQLAlchemy 2.0 style):** The modern API. Mapped columns
+use type annotations (`Mapped[int]`, `Mapped[str]`) instead of the old
+`Column(Integer)` pattern. Cleaner, more Pythonic, better IDE support. The
+school project benefits from using the current recommended style.
+
+**Why a service layer separate from models:** Models define shape. Services
+define behavior. Single responsibility. The six service functions accept a
+Session and return model instances. No HTTP awareness, no auth logic, no
+business rules. FastAPI routes will call these functions — they will never
+construct raw queries themselves. This keeps the routes thin and the queries
+testable in isolation.
+
+**Why in-memory SQLite for tests:** Fast, isolated, no cleanup needed. Each
+test gets a fresh database via a `db_session` pytest fixture that creates an
+engine, runs `create_all`, yields a session, then tears everything down.
+No leftover `sophia_memory.db` files polluting the repo. All 27 tests run
+in under one second.
+
+**Why no Alembic yet:** Alembic is planned for Phase 13. At this stage the
+schema is brand new and `Base.metadata.create_all()` is sufficient. Migrations
+become necessary when the schema needs to evolve without losing data.
+
+**Test coverage breakdown:**
+- Engine and session factory (3 tests)
+- User model: table existence, CRUD, email uniqueness constraint, repr (4 tests)
+- Conversation model: table existence, linked creation, timestamps (1 test)
+- Message model: table existence, linked creation, sources_json storage (2+1 tests)
+- Relationships: user.conversations, conversation.messages with ordering (2 tests)
+- Cascade deletes: user cascades to conversations and messages, conversation cascades to messages only (2 tests)
+- Repr for Conversation and Message (2 tests)
+- Service functions: all six, including not-found paths and sources variant (9 tests)
+
+**Total test suite:** 103 tests (76 from Phases 0-8 + 27 new), 102 passed,
+1 skipped (real-corpus retriever test), 0 failures, 0 regressions.
+
+**School requirements satisfied:** This phase delivers requirement #1 (database)
+and requirement #2 (OOP) via SQLAlchemy models and service classes.
+
+**Next step:** Phase 10 — Auth layer. Password hashing with passlib (bcrypt),
+JWT token creation and verification with python-jose, and integration with
+the User model from this phase.
