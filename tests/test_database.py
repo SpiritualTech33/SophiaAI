@@ -192,3 +192,93 @@ def test_message_stores_sources_json(db_session):
     parsed = json.loads(fetched.sources_json)
     assert parsed[0]["file"] == "lao_tzu.md"
     assert parsed[0]["score"] == 0.87
+
+
+def test_user_has_conversations_relationship(db_session):
+    """user.conversations returns all conversations owned by that user."""
+    user = User(email="rel@test.com", hashed_password="hash")
+    db_session.add(user)
+    db_session.commit()
+
+    db_session.add(Conversation(user_id=user.id, title="Talk 1"))
+    db_session.add(Conversation(user_id=user.id, title="Talk 2"))
+    db_session.commit()
+
+    db_session.refresh(user)
+    assert len(user.conversations) == 2
+    titles = {c.title for c in user.conversations}
+    assert titles == {"Talk 1", "Talk 2"}
+
+
+def test_conversation_has_messages_relationship(db_session):
+    """conversation.messages returns all messages in order."""
+    user = User(email="msgs@test.com", hashed_password="hash")
+    db_session.add(user)
+    db_session.commit()
+
+    conversation = Conversation(user_id=user.id, title="Deep Talk")
+    db_session.add(conversation)
+    db_session.commit()
+
+    db_session.add(Message(conversation_id=conversation.id, role="user", content="Hello"))
+    db_session.add(Message(conversation_id=conversation.id, role="sophia", content="Welcome"))
+    db_session.commit()
+
+    db_session.refresh(conversation)
+    assert len(conversation.messages) == 2
+    assert conversation.messages[0].role == "user"
+    assert conversation.messages[1].role == "sophia"
+
+
+def test_delete_user_cascades_to_conversations_and_messages(db_session):
+    """Deleting a User deletes their Conversations and Messages."""
+    user = User(email="cascade@test.com", hashed_password="hash")
+    db_session.add(user)
+    db_session.commit()
+
+    conversation = Conversation(user_id=user.id, title="Doomed Talk")
+    db_session.add(conversation)
+    db_session.commit()
+
+    db_session.add(Message(conversation_id=conversation.id, role="user", content="Goodbye"))
+    db_session.commit()
+
+    db_session.delete(user)
+    db_session.commit()
+
+    assert db_session.query(User).count() == 0
+    assert db_session.query(Conversation).count() == 0
+    assert db_session.query(Message).count() == 0
+
+
+def test_delete_conversation_cascades_to_messages(db_session):
+    """Deleting a Conversation deletes its Messages but not the User."""
+    user = User(email="partcasc@test.com", hashed_password="hash")
+    db_session.add(user)
+    db_session.commit()
+
+    conversation = Conversation(user_id=user.id, title="Temporary")
+    db_session.add(conversation)
+    db_session.commit()
+
+    db_session.add(Message(conversation_id=conversation.id, role="user", content="Test"))
+    db_session.commit()
+
+    db_session.delete(conversation)
+    db_session.commit()
+
+    assert db_session.query(User).count() == 1
+    assert db_session.query(Conversation).count() == 0
+    assert db_session.query(Message).count() == 0
+
+
+def test_conversation_repr():
+    """Conversation.__repr__ returns a readable string."""
+    conversation = Conversation(id=7, title="On Love")
+    assert "On Love" in repr(conversation)
+
+
+def test_message_repr():
+    """Message.__repr__ returns a readable string."""
+    message = Message(id=3, role="sophia")
+    assert "sophia" in repr(message)
