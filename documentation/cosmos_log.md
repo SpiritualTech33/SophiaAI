@@ -395,3 +395,70 @@ and requirement #2 (OOP) via SQLAlchemy models and service classes.
 **Next step:** Phase 10 — Auth layer. Password hashing with passlib (bcrypt),
 JWT token creation and verification with python-jose, and integration with
 the User model from this phase.
+
+---
+
+## 27-May-2026
+
+### Phase 10 — Auth Layer
+
+**What was built:** Package `sophia/auth/` with three modules: `security.py`
+(password hashing and JWT token management), `dependencies.py` (FastAPI
+authentication dependency), and `__init__.py` (clean public API exporting
+all five functions). This gives SophiaAI the ability to securely register
+users, verify passwords, issue session tokens, and authenticate requests.
+
+**Artifacts:**
+- `sophia/auth/__init__.py` — public exports: hash_password, verify_password, create_access_token, decode_access_token, get_current_user
+- `sophia/auth/security.py` — bcrypt hashing via passlib, JWT encode/decode via python-jose
+- `sophia/auth/dependencies.py` — get_current_user: validates JWT, looks up User in DB, returns ORM instance
+- `tests/test_auth.py` — 13 unit tests covering hashing, JWT, and dependency integration
+- `documentation/plans/phase10-auth-layer.md` — implementation plan with 4 tasks
+
+**Two layers, one responsibility each:**
+- `security.py` owns all cryptographic operations. Four pure functions: hash a
+  password, verify a password, create a JWT, decode a JWT. No database, no HTTP,
+  no framework awareness. These functions are reusable anywhere.
+- `dependencies.py` owns the bridge between a JWT token and a User ORM instance.
+  One function: `get_current_user(token, secret_key, session)`. It decodes the
+  token, extracts the email, queries the database, and returns the User or raises
+  ValueError. Designed as a pure function now; wired as `Depends()` in Phase 11.
+
+**Password hashing with bcrypt:** passlib's CryptContext wraps bcrypt with
+automatic salt generation. Two hashes of the same password always differ
+(random salt). Verification is constant-time to prevent timing attacks.
+The `$2b$` prefix identifies the hash algorithm for future compatibility.
+
+**JWT design decisions:**
+- Algorithm: HS256 (HMAC-SHA256). Simple, symmetric, sufficient for a
+  single-server school project. No RSA key management overhead.
+- Token lifetime: 24 hours default (`DEFAULT_TOKEN_LIFETIME_HOURS = 24`).
+  Long enough for a study session, short enough that a leaked token expires.
+- Secret key: passed as argument, not hardcoded. The FastAPI app (Phase 11)
+  will read `JWT_SECRET` from `.env` and inject it.
+- Error handling: expired tokens and invalid tokens both raise ValueError
+  with distinct messages ("expired" vs "invalid") so the caller can
+  differentiate if needed.
+
+**Compatibility gotcha discovered:** passlib 1.7.4 is incompatible with
+bcrypt >= 4.1. passlib's internal bug-detection routine sends a 256-byte
+test password, but bcrypt 4.1+ rejects passwords longer than 72 bytes.
+Fix: pinned `bcrypt<4.1` in requirements.txt. This is a known upstream
+issue — passlib has not been updated since 2020.
+
+**Test coverage breakdown:**
+- Password hashing: bcrypt format, correct verification, wrong password rejection, salt uniqueness (4 tests)
+- JWT creation: returns string, embeds subject, sets expiration (3 tests)
+- JWT validation: extracts subject, rejects expired, rejects invalid, rejects wrong secret (3 tests)
+- get_current_user: returns User for valid token, rejects invalid token, rejects nonexistent user (3 tests)
+
+**Total test suite:** 116 tests (103 from Phases 0-9 + 13 new), all passed,
+0 failures, 0 regressions.
+
+**School requirements satisfied:** This phase delivers requirement #4 (login)
+via JWT authentication and bcrypt password hashing, building on requirement #1
+(database) and #2 (OOP) from Phase 9.
+
+**Next step:** Phase 11 — FastAPI skeleton. Wire everything together behind
+HTTP endpoints: POST /register, POST /login, POST /api/chat, and the page
+routes. Application lifespan for heavy object initialization.

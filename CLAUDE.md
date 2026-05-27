@@ -18,7 +18,7 @@ Web app: FastAPI + Jinja2 templates + SQLite (sophia_memory DB) + JWT login.
 
 ## Project State
 
-Phase 9 complete. Ready to start Phase 10 - Auth Layer
+Phase 10 complete. Ready to start Phase 11 - FastAPI Skeleton
 
 
 
@@ -113,6 +113,7 @@ Stateless. Simpler deploy. Satisfies the school requirement cleanly.
 
 ## Code Conventions
 
+All the codebase must follow SOLID principles.
 **Philosophy:** ZenCode PRO + CEO of Water in every file.
 - Single-responsibility functions, explicit naming, no clever tricks.
 - Bulletproof error handling — one bad file must never kill a pipeline.
