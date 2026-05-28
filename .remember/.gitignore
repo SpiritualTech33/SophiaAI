@@ -1,0 +1,3 @@
+# Track the memory markdown; ignore transient scratch only.
+tmp/
+logs/

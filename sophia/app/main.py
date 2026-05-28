@@ -18,12 +18,17 @@ from __future__ import annotations
 import logging
 import os
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 from sophia.db.database import Base, build_engine, build_session_factory
+
+_APP_DIR = Path(__file__).resolve().parent
 
 load_dotenv()
 
@@ -66,6 +71,26 @@ async def lifespan(app: FastAPI):
     logger.info("SophiaAI shut down.")
 
 
+def configure_assets(application: FastAPI) -> None:
+    """
+    Executive Brief:
+        Mount static files at /static and attach a Jinja2Templates
+        instance to app.state. Shared by create_app() and the test
+        harness so both serve pages identically.
+
+    Mental Model:
+        Templates and static assets are resolved relative to this file
+        (_APP_DIR), so they load the same regardless of the working
+        directory the app is launched from.
+    """
+    application.mount(
+        "/static",
+        StaticFiles(directory=_APP_DIR / "static"),
+        name="static",
+    )
+    application.state.templates = Jinja2Templates(directory=str(_APP_DIR / "templates"))
+
+
 def create_app() -> FastAPI:
     """
     Executive Brief:
@@ -86,6 +111,8 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    configure_assets(application)
 
     from sophia.app.routers import auth, chat, pages
     application.include_router(auth.router)

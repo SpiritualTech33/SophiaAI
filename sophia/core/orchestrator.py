@@ -145,17 +145,31 @@ class Sophia:
 
         return "\n".join(parts)
 
+    # Internal (DB) role -> LLM API role. The LLM only accepts
+    # system | user | assistant, but conversations are stored with the
+    # domain role "sophia". Translate at this boundary.
+    _LLM_ROLE_BY_DOMAIN_ROLE = {"sophia": "assistant"}
+
     def _build_messages(
         self,
         system_prompt: str,
         query: str,
         conversation_history: list[dict] | None,
     ) -> list[dict]:
-        """Build the messages list for the LLM: system + history + user query."""
+        """Build the messages list for the LLM: system + history + user query.
+
+        History entries are normalized so domain roles (e.g. "sophia") become
+        the LLM API roles the provider accepts (e.g. "assistant").
+        """
         messages: list[dict] = [{"role": "system", "content": system_prompt}]
 
         if conversation_history:
-            messages.extend(conversation_history)
+            for entry in conversation_history:
+                role = entry.get("role", "user")
+                messages.append({
+                    "role": self._LLM_ROLE_BY_DOMAIN_ROLE.get(role, role),
+                    "content": entry.get("content", ""),
+                })
 
         messages.append({"role": "user", "content": query})
         return messages

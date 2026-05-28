@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Sign in — SophiaAI{% endblock %}
+
+{% block content %}
+<section class="gate glass">
+  <h1>Sign in</h1>
+  <p class="subtitle">Return to the portal.</p>
+
+  <form id="auth-form" data-mode="login" novalidate>
+    <div class="form-error" role="alert" aria-live="polite" id="error"></div>
+
+    <div class="field">
+      <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
+      <input class="input" type="email" id="email" name="email"
+             autocomplete="email" required>
+    </div>
+
+    <div class="field">
+      <label for="password">Password <span class="req" aria-hidden="true">*</span></label>
+      <div class="password-wrap">
+        <input class="input" type="password" id="password" name="password"
+               autocomplete="current-password" required>
+        <button type="button" class="password-toggle" data-toggle="password" aria-label="Show password">Show</button>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" id="submit" style="width:100%">Sign in</button>
+  </form>
+
+  <p class="alt">New here? <a href="/register">Create an account</a></p>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script type="module" src="/static/js/auth.js"></script>
+{% endblock %}
