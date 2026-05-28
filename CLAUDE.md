@@ -18,7 +18,7 @@ Web app: FastAPI + Jinja2 templates + SQLite (sophia_memory DB) + JWT login.
 
 ## Project State
 
-Phase 10 complete. Ready to start Phase 11 - FastAPI Skeleton
+Phase 11 complete. Ready to start Phase 12 - Templates and Chat UI
 
 
 
@@ -211,19 +211,20 @@ the repo in under one minute?" If yes, do not write it here.
 
 ## Phase Status (one line)
 
-Phases 0-9 complete. Phase 10 (Auth Layer) is the next slot.
+Phases 0-11 complete. Phase 12 (Templates and Chat UI) is the next slot.
 Full status table lives in `cosmos_log.md` and `git log --graph`.
 
 ---
 
-## Next Phase Preview — Phase 10 (Auth Layer)
+## Next Phase Preview — Phase 12 (Templates and Chat UI)
 
-**Goal:** Password hashing + JWT authentication.
+**Goal:** Replace placeholder HTML with Jinja2 templates and a working chat UI.
 
 **Shape:**
-- Password hashing with passlib (bcrypt)
-- JWT token creation and verification with python-jose
-- Integration with User model from Phase 9
+- base.html layout with header, footer, CSS
+- login.html, register.html with forms
+- chat.html with conversation view and JS fetch to /api/chat
+- Static assets (CSS, minimal JS)
 
-**Dependencies:** Phase 9 (User model). Satisfies school requirement #4 (login).
+**Dependencies:** Phase 11 (FastAPI skeleton). Satisfies the user-facing experience.
 
