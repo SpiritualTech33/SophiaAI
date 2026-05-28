@@ -280,6 +280,37 @@ def test_ask_with_conversation_history():
     assert messages[3]["content"] == "Tell me more about that."
 
 
+def test_ask_maps_sophia_role_to_assistant():
+    """Stored 'sophia' history roles are normalized to the LLM's 'assistant' role.
+
+    The DB stores Sophia's messages with role='sophia', but the LLM API only
+    accepts 'system' | 'user' | 'assistant'. The orchestrator must translate.
+    """
+    mock_retriever = MagicMock()
+    mock_retriever.retrieve.return_value = [
+        _make_chunk("passage", "file.md", "mind", 0.9),
+    ]
+
+    mock_llm = MagicMock()
+    mock_llm.chat.return_value = "follow-up answer"
+
+    history = [
+        {"role": "user", "content": "What is the mind?"},
+        {"role": "sophia", "content": "The mind is awareness."},
+    ]
+
+    sophia = Sophia(retriever=mock_retriever, llm_client=mock_llm)
+    sophia.ask("Tell me more.", conversation_history=history)
+
+    call_args = mock_llm.chat.call_args
+    messages = call_args.kwargs.get("messages") or call_args[0][0]
+
+    roles = [m["role"] for m in messages]
+    assert "sophia" not in roles
+    assert messages[2]["role"] == "assistant"
+    assert messages[2]["content"] == "The mind is awareness."
+
+
 def test_ask_without_history():
     """No history -> messages are just [system, user]."""
     mock_retriever = MagicMock()
