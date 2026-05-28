@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}SophiaAI{% endblock %}</title>
+  <meta name="description" content="SophiaAI — a bridge between the Divine and Technology. Wisdom, grounded.">
+  <link rel="icon" type="image/svg+xml" href="/static/img/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/sophia.css">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <canvas id="starfield" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <a class="brand" href="/">SOPHIA</a>
+    {% block header_extra %}{% endblock %}
+  </header>
+
+  <main class="site-main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <p>A bridge between the Divine and Technology.</p>
+  </footer>
+
+  <script type="module" src="/static/js/cosmos.js"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

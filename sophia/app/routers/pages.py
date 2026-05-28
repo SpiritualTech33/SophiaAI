@@ -2,60 +2,54 @@
 HTML page routes for SophiaAI.
 
 Executive Brief:
-    Placeholder pages that return minimal HTML. Phase 12 replaces
-    these with proper Jinja2 templates, static assets, and a real
-    chat UI. These stubs exist so the route structure is wired and
-    testable now.
+    Server-rendered Jinja2 pages. Each route returns a TemplateResponse
+    built from app.state.templates. These pages are public HTML shells;
+    authentication is enforced client-side (the JS redirects to /login
+    when no token is present) and server-side by the /api/* endpoints.
+
+Mental Model:
+    The page routes serve structure. The behavior lives in the static JS
+    modules (cosmos.js, auth.js, chat.js), which talk to the JSON API
+    using the JWT stored in localStorage.
 """
 
 from __future__ import annotations
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 
 router = APIRouter(tags=["pages"])
 
 
+def _render(request: Request, template_name: str) -> HTMLResponse:
+    """
+    Executive Brief:
+        Render a template from the app-level Jinja2Templates instance.
+        Centralized so every page route stays a single expressive line.
+    """
+    templates = request.app.state.templates
+    return templates.TemplateResponse(request, template_name)
+
+
 @router.get("/", response_class=HTMLResponse)
-def landing_page() -> HTMLResponse:
+def landing_page(request: Request) -> HTMLResponse:
     """Serve the landing page."""
-    return HTMLResponse(
-        "<html><body>"
-        "<h1>SophiaAI</h1>"
-        "<p>A bridge between the Divine and Technology.</p>"
-        "<p><a href='/login'>Login</a> | <a href='/register'>Register</a></p>"
-        "</body></html>"
-    )
+    return _render(request, "index.html")
 
 
 @router.get("/chat", response_class=HTMLResponse)
-def chat_page() -> HTMLResponse:
+def chat_page(request: Request) -> HTMLResponse:
     """Serve the chat page."""
-    return HTMLResponse(
-        "<html><body>"
-        "<h1>Chat with Sophia</h1>"
-        "<p>The conversation UI will arrive in Phase 12.</p>"
-        "</body></html>"
-    )
+    return _render(request, "chat.html")
 
 
 @router.get("/login", response_class=HTMLResponse)
-def login_page() -> HTMLResponse:
+def login_page(request: Request) -> HTMLResponse:
     """Serve the login page."""
-    return HTMLResponse(
-        "<html><body>"
-        "<h1>Login</h1>"
-        "<p>The login form will arrive in Phase 12.</p>"
-        "</body></html>"
-    )
+    return _render(request, "login.html")
 
 
 @router.get("/register", response_class=HTMLResponse)
-def register_page() -> HTMLResponse:
+def register_page(request: Request) -> HTMLResponse:
     """Serve the register page."""
-    return HTMLResponse(
-        "<html><body>"
-        "<h1>Register</h1>"
-        "<p>The registration form will arrive in Phase 12.</p>"
-        "</body></html>"
-    )
+    return _render(request, "register.html")

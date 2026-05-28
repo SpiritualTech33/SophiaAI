@@ -45,6 +45,9 @@ def test_app():
     app.state.session_factory = session_factory
     app.state.jwt_secret = TEST_JWT_SECRET
 
+    from sophia.app.main import configure_assets
+    configure_assets(app)
+
     from sophia.app.routers import auth, chat, pages
     app.include_router(auth.router)
     app.include_router(chat.router)
