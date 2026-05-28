@@ -13,3 +13,6 @@ data/sophia_index.faiss
 # Runtime database — created on app boot, not tracked
 *.db
 sophia_memory.db
+
+# graphify knowledge graph — regenerable from the repo, not tracked
+graphify-out/
