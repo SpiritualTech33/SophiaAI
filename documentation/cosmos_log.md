@@ -462,3 +462,85 @@ via JWT authentication and bcrypt password hashing, building on requirement #1
 **Next step:** Phase 11 — FastAPI skeleton. Wire everything together behind
 HTTP endpoints: POST /register, POST /login, POST /api/chat, and the page
 routes. Application lifespan for heavy object initialization.
+
+### Phase 11 — FastAPI Skeleton
+
+**What was built:** Package `sophia/app/` — a complete FastAPI web application
+skeleton with three routers, six HTTP endpoints, Pydantic request/response
+models, dependency injection, and an application lifespan that initializes all
+heavy objects once at startup. This is the moment Sophia stops being a
+collection of independent modules and becomes a running web application.
+
+**Artifacts:**
+- `sophia/app/__init__.py` — package exports
+- `sophia/app/schemas.py` — 9 Pydantic models (RegisterRequest, LoginRequest, TokenResponse, ChatRequest, ChatResponse, SourceOut, ConversationSummary, MessageOut, ConversationDetail)
+- `sophia/app/dependencies.py` — get_db_session (yield-based), get_authenticated_user (JWT + OAuth2PasswordBearer)
+- `sophia/app/routers/auth.py` — POST /auth/register, POST /auth/login
+- `sophia/app/routers/chat.py` — POST /api/chat, GET /api/conversations, GET /api/conversations/{id}
+- `sophia/app/routers/pages.py` — GET /, GET /chat, GET /login, GET /register (placeholder HTML)
+- `sophia/app/main.py` — create_app() factory, lifespan context manager, CORS middleware
+- `tests/conftest.py` — shared fixtures: test app with in-memory SQLite, TestClient, auth helper
+- `tests/test_app_schemas.py` — 10 schema validation tests
+- `tests/test_app_auth.py` — 6 auth endpoint tests
+- `tests/test_app_chat.py` — 6 chat endpoint tests
+- `tests/test_app_pages.py` — 4 page route tests
+- `documentation/plans/phase11-fastapi-skeleton.md` — implementation plan with 7 tasks
+
+**The wiring pattern:** Every heavy object — SophiaRetriever (FAISS index +
+embedding model, ~90 MB), GroqClient (API connection), Sophia orchestrator —
+initializes once inside the lifespan context manager and lives on `app.state`.
+Database sessions are created per request via a yield-based dependency and
+closed automatically. The JWT secret is read from the environment and stored
+on `app.state.jwt_secret`. This means zero per-request initialization cost
+for the AI pipeline.
+
+**Why lifespan and not module-level globals:** Predictable startup, clean
+teardown, easier testing. The lifespan context manager is FastAPI's official
+way to handle resources that outlive individual requests. Module-level globals
+would initialize at import time, making tests painful and startup order
+unpredictable.
+
+**Why OAuth2PasswordBearer:** FastAPI provides this scheme to extract Bearer
+tokens from the Authorization header. It also generates the lock icon in the
+OpenAPI docs at /docs, making manual testing effortless. The tokenUrl points
+to /auth/login so the docs know where to send login requests.
+
+**Why a test app without the lifespan:** The real lifespan loads FAISS, the
+embedding model, and calls the Groq API — none of which should happen in
+tests. Instead, conftest.py creates a bare FastAPI app with in-memory SQLite
+(using StaticPool to share the database across connections), sets app.state
+manually, and injects a MockSophia that returns fixed responses. This keeps
+tests fast (~1 second) and deterministic.
+
+**Why StaticPool for test SQLite:** SQLite in-memory databases are
+connection-scoped. Without StaticPool, each new session from the factory gets
+a fresh empty database and never sees the schema created by create_all.
+StaticPool forces all connections to share the same in-memory instance.
+
+**Endpoint design:**
+- Registration returns a JWT immediately (user is logged in after register)
+- Login validates credentials and returns a JWT
+- Chat creates or appends to a conversation, calls Sophia, persists both messages
+- Conversations list returns summaries (no messages, lightweight)
+- Conversation detail eagerly loads all messages
+- All chat/conversation endpoints require authentication (401 without token)
+- Pages return placeholder HTML — Phase 12 replaces with Jinja2 templates
+
+**Test coverage breakdown:**
+- Schema validation: valid input, invalid email, defaults, nesting (10 tests)
+- Auth endpoints: register, duplicate email, invalid email, login, wrong password, unknown user (6 tests)
+- Chat endpoints: new conversation, existing conversation, unauthorized, list, detail, not found (6 tests)
+- Page routes: landing, chat, login, register (4 tests)
+
+**Total test suite:** 142 tests (116 from Phases 0-10 + 26 new), all passed,
+0 failures, 0 regressions.
+
+**School requirements satisfied:** This phase delivers requirement #3 (framework)
+via FastAPI. Combined with Phase 9 (#1 database, #2 OOP) and Phase 10 (#4 login),
+four of five requirements are now complete. Only #5 (documentation) remains,
+and it is being satisfied continuously by this cosmos_log.
+
+**Next step:** Phase 12 — Templates and Chat UI. Replace placeholder HTML with
+Jinja2 templates, add static CSS/JS, build the real chat interface where users
+can talk to Sophia and see her answers with cited sources.
+
