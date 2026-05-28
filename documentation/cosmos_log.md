@@ -544,3 +544,96 @@ and it is being satisfied continuously by this cosmos_log.
 Jinja2 templates, add static CSS/JS, build the real chat interface where users
 can talk to Sophia and see her answers with cited sources.
 
+---
+
+## 28-May-2026
+
+### Phase 12 - SophiaAI UI
+
+Today Sophia received a face. Phase 12 replaced the placeholder HTML stubs
+with real Jinja2 templates, a design system, and a working chat interface.
+The brief was specific: the UI should feel like entering the portal of a
+cosmic intelligence — metaphysical, alive, sacred. I grilled the design with
+Claude before a single line of code: avatar form, palette, motion, scope,
+asset strategy, typography. Those decisions shaped everything.
+
+**Design decisions (and why):**
+- **Avatar — hybrid.** The landing shows the marble goddess (my own
+  reference image, the one with the gold atom-heart and astrolabe halo over
+  a galaxy). The chat avatar is a pure CSS/SVG cosmic orb — no image — so it
+  scales infinitely and reacts to state. Brand mark is "SOPHIA" in Cinzel.
+- **Palette — deep cosmic (black hole).** Near-black indigo void, violet,
+  cyan, magenta nebula accents, a drifting starfield. The mood is the void,
+  the portal, the night sky — not a daylight temple.
+- **Motion — living portal.** Animated starfield, an orb that breathes when
+  idle, spins faster when thinking, pulses when speaking; messages fade and
+  rise in. Every animation is gated behind prefers-reduced-motion, so the
+  whole thing degrades gracefully to a still, readable page.
+- **Type — Cinzel + Inter.** Cinzel (engraved Roman capitals) for the
+  wordmark and headings, Inter for body. Sacred where it matters, clean
+  where it must be read.
+- **No framework.** Vanilla JS, ES modules, no build step. Every layer of
+  complexity is a layer I would have to defend in the video. Jinja2 is enough.
+
+**Artifacts:**
+- `sophia/app/templates/base.html` — shared layout: fonts, starfield canvas, header/footer, blocks
+- `sophia/app/templates/index.html` — landing: goddess hero, SOPHIA wordmark, manifesto, CTAs
+- `sophia/app/templates/login.html`, `register.html` — glass "portal gate" forms
+- `sophia/app/templates/chat.html` — the cosmic portal: sidebar, thread, composer, orb
+- `sophia/app/static/css/sophia.css` — full design system (tokens, components, the CSS orb, reduced-motion)
+- `sophia/app/static/js/cosmos.js` — token storage, authFetch, requireAuth, starfield
+- `sophia/app/static/js/auth.js` — login + register handling (one module, data-mode driven)
+- `sophia/app/static/js/chat.js` — send flow, orb states, sources, conversation list (XSS-safe via textContent)
+- `sophia/app/static/img/sophia_goddess.jpg` — goddess hero (1024×1024, 159 KB)
+- `sophia/app/static/img/favicon.svg` — cosmic orb favicon
+- `sophia/app/main.py` — configure_assets() mounts /static and Jinja2, shared with the test harness
+- `sophia/app/routers/pages.py` — renders templates instead of inline HTML
+- `documentation/plans/phase12-SophiaAI-UI.md` — implementation plan, 8 tasks
+
+**The architecture detail that mattered:** auth returns a JWT in the JSON
+body, and the protected endpoints read it from the Authorization header
+(OAuth2PasswordBearer). So there is no cookie or session flow. The front end
+stores the token in localStorage and attaches it to every fetch via a shared
+authFetch helper, which also clears a dead token and redirects to /login on a
+401. Page routes are public HTML shells; the JS enforces auth client-side and
+the API enforces it server-side.
+
+**A decision I changed mid-build:** the plan called for a WebP goddess image,
+but the only conversion tool available locally was .NET GDI+, which has no
+WebP encoder, and I did not want to add Pillow just for a one-time asset job.
+So the hero ships as an optimized JPG (159 KB) instead. The right call —
+intentional simplicity over a dependency.
+
+**The bug that taught me something:** after the UI went live, Sophia would
+answer the first message and then go silent. The first message worked; the
+second returned a 500. The trace led to Groq returning a 400:
+`discriminator property 'role' has invalid value`. The cause was subtle and
+honest — a latent bug from Phase 8, not Phase 12. Conversations are stored in
+the database with role "sophia" for Sophia's messages. The LLM API only
+accepts system, user, and assistant. On the first message there is no history,
+so only system and user roles are sent — valid. On the second message the
+orchestrator replayed the history, which now contained a "sophia" role —
+invalid. The UI was simply the first caller to ever send a conversation_id and
+trigger the history path. Fixed it at the right layer: the orchestrator now
+maps domain roles to LLM roles ("sophia" → "assistant") in _build_messages,
+the single boundary where it talks to the LLM. Added a failing test first,
+then the fix. Lesson: a bug can sit dormant for phases until something
+finally exercises the path. The UI is also a test.
+
+**Test coverage:** updated the four page tests for rendered templates, added a
+static-asset test, and added test_ask_maps_sophia_role_to_assistant for the
+role bug. Total suite: 144 tests, all passed, 0 regressions. The full flow was
+also verified live against the running server — register, multi-turn chat with
+real corpus-grounded answers, sources, and conversation persistence.
+
+**What is left:** refinement. The bones are good and the portal works
+end-to-end, but there is polish to do — visual tuning, edge cases, the mobile
+experience. That is for the next pass.
+
+**Next step:** Phase 13 — Alembic migrations. Version control for the database
+schema, the last piece of the stack the school requirement names explicitly.
+
+---
+
+
+

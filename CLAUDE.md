@@ -18,7 +18,9 @@ Web app: FastAPI + Jinja2 templates + SQLite (sophia_memory DB) + JWT login.
 
 ## Project State
 
-Phase 11 complete. Ready to start Phase 12 - Templates and Chat UI
+Phase 12 complete. Ready to start Phase 13 - Alembic Migrations.
+The web UI is live: Jinja2 templates, cosmic design system, working chat
+with conversation memory. Refinement/polish still pending.
 
 
 
@@ -211,20 +213,21 @@ the repo in under one minute?" If yes, do not write it here.
 
 ## Phase Status (one line)
 
-Phases 0-11 complete. Phase 12 (Templates and Chat UI) is the next slot.
+Phases 0-12 complete. Phase 13 (Alembic Migrations) is the next slot.
 Full status table lives in `cosmos_log.md` and `git log --graph`.
 
 ---
 
-## Next Phase Preview — Phase 12 (Templates and Chat UI)
+## Next Phase Preview — Phase 13 (Alembic Migrations)
 
-**Goal:** Replace placeholder HTML with Jinja2 templates and a working chat UI.
+**Goal:** Version control for the database schema. Last stack piece the
+school requirement names explicitly.
 
 **Shape:**
-- base.html layout with header, footer, CSS
-- login.html, register.html with forms
-- chat.html with conversation view and JS fetch to /api/chat
-- Static assets (CSS, minimal JS)
+- `alembic init alembic`, point env.py at sophia/db/models.py metadata
+- Autogenerate the initial migration (users, conversations, messages)
+- `alembic upgrade head`
 
-**Dependencies:** Phase 11 (FastAPI skeleton). Satisfies the user-facing experience.
+**Dependencies:** Phase 9 (database layer). Does not block the UI; can run
+in parallel with Phase 12 refinement.
 

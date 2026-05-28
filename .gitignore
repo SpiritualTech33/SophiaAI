@@ -1,9 +1,15 @@
 .env
-.remember/
 SophiaAI-venv/
+
+# .remember/ is tracked, except its transient scratch files
+.remember/tmp/
 __pycache__/
 *.pyc
 
 # Large binary artifacts — not tracked by git
 data/embeddings.npy
 data/sophia_index.faiss
+
+# Runtime database — created on app boot, not tracked
+*.db
+sophia_memory.db
