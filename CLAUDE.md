@@ -120,14 +120,16 @@ changed files, prunes deleted ones. Code-only changes skip the LLM (AST only).
 
 ## Project Status
 
-Phases 0-12 complete. Phase 13 (Alembic Migrations) is next. Web UI live
-(Jinja2, cosmic design system, working chat with conversation memory).
-Refinement/polish pending. Full table: `cosmos_log.md` + `git log --graph`.
+Phases 0-13 complete. Phase 14 (Testing) is next. Web UI live (Jinja2, cosmic
+design system, working chat with conversation memory); DB schema under Alembic
+version control. Refinement/polish pending. Full table: `cosmos_log.md` +
+`git log --graph`.
 
-**Phase 13 — Alembic Migrations.** Version control for the DB schema; last
-stack piece the school requirement names. `alembic init alembic`, point env.py
-at `sophia/db/models.py` metadata, autogenerate initial migration (users,
-conversations, messages), `alembic upgrade head`. Depends on Phase 9.
+**Phase 14 — Testing.** Round out the suite per `developing_plan.md`: retriever
+top-result assertion, orchestrator prompt-injection test, auth register/login/
+protected-endpoint flow, and a full `/api/chat` request as a logged-in user.
+pytest + pytest-asyncio + httpx.AsyncClient; mock the Groq client. Depends on
+everything above.
 
 ## School Context
 
