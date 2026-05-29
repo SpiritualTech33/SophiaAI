@@ -2,7 +2,7 @@
 SophiaAI-venv/
 
 # .remember/ is tracked, except its transient scratch files
-.remember/tmp/
+.remember/
 __pycache__/
 *.pyc
 
