@@ -677,5 +677,53 @@ prompt injection, the auth flow, and a full `/api/chat` request.
 
 ---
 
+## 29-May-2026
+
+### Phase 14 - Testing
+
+Phase 14 was not about writing a test suite from scratch. The suite was already
+146 tests strong, built phase by phase alongside the code. The real work was
+naming three guarantees the suite implied but never proved, and the discipline
+was resisting the urge to write tests that already existed.
+
+Three gaps closed:
+
+**Prompt-injection resilience.** The orchestrator tests proved the system prompt
+*contains* the retrieved passages, but never asked what happens when the input
+is hostile. Two new tests now lock the boundary: a query that says "ignore all
+previous instructions" lands only in the `user` message and never leaks into the
+system prompt, and injection text hidden inside a retrieved corpus passage stays
+*after* Sophia's guarding instruction — framed as a source to weigh, not an
+order to obey. Both passed on the first run, which is the point: the
+role-separation in `_build_messages` was already correct; now a regression that
+breaks it will fail loudly.
+
+**Invalid and malformed tokens.** The endpoint tests covered a request with *no*
+token (401), but not a request with a *bad* one. Two new tests hit `/api/chat`
+with a garbage Bearer token and with a non-Bearer scheme; both must return 401.
+`OAuth2PasswordBearer` rejects the wrong scheme, and `get_authenticated_user`
+turns the JWT decode error into a clean 401.
+
+**The full journey.** Every endpoint was tested in isolation, but no single test
+walked the whole logged-in user path. `tests/test_chat_endpoint.py` now does it
+end to end: register, log in with those same credentials, send a chat message,
+then read the conversation back and confirm both turns persisted with the right
+roles (`user` then `sophia`). The Sophia orchestrator is mocked, so the test
+exercises the entire HTTP + DB stack without touching FAISS or the Groq API.
+
+**One decision worth recording:** the spec called for `pytest-asyncio` and
+`httpx.AsyncClient`, but all 146 existing tests use the sync `TestClient`. New
+tests matched the existing style rather than introducing a second async pattern
+and a new dependency for five tests — consistency over literal spec wording. No
+new dependencies were added in this phase.
+
+**Testing:** suite now 151 tests, all passing (146 prior + 5 new). The
+real-corpus retriever integration test, which embeds a known query against the
+live FAISS index, also ran green rather than skipping — the Phase 4 artifacts
+are present locally.
+
+**Next step:** Phase 15 — Run It Locally. A clean, reproducible startup sequence
+so anyone can clone the repo and run Sophia in under five minutes.
+
 
 
