@@ -1,14 +1,19 @@
 # Handoff
 
 ## State
-Phases 0-12 complete on master. This session: ran /graphify on code+docs (skipped data/) → knowledge graph in `graphify-out/` (842 nodes, 49 communities). Compacted CLAUDE.md 234→~150 lines, added a "Querying the Codebase — graphify" section. Added `graphify-out/` to `.gitignore`. No code changed; nothing committed.
+Phases 0-12 done (web UI live, 144 tests pass). Phase 13 (Alembic) plan written
+at `documentation/plans/phase13-alembic-migrations.md` — 8 tasks, TDD, ready to
+execute. No code written yet for Phase 13. Branch: master.
 
 ## Next
-1. Phase 13 — Alembic migrations (the slot). Plan at `documentation/plans/phase13-*.md` first, then init/autogenerate/upgrade against `sophia/db/models.py`.
-2. Optional: commit the CLAUDE.md + .gitignore edits.
-3. Optional: UI refinement/polish (still pending from Phase 12).
+1. Execute the Phase 13 plan (subagent-driven recommended). Start: add `alembic`
+   to requirements.txt, `alembic init alembic`, wire env.py to `Base.metadata`.
+2. Phase 14 (Testing) after.
 
 ## Context
-- graphify graph is regenerable, gitignored. Refresh manually with `/graphify . --update` after code/doc changes; query with `/graphify query "..."`.
-- During the graphify run, 4 of 6 semantic subagents hit the session token limit; I hand-built those 2 chunks from source, so graph coverage is intact but those files aren't in the semantic cache (next --update re-extracts them via LLM).
-- Use PowerShell for shell commands on this Windows box, not Bash.
+- Dev `sophia_memory.db` already has the 3 tables → autogenerate against an empty
+  throwaway DB (`SOPHIA_DB_URL=sqlite:///./_alembic_tmp.db`) or migration is empty.
+  Reconcile real DB with `alembic stamp head`, not upgrade.
+- `render_as_batch=True` in env.py — SQLite needs it for future ALTERs.
+- Use PowerShell tool, not Bash (Bash hung in Phase 12).
+- `Base.metadata` from `sophia/db/models.py`; URL env var `SOPHIA_DB_URL`.
