@@ -121,3 +121,25 @@ def test_get_conversation_not_found(auth_client):
     client, token = auth_client
     response = client.get("/api/conversations/999", headers=_auth_header(token))
     assert response.status_code == 404
+
+
+def test_chat_invalid_token_returns_401(auth_client):
+    """POST /api/chat with a garbage Bearer token returns 401."""
+    client, _token = auth_client
+    response = client.post(
+        "/api/chat",
+        json={"message": "Hello"},
+        headers={"Authorization": "Bearer not.a.real.token"},
+    )
+    assert response.status_code == 401
+
+
+def test_chat_malformed_auth_header_returns_401(auth_client):
+    """POST /api/chat with a non-Bearer Authorization scheme returns 401."""
+    client, _token = auth_client
+    response = client.post(
+        "/api/chat",
+        json={"message": "Hello"},
+        headers={"Authorization": "Basic dXNlcjpwYXNz"},
+    )
+    assert response.status_code == 401
