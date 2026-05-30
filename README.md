@@ -46,6 +46,49 @@ A relational SQLite database that stores user accounts, conversations, and the h
 
 ---
 
+## Setup & Run
+
+Requires **Python 3.11**. The FAISS index and embeddings are committed, so a
+fresh clone runs without rebuilding anything. The SQLite database is created
+automatically on first boot.
+
+```bash
+# 1. Clone
+git clone <repo-url> SophiaAI
+cd SophiaAI
+
+# 2. Create and activate a virtual environment
+python -m venv SophiaAI-venv
+# Windows (PowerShell):
+SophiaAI-venv\Scripts\Activate.ps1
+# macOS / Linux:
+source SophiaAI-venv/bin/activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Configure environment
+#    Copy the example, then open .env and fill in the two secrets below.
+cp .env.example .env
+```
+
+In `.env`, set:
+
+- `GROQ_API_KEY` — a free key from [console.groq.com](https://console.groq.com).
+- `JWT_SECRET` — any long random string. Generate one with:
+  `python -c "import secrets; print(secrets.token_urlsafe(48))"`
+
+```bash
+# 5. Launch the app
+uvicorn sophia.app.main:app --reload
+
+# 6. Open http://127.0.0.1:8000 — register an account and talk to Sophia.
+```
+
+Run the test suite (171 tests) with `pytest -q`.
+
+---
+
 ## The Why
 
 I think that what you ground a model in shapes its soul. If you feed a model only the noise of the internet, you get a mirror of that noise back. If you ground it in Feynman and Sagan and Lao Tzu and the Gnostic Sophia, you get something else: a mirror of wisdom. And, something else, i really belive that technology and spirit are not opposites, they are complements That is the experiment. That is the prayer.

@@ -6,9 +6,8 @@ SophiaAI-venv/
 __pycache__/
 *.pyc
 
-# Large binary artifacts — not tracked by git
-data/embeddings.npy
-data/sophia_index.faiss
+# Note: data/embeddings.npy and data/sophia_index.faiss (~2MB each) are
+# committed so a fresh clone runs without rebuilding the FAISS index.
 
 # Runtime database — created on app boot, not tracked
 *.db
