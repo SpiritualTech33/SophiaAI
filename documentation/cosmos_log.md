@@ -727,3 +727,48 @@ so anyone can clone the repo and run Sophia in under five minutes.
 
 
 
+
+### Phase 15 - Three-Panel Interface
+
+The chat page grew from two panels to three. Left stays conversations, center
+stays the chat, and a new right panel — "Sophia's Mind" — opens the whole corpus
+to the reader. The goal was to make Sophia's grounding visible: not just an
+answer, but the shelf of 137 sources it was drawn from, browsable and readable
+on the spot.
+
+Backend was almost there already. The conversation list and chat endpoints
+existed from earlier phases; the corpus had no door to the web. Phase 15 added
+one: a CorpusLibrary that loads corpus_manifest.json once at startup (mirroring
+how SophiaRetriever is built once and shared on app.state) and two JWT-gated
+endpoints — GET /api/corpus for the metadata list and GET /api/corpus/{id} for
+one document's raw markdown.
+
+One security decision worth recording. Documents are addressed by their
+content sha256, an opaque id, never by a filesystem path the client chooses. The
+client cannot ask for an arbitrary file. Even so, get_document_text re-resolves
+the manifest path and verifies it stays inside data/sophia_engine before reading
+— two locks on the same door. The traversal guard has its own test, built from a
+hand-crafted manifest pointing at ../../etc/passwd, which must raise.
+
+Front end stayed vanilla JS, no framework, honoring the standing decision that
+every layer is a layer to defend in the school video. The prototype was written
+in React; it was ported to plain DOM rather than adopted. A new mind.js renders
+the corpus grouped by the four pillars, with search, pillar filters, and a
+markdown reader overlay. The reader's markdown is built into real DOM nodes via
+textContent only, so corpus text can never inject markup — the same XSS
+discipline chat.js already followed.
+
+The two scripts talk through window CustomEvents, not shared globals: an answer
+dispatches "sophia:cite" and the Mind panel highlights, expands, and flashes the
+cited documents; clicking a source chip dispatches "sophia:open" and the reader
+opens that document. Each answer now shows source chips ("Drawn from Sophia's
+mind") in place of the old collapsible sources list, and the conversation list
+gained date grouping (Today/Yesterday/Earlier) and a search box.
+
+**Testing:** 9 new tests (5 CorpusLibrary unit, 4 endpoint), suite now 160
+passing. The full app boots through its real lifespan with the corpus loaded;
+/chat renders the three panels and /api/corpus correctly returns 401 without a
+token. Browser visual verification of the live layout is still pending.
+
+**Next step:** eyeball the running app, then resume the roadmap's local-run
+polish.
