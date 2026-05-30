@@ -291,6 +291,7 @@ from sophia.db.service import (
     get_conversations_for_user,
     add_message,
     get_conversation_with_messages,
+    delete_conversation,
 )
 
 
@@ -387,3 +388,31 @@ def test_get_conversation_with_messages_not_found(db_session):
     """get_conversation_with_messages returns None for nonexistent id."""
     result = get_conversation_with_messages(db_session, conversation_id=9999)
     assert result is None
+
+
+def test_delete_conversation_service(db_session):
+    """delete_conversation removes the conversation and returns True."""
+    user = create_user(db_session, email="del@test.com", hashed_password="hash")
+    conversation = create_conversation(db_session, user_id=user.id, title="Doomed")
+    conversation_id = conversation.id
+
+    deleted = delete_conversation(db_session, conversation_id=conversation_id)
+    assert deleted is True
+    assert get_conversation_with_messages(db_session, conversation_id) is None
+
+
+def test_delete_conversation_cascades_to_its_messages(db_session):
+    """delete_conversation also removes the conversation's messages."""
+    user = create_user(db_session, email="delcascade@test.com", hashed_password="hash")
+    conversation = create_conversation(db_session, user_id=user.id)
+    add_message(db_session, conversation_id=conversation.id, role="user", content="Q1")
+    add_message(db_session, conversation_id=conversation.id, role="sophia", content="A1")
+
+    delete_conversation(db_session, conversation_id=conversation.id)
+    remaining = db_session.query(Message).filter_by(conversation_id=conversation.id).all()
+    assert remaining == []
+
+
+def test_delete_conversation_not_found_returns_false(db_session):
+    """delete_conversation returns False when no conversation has that id."""
+    assert delete_conversation(db_session, conversation_id=9999) is False

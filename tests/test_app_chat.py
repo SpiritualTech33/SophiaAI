@@ -202,6 +202,44 @@ def test_rename_other_users_conversation_returns_404(auth_client):
     assert response.status_code == 404
 
 
+def test_delete_conversation(auth_client):
+    """DELETE /api/conversations/{id} removes the conversation."""
+    client, token = auth_client
+    headers = _auth_header(token)
+    chat = client.post("/api/chat", json={"message": "Delete me"}, headers=headers)
+    conversation_id = chat.json()["conversation_id"]
+
+    response = client.delete(f"/api/conversations/{conversation_id}", headers=headers)
+    assert response.status_code == 204
+
+    listing = client.get("/api/conversations", headers=headers).json()
+    assert all(c["id"] != conversation_id for c in listing)
+    assert client.get(f"/api/conversations/{conversation_id}", headers=headers).status_code == 404
+
+
+def test_delete_conversation_not_found(auth_client):
+    """DELETE /api/conversations/999 returns 404 for a nonexistent conversation."""
+    client, token = auth_client
+    response = client.delete("/api/conversations/999", headers=_auth_header(token))
+    assert response.status_code == 404
+
+
+def test_delete_other_users_conversation_returns_404(auth_client):
+    """A user cannot delete a conversation they do not own."""
+    client, token = auth_client
+    headers = _auth_header(token)
+    chat = client.post("/api/chat", json={"message": "Mine"}, headers=headers)
+    conversation_id = chat.json()["conversation_id"]
+
+    other_token = register_and_get_token(client, email="intruder2@sophia.ai")
+    response = client.delete(
+        f"/api/conversations/{conversation_id}", headers=_auth_header(other_token)
+    )
+    assert response.status_code == 404
+    # The conversation survives the failed delete attempt.
+    assert client.get(f"/api/conversations/{conversation_id}", headers=headers).status_code == 200
+
+
 def test_chat_invalid_token_returns_401(auth_client):
     """POST /api/chat with a garbage Bearer token returns 401."""
     client, _token = auth_client

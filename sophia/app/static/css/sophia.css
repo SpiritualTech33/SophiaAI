@@ -377,9 +377,26 @@ img { max-width: 100%; height: auto; display: block; }
   opacity: 0;
   transition: opacity var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
 }
+.conv-delete {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
 .conv-row:hover .conv-rename,
-.conv-rename:focus-visible { opacity: 1; }
+.conv-row:hover .conv-delete,
+.conv-rename:focus-visible,
+.conv-delete:focus-visible { opacity: 1; }
 .conv-rename:hover { color: var(--text); }
+.conv-delete:hover { color: var(--danger); }
 .conv-edit {
   flex: 1;
   min-width: 0;

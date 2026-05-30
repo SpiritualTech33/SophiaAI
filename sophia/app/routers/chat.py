@@ -5,6 +5,8 @@ Executive Brief:
     POST /api/chat                     — Send a message, get Sophia's response.
     GET  /api/conversations            — List the user's conversations.
     GET  /api/conversations/{id}       — Get a single conversation with messages.
+    PATCH  /api/conversations/{id}     — Rename a conversation.
+    DELETE /api/conversations/{id}     — Delete a conversation and its messages.
 
     All endpoints require a valid JWT in the Authorization header.
 """
@@ -13,7 +15,7 @@ from __future__ import annotations
 
 import json
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from sqlalchemy.orm import Session
 
 from sophia.app.dependencies import get_authenticated_user, get_db_session
@@ -30,6 +32,7 @@ from sophia.db.models import User
 from sophia.db.service import (
     add_message,
     create_conversation,
+    delete_conversation,
     get_conversation_with_messages,
     get_conversations_for_user,
     update_conversation_title,
@@ -154,6 +157,26 @@ def rename_conversation(
         created_at=updated.created_at,
         updated_at=updated.updated_at,
     )
+
+
+@router.delete("/api/conversations/{conversation_id}", status_code=204)
+def delete_conversation_endpoint(
+    conversation_id: int,
+    user: User = Depends(get_authenticated_user),
+    session: Session = Depends(get_db_session),
+) -> Response:
+    """
+    Executive Brief:
+        Delete one of the user's conversations and all its messages.
+        Returns 204 on success, 404 if it does not exist or belongs to a
+        different user.
+    """
+    conversation = get_conversation_with_messages(session, conversation_id)
+    if conversation is None or conversation.user_id != user.id:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+
+    delete_conversation(session, conversation_id)
+    return Response(status_code=204)
 
 
 @router.get("/api/conversations/{conversation_id}", response_model=ConversationDetail)

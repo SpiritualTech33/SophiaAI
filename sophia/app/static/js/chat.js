@@ -294,8 +294,39 @@ function initChat() {
       beginRename(li, c);
     });
 
-    li.append(btn, rename);
+    const del = document.createElement("button");
+    del.type = "button";
+    del.className = "conv-delete";
+    del.title = "Delete conversation";
+    del.setAttribute("aria-label", "Delete conversation");
+    del.innerHTML =
+      '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>';
+    del.addEventListener("click", (e) => {
+      e.stopPropagation();
+      deleteConversation(c);
+    });
+
+    li.append(btn, rename, del);
     return li;
+  }
+
+  // Confirm, then delete a conversation. If it was the open one, reset the
+  // view to the empty "new conversation" state.
+  async function deleteConversation(c) {
+    const label = c.title || "Untitled";
+    if (!window.confirm(`Delete "${label}"? This cannot be undone.`)) return;
+    try {
+      const res = await authFetch(`/api/conversations/${c.id}`, { method: "DELETE" });
+      if (!res.ok) return;
+      allConversations = allConversations.filter((conv) => conv.id !== c.id);
+      if (c.id === currentConversationId) {
+        currentConversationId = null;
+        thread.innerHTML = "";
+        thread.appendChild(emptyStateClone());
+        emitCitations([]); // clear the Mind panel highlight
+      }
+      renderFilteredConversations();
+    } catch (_) { /* leave the list as-is on network error */ }
   }
 
   // Swap a row for an input; Enter or blur saves, Escape cancels.
