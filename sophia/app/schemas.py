@@ -39,6 +39,11 @@ class ChatRequest(BaseModel):
     conversation_id: int | None = None
 
 
+class ConversationRenameRequest(BaseModel):
+    """Body for PATCH /api/conversations/{id}."""
+    title: str
+
+
 class SourceOut(BaseModel):
     """One source citation in a chat response."""
     text: str

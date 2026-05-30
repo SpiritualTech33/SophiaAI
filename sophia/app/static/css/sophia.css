@@ -360,6 +360,40 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .conv-empty { padding: var(--space-3); color: var(--text-dim); font-size: 0.85rem; }
 
+/* A conversation row: title button + a rename pencil that appears on hover. */
+.conv-row { display: flex; align-items: center; gap: 2px; }
+.conv-row .conversation-item { flex: 1; min-width: 0; }
+.conv-rename {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.conv-row:hover .conv-rename,
+.conv-rename:focus-visible { opacity: 1; }
+.conv-rename:hover { color: var(--text); }
+.conv-edit {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--violet);
+  border-radius: var(--radius);
+  padding: 10px var(--space-3);
+  min-height: 44px;
+}
+.conv-edit:focus { outline: none; box-shadow: 0 0 0 3px rgba(124,92,255,0.25); }
+
 .sidebar-foot { border-top: 1px solid var(--border); padding-top: var(--space-3); }
 .btn-signout { color: var(--danger); border-color: transparent; background: transparent; width: 100%; justify-content: flex-start; }
 .btn-signout:hover:not(:disabled) { background: rgba(255,93,108,0.12); }

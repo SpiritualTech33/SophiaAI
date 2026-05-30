@@ -67,6 +67,37 @@ def create_conversation(
     return conversation
 
 
+def update_conversation_title(
+    session: Session,
+    conversation_id: int,
+    title: str,
+) -> Conversation | None:
+    """
+    Executive Brief:
+        Rename a conversation. Returns the updated conversation, or None if
+        no conversation has that id. Ownership is the caller's check.
+
+    Args:
+        session: Active SQLAlchemy session.
+        conversation_id: The conversation to rename.
+        title: The new display title.
+
+    Returns:
+        Conversation | None: Updated instance, or None when not found.
+    """
+    conversation = (
+        session.query(Conversation)
+        .filter(Conversation.id == conversation_id)
+        .first()
+    )
+    if conversation is None:
+        return None
+    conversation.title = title
+    session.commit()
+    session.refresh(conversation)
+    return conversation
+
+
 def get_conversations_for_user(session: Session, user_id: int) -> list[Conversation]:
     """
     Executive Brief:

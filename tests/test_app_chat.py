@@ -123,6 +123,85 @@ def test_get_conversation_not_found(auth_client):
     assert response.status_code == 404
 
 
+def test_new_conversation_titled_from_first_message(auth_client):
+    """A new conversation takes its title from the first user message."""
+    client, token = auth_client
+    response = client.post(
+        "/api/chat",
+        json={"message": "What does Lao Tzu say about water?"},
+        headers=_auth_header(token),
+    )
+    conversation_id = response.json()["conversation_id"]
+    listing = client.get("/api/conversations", headers=_auth_header(token)).json()
+    titles = {c["id"]: c["title"] for c in listing}
+    assert titles[conversation_id] == "What does Lao Tzu say about water?"
+
+
+def test_long_first_message_title_is_truncated(auth_client):
+    """A long first message is truncated to a tidy title with an ellipsis."""
+    client, token = auth_client
+    long_message = "Tell me everything about the nature of consciousness and the soul"
+    response = client.post(
+        "/api/chat", json={"message": long_message}, headers=_auth_header(token)
+    )
+    conversation_id = response.json()["conversation_id"]
+    listing = client.get("/api/conversations", headers=_auth_header(token)).json()
+    title = next(c["title"] for c in listing if c["id"] == conversation_id)
+    assert title.endswith("…")
+    assert len(title) <= 43  # 42 chars + the ellipsis
+
+
+def test_rename_conversation(auth_client):
+    """PATCH /api/conversations/{id} updates the title."""
+    client, token = auth_client
+    headers = _auth_header(token)
+    chat = client.post("/api/chat", json={"message": "First"}, headers=headers)
+    conversation_id = chat.json()["conversation_id"]
+
+    response = client.patch(
+        f"/api/conversations/{conversation_id}",
+        json={"title": "Waters of the Tao"},
+        headers=headers,
+    )
+    assert response.status_code == 200
+    assert response.json()["title"] == "Waters of the Tao"
+
+    listing = client.get("/api/conversations", headers=headers).json()
+    title = next(c["title"] for c in listing if c["id"] == conversation_id)
+    assert title == "Waters of the Tao"
+
+
+def test_rename_empty_title_rejected(auth_client):
+    """A blank title is rejected with 422."""
+    client, token = auth_client
+    headers = _auth_header(token)
+    chat = client.post("/api/chat", json={"message": "First"}, headers=headers)
+    conversation_id = chat.json()["conversation_id"]
+
+    response = client.patch(
+        f"/api/conversations/{conversation_id}",
+        json={"title": "   "},
+        headers=headers,
+    )
+    assert response.status_code == 422
+
+
+def test_rename_other_users_conversation_returns_404(auth_client):
+    """A user cannot rename a conversation they do not own."""
+    client, token = auth_client
+    headers = _auth_header(token)
+    chat = client.post("/api/chat", json={"message": "Mine"}, headers=headers)
+    conversation_id = chat.json()["conversation_id"]
+
+    other_token = register_and_get_token(client, email="intruder@sophia.ai")
+    response = client.patch(
+        f"/api/conversations/{conversation_id}",
+        json={"title": "Hijacked"},
+        headers=_auth_header(other_token),
+    )
+    assert response.status_code == 404
+
+
 def test_chat_invalid_token_returns_401(auth_client):
     """POST /api/chat with a garbage Bearer token returns 401."""
     client, _token = auth_client

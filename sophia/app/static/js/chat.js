@@ -263,18 +263,86 @@ function initChat() {
       list.appendChild(header);
 
       for (const c of items) {
-        const li = document.createElement("li");
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "conversation-item";
-        if (c.id === currentConversationId) btn.classList.add("active");
-        btn.dataset.id = c.id;
-        btn.textContent = c.title || "Untitled";
-        btn.addEventListener("click", () => openConversation(c.id));
-        li.appendChild(btn);
-        list.appendChild(li);
+        list.appendChild(makeConversationRow(c));
       }
     }
+  }
+
+  // One conversation row: a title button that opens it, plus a pencil that
+  // turns the title into an inline editor.
+  function makeConversationRow(c) {
+    const li = document.createElement("li");
+    li.className = "conv-row";
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "conversation-item";
+    if (c.id === currentConversationId) btn.classList.add("active");
+    btn.dataset.id = c.id;
+    btn.textContent = c.title || "Untitled";
+    btn.addEventListener("click", () => openConversation(c.id));
+
+    const rename = document.createElement("button");
+    rename.type = "button";
+    rename.className = "conv-rename";
+    rename.title = "Rename conversation";
+    rename.setAttribute("aria-label", "Rename conversation");
+    rename.innerHTML =
+      '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>';
+    rename.addEventListener("click", (e) => {
+      e.stopPropagation();
+      beginRename(li, c);
+    });
+
+    li.append(btn, rename);
+    return li;
+  }
+
+  // Swap a row for an input; Enter or blur saves, Escape cancels.
+  function beginRename(li, c) {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "conv-edit";
+    input.maxLength = 42;
+    input.value = c.title || "";
+    li.replaceChildren(input);
+    input.focus();
+    input.select();
+
+    let done = false;
+    const cancel = () => {
+      if (done) return;
+      done = true;
+      renderFilteredConversations();
+    };
+    const save = async () => {
+      if (done) return;
+      const title = input.value.trim();
+      if (!title || title === c.title) return cancel();
+      done = true;
+      await renameConversation(c.id, title);
+    };
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); save(); }
+      else if (e.key === "Escape") { e.preventDefault(); cancel(); }
+    });
+    input.addEventListener("blur", save);
+  }
+
+  async function renameConversation(id, title) {
+    try {
+      const res = await authFetch(`/api/conversations/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ title }),
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        const target = allConversations.find((c) => c.id === id);
+        if (target) target.title = updated.title;
+      }
+    } catch (_) { /* leave the old title in place */ }
+    renderFilteredConversations();
   }
 
   function setActiveItem(id) {
