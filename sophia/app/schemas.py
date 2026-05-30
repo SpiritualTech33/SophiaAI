@@ -39,6 +39,11 @@ class ChatRequest(BaseModel):
     conversation_id: int | None = None
 
 
+class ConversationRenameRequest(BaseModel):
+    """Body for PATCH /api/conversations/{id}."""
+    title: str
+
+
 class SourceOut(BaseModel):
     """One source citation in a chat response."""
     text: str
@@ -77,3 +82,23 @@ class ConversationDetail(BaseModel):
     id: int
     title: str
     messages: list[MessageOut]
+
+
+class CorpusDocOut(BaseModel):
+    """One document in the list returned by GET /api/corpus."""
+    id: str
+    title: str
+    author: str
+    year: int | None
+    words: int
+    pillar: str
+    path: str
+
+
+class CorpusDocText(BaseModel):
+    """Raw markdown of one document for GET /api/corpus/{doc_id}."""
+    id: str
+    title: str
+    author: str
+    pillar: str
+    text: str

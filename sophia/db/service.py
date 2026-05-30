@@ -67,6 +67,64 @@ def create_conversation(
     return conversation
 
 
+def update_conversation_title(
+    session: Session,
+    conversation_id: int,
+    title: str,
+) -> Conversation | None:
+    """
+    Executive Brief:
+        Rename a conversation. Returns the updated conversation, or None if
+        no conversation has that id. Ownership is the caller's check.
+
+    Args:
+        session: Active SQLAlchemy session.
+        conversation_id: The conversation to rename.
+        title: The new display title.
+
+    Returns:
+        Conversation | None: Updated instance, or None when not found.
+    """
+    conversation = (
+        session.query(Conversation)
+        .filter(Conversation.id == conversation_id)
+        .first()
+    )
+    if conversation is None:
+        return None
+    conversation.title = title
+    session.commit()
+    session.refresh(conversation)
+    return conversation
+
+
+def delete_conversation(session: Session, conversation_id: int) -> bool:
+    """
+    Executive Brief:
+        Delete a conversation by id. Its messages are removed too via the
+        cascade defined on the Conversation.messages relationship. Returns
+        True if a conversation was deleted, False if none had that id.
+        Ownership is the caller's check.
+
+    Args:
+        session: Active SQLAlchemy session.
+        conversation_id: The conversation to delete.
+
+    Returns:
+        bool: True when a conversation was removed, False when not found.
+    """
+    conversation = (
+        session.query(Conversation)
+        .filter(Conversation.id == conversation_id)
+        .first()
+    )
+    if conversation is None:
+        return False
+    session.delete(conversation)
+    session.commit()
+    return True
+
+
 def get_conversations_for_user(session: Session, user_id: int) -> list[Conversation]:
     """
     Executive Brief:
