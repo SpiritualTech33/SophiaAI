@@ -87,6 +87,7 @@ class CorpusDocOut(BaseModel):
     year: int | None
     words: int
     pillar: str
+    path: str
 
 
 class CorpusDocText(BaseModel):

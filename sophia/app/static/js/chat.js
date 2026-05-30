@@ -30,6 +30,7 @@ function initChat() {
   const signoutBtn = document.getElementById("signout");
   const sidebar = document.getElementById("sidebar");
   const menuToggle = document.getElementById("menu-toggle");
+  const convSearch = document.getElementById("conversation-search");
 
   let currentConversationId = null;
   let sending = false;
@@ -90,29 +91,61 @@ function initChat() {
     return badge;
   }
 
-  function makeSources(sources) {
-    const details = document.createElement("details");
-    details.className = "sources";
-    const summary = document.createElement("summary");
-    summary.textContent = `Sources (${sources.length})`;
-    details.appendChild(summary);
+  // Collapse a source list to one chip per distinct document, keeping the
+  // first occurrence (highest score) of each file.
+  function dedupeSources(sources) {
+    const seen = new Map();
     for (const s of sources) {
-      const div = document.createElement("div");
-      div.className = "source";
-      const pillar = document.createElement("span");
-      pillar.className = "pillar";
-      pillar.textContent = s.pillar || "";
-      const file = document.createElement("span");
-      file.textContent = `${s.source_file}  ·  ${Number(s.score).toFixed(2)}`;
-      const quote = document.createElement("p");
-      quote.className = "msg-text";
-      quote.textContent = s.text;
-      div.appendChild(pillar);
-      div.appendChild(file);
-      div.appendChild(quote);
-      details.appendChild(div);
+      if (!seen.has(s.source_file)) seen.set(s.source_file, s);
     }
-    return details;
+    return [...seen.values()];
+  }
+
+  function prettyTitle(path) {
+    const corpus = window.__corpusByPath;
+    if (corpus && corpus.has(path)) return corpus.get(path).title;
+    const file = path.split("/").pop().replace(/\.md$/, "");
+    return file.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+
+  // Source chips: clicking one opens that document in Sophia's Mind panel.
+  function makeSources(sources) {
+    const unique = dedupeSources(sources);
+    const wrap = document.createElement("div");
+    wrap.className = "src-cite";
+    const label = document.createElement("div");
+    label.className = "src-label";
+    label.textContent = "Drawn from Sophia's mind";
+    wrap.appendChild(label);
+
+    const row = document.createElement("div");
+    row.className = "src-row";
+    for (const s of unique) {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "src-chip";
+      if (s.pillar) chip.style.setProperty("--p", `var(--pillar-${s.pillar})`);
+      const dot = document.createElement("span");
+      dot.className = "dot";
+      const ct = document.createElement("span");
+      ct.className = "ct";
+      ct.textContent = prettyTitle(s.source_file);
+      chip.append(dot, ct);
+      chip.addEventListener("click", () =>
+        window.dispatchEvent(
+          new CustomEvent("sophia:open", { detail: { path: s.source_file } })
+        )
+      );
+      row.appendChild(chip);
+    }
+    wrap.appendChild(row);
+    return wrap;
+  }
+
+  // Tell the Mind panel which documents this answer drew from.
+  function emitCitations(sources) {
+    const paths = dedupeSources(sources || []).map((s) => s.source_file);
+    window.dispatchEvent(new CustomEvent("sophia:cite", { detail: { paths } }));
   }
 
   function appendSophiaMessage({ answer, sources, search_mode }) {
@@ -135,6 +168,9 @@ function initChat() {
     row.appendChild(bubble);
     thread.appendChild(row);
     scrollToBottom();
+
+    // Light up the cited documents in Sophia's Mind.
+    emitCitations(sources);
 
     // Settle the orb back to idle after the speaking pulse.
     const orb = row.querySelector(".orb");
@@ -182,19 +218,62 @@ function initChat() {
     } catch (_) { /* network handled elsewhere */ }
   }
 
+  let allConversations = [];
+
   function renderConversationList(conversations) {
+    allConversations = conversations;
+    renderFilteredConversations();
+  }
+
+  // Bucket a conversation by its last-activity date.
+  function dateGroup(iso) {
+    const then = new Date(iso);
+    const today = new Date();
+    const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const startOfThen = new Date(then.getFullYear(), then.getMonth(), then.getDate());
+    const dayMs = 86400000;
+    const diff = Math.round((startOfToday - startOfThen) / dayMs);
+    if (diff <= 0) return "Today";
+    if (diff === 1) return "Yesterday";
+    return "Earlier";
+  }
+
+  function renderFilteredConversations() {
+    const q = (convSearch ? convSearch.value : "").trim().toLowerCase();
+    const filtered = q
+      ? allConversations.filter((c) => (c.title || "").toLowerCase().includes(q))
+      : allConversations;
+
     list.innerHTML = "";
-    for (const c of conversations) {
-      const li = document.createElement("li");
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "conversation-item";
-      if (c.id === currentConversationId) btn.classList.add("active");
-      btn.dataset.id = c.id;
-      btn.textContent = c.title || "Untitled";
-      btn.addEventListener("click", () => openConversation(c.id));
-      li.appendChild(btn);
-      list.appendChild(li);
+    if (filtered.length === 0) {
+      const empty = document.createElement("li");
+      empty.className = "conv-empty";
+      empty.textContent = q ? "No conversations found." : "No conversations yet.";
+      list.appendChild(empty);
+      return;
+    }
+
+    for (const group of ["Today", "Yesterday", "Earlier"]) {
+      const items = filtered.filter((c) => dateGroup(c.updated_at) === group);
+      if (items.length === 0) continue;
+
+      const header = document.createElement("li");
+      header.className = "conv-group";
+      header.textContent = group;
+      list.appendChild(header);
+
+      for (const c of items) {
+        const li = document.createElement("li");
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "conversation-item";
+        if (c.id === currentConversationId) btn.classList.add("active");
+        btn.dataset.id = c.id;
+        btn.textContent = c.title || "Untitled";
+        btn.addEventListener("click", () => openConversation(c.id));
+        li.appendChild(btn);
+        list.appendChild(li);
+      }
     }
   }
 
@@ -212,6 +291,7 @@ function initChat() {
       currentConversationId = detail.id;
       setActiveItem(id);
       thread.innerHTML = "";
+      emitCitations([]); // reset; the last answer below re-lights the panel
       for (const m of detail.messages) {
         if (m.role === "user") {
           appendUserMessage(m.content);
@@ -297,11 +377,16 @@ function initChat() {
 
   /* ----------------------------- Sidebar / nav ------------------------- */
 
+  if (convSearch) {
+    convSearch.addEventListener("input", renderFilteredConversations);
+  }
+
   newBtn.addEventListener("click", () => {
     currentConversationId = null;
     thread.innerHTML = "";
     thread.appendChild(emptyStateClone());
     setActiveItem(-1);
+    emitCitations([]); // clear the Mind panel highlight
     closeSidebarMobile();
     textarea.focus();
   });

@@ -40,6 +40,7 @@ def list_corpus(
             year=doc.year,
             words=doc.words,
             pillar=doc.pillar,
+            path=doc.path,
         )
         for doc in library.list_documents()
     ]
