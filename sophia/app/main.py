@@ -64,6 +64,9 @@ async def lifespan(app: FastAPI):
     llm_client = GroqClient()
     app.state.sophia = Sophia(retriever=retriever, llm_client=llm_client)
 
+    from sophia.core.corpus import CorpusLibrary
+    app.state.corpus = CorpusLibrary()
+
     logger.info("SophiaAI ready. Listening for requests.")
     yield
 
@@ -114,9 +117,10 @@ def create_app() -> FastAPI:
 
     configure_assets(application)
 
-    from sophia.app.routers import auth, chat, pages
+    from sophia.app.routers import auth, chat, corpus, pages
     application.include_router(auth.router)
     application.include_router(chat.router)
+    application.include_router(corpus.router)
     application.include_router(pages.router)
 
     return application
