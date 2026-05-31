@@ -157,10 +157,10 @@ function initChat() {
     const bubble = document.createElement("div");
     bubble.className = "bubble";
 
-    const p = document.createElement("p");
-    p.className = "msg-text";
-    p.textContent = answer;
-    bubble.appendChild(p);
+    const text = document.createElement("div");
+    text.className = "msg-text";
+    text.innerHTML = renderMarkdown(answer); // safe: renderMarkdown escapes first
+    bubble.appendChild(text);
 
     bubble.appendChild(makeBadge(search_mode));
     if (sources && sources.length) bubble.appendChild(makeSources(sources));
@@ -177,13 +177,26 @@ function initChat() {
     setTimeout(() => { if (orb) orb.dataset.state = "idle"; }, 1500);
   }
 
+  // Loading phrases shown while the LLM generates. One is picked at random
+  // per query so the wait feels alive instead of repeating the same line.
+  const CONTEMPLATION_PHRASES = [
+    "Sophia is philosophizing…",
+    "Sophia is connecting with higher dimensions…",
+    "Sophia is thinking…",
+    "Sophia is symbiotizing…",
+    "Sophia is contemplating…",
+    "Sophia is reasoning…",
+    "Sophia is connecting with Nous…",
+  ];
+
   let typingRow = null;
   function showTyping() {
     typingRow = document.createElement("div");
     typingRow.className = "msg msg-sophia typing";
     typingRow.appendChild(makeOrb("thinking"));
     const span = document.createElement("span");
-    span.textContent = "Sophia is contemplating…";
+    const index = Math.floor(Math.random() * CONTEMPLATION_PHRASES.length);
+    span.textContent = CONTEMPLATION_PHRASES[index];
     typingRow.appendChild(span);
     thread.appendChild(typingRow);
     scrollToBottom();
@@ -205,6 +218,123 @@ function initChat() {
     row.appendChild(bubble);
     thread.appendChild(row);
     scrollToBottom();
+  }
+
+  /* ----------------------------- Markdown ------------------------------ */
+  // Sophia streams plain markdown. We render a small, safe subset of it.
+  // SECURITY: the text is HTML-escaped FIRST, so no tag from the model can
+  // survive. The only HTML in the output comes from our own whitelist
+  // transforms below — never from the model's or user's content. This keeps
+  // the XSS-safe guarantee the rest of the file relies on.
+
+  function escapeHtml(s) {
+    return s
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  // Inline marks on already-escaped text: `code`, **bold**, *italic*.
+  function renderInline(s) {
+    return s
+      .replace(/`([^`]+)`/g, "<code>$1</code>")
+      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*([^*\n]+)\*/g, "<em>$1</em>");
+  }
+
+  // Block-level: headings, unordered/ordered lists, paragraphs. Line-based so
+  // a partially-streamed answer still renders sensibly each token.
+  function renderMarkdown(text) {
+    const lines = escapeHtml(text).split("\n");
+    const out = [];
+    let listType = null; // "ul" | "ol" | null
+
+    const closeList = () => {
+      if (listType) { out.push(`</${listType}>`); listType = null; }
+    };
+
+    for (const raw of lines) {
+      const line = raw.trimEnd();
+      const heading = line.match(/^(#{1,3})\s+(.*)$/);
+      const bullet = line.match(/^[-*]\s+(.*)$/);
+      const ordered = line.match(/^\d+\.\s+(.*)$/);
+
+      if (heading) {
+        closeList();
+        const level = heading[1].length;
+        out.push(`<h${level}>${renderInline(heading[2])}</h${level}>`);
+      } else if (bullet) {
+        if (listType !== "ul") { closeList(); out.push("<ul>"); listType = "ul"; }
+        out.push(`<li>${renderInline(bullet[1])}</li>`);
+      } else if (ordered) {
+        if (listType !== "ol") { closeList(); out.push("<ol>"); listType = "ol"; }
+        out.push(`<li>${renderInline(ordered[1])}</li>`);
+      } else if (line.trim() === "") {
+        closeList();
+      } else {
+        closeList();
+        out.push(`<p>${renderInline(line)}</p>`);
+      }
+    }
+    closeList();
+    return out.join("");
+  }
+
+  /* ----------------------------- Web results --------------------------- */
+  // Accept a URL only if it is http/https — rejects javascript: and friends.
+  function safeHttpUrl(url) {
+    try {
+      const u = new URL(url);
+      return (u.protocol === "http:" || u.protocol === "https:") ? u.href : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  // The links Sophia consulted when she went beyond the corpus.
+  function makeWebResults(results) {
+    const wrap = document.createElement("div");
+    wrap.className = "web-cite";
+    const label = document.createElement("div");
+    label.className = "src-label";
+    label.textContent = "From the web";
+    wrap.appendChild(label);
+
+    const ul = document.createElement("ul");
+    ul.className = "web-list";
+    for (const r of results) {
+      const href = safeHttpUrl(r.url);
+      if (!href) continue;
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.href = href;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = r.title || href; // textContent — never innerHTML
+      li.appendChild(a);
+      ul.appendChild(li);
+    }
+    wrap.appendChild(ul);
+    return wrap;
+  }
+
+  // An empty Sophia bubble we can stream tokens into. Returns the row, the
+  // bubble (for appending badge/sources/web after streaming), and the text
+  // element that holds the rendered markdown.
+  function makeStreamingBubble() {
+    clearEmptyState();
+    const row = document.createElement("div");
+    row.className = "msg msg-sophia";
+    row.appendChild(makeOrb("speaking"));
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+    const text = document.createElement("div");
+    text.className = "msg-text";
+    bubble.appendChild(text);
+    row.appendChild(bubble);
+    thread.appendChild(row);
+    scrollToBottom();
+    return { row, bubble, text };
   }
 
   /* ----------------------------- Conversations ------------------------- */
@@ -419,26 +549,18 @@ function initChat() {
     showTyping();
 
     try {
-      const res = await authFetch("/api/chat", {
+      const res = await authFetch("/api/chat/stream", {
         method: "POST",
         body: JSON.stringify({ message: text, conversation_id: currentConversationId }),
       });
-      hideTyping();
 
-      if (!res.ok) {
+      if (!res.ok || !res.body) {
+        hideTyping();
         showErrorBubble("Sophia could not answer just now. Please try again.");
         return;
       }
 
-      const data = await res.json();
-      appendSophiaMessage(data);
-
-      const isNew = currentConversationId === null;
-      currentConversationId = data.conversation_id;
-      if (isNew) {
-        await loadConversations();
-        setActiveItem(currentConversationId);
-      }
+      await consumeStream(res.body);
     } catch (_) {
       hideTyping();
       showErrorBubble("Network error reaching Sophia. Please try again.");
@@ -446,6 +568,105 @@ function initChat() {
       sending = false;
       sendBtn.disabled = false;
       textarea.focus();
+    }
+  }
+
+  // Parse one raw SSE block ("event: x\ndata: {...}") into {event, data}.
+  function parseFrame(block) {
+    let event = null;
+    let data = null;
+    for (const line of block.split("\n")) {
+      if (line.startsWith("event:")) {
+        event = line.slice(6).trim();
+      } else if (line.startsWith("data:")) {
+        try { data = JSON.parse(line.slice(5).trim()); } catch (_) { data = null; }
+      }
+    }
+    return event ? { event, data } : null;
+  }
+
+  // After streaming completes, attach the badge, source chips, and web links,
+  // then light the Mind panel and settle the orb.
+  function finalizeBubble(b, meta) {
+    if (!b) return;
+    b.bubble.appendChild(makeBadge(meta ? meta.search_mode : "corpus"));
+    const sources = (meta && meta.sources) || [];
+    if (sources.length) b.bubble.appendChild(makeSources(sources));
+    const web = (meta && meta.web_results) || [];
+    if (web.length) b.bubble.appendChild(makeWebResults(web));
+    emitCitations(sources);
+    const orb = b.row.querySelector(".orb");
+    setTimeout(() => { if (orb) orb.dataset.state = "idle"; }, 1500);
+    scrollToBottom();
+  }
+
+  // Adopt the conversation id from meta; refresh the sidebar for new chats.
+  function adoptConversation(meta) {
+    const isNew = currentConversationId === null;
+    if (meta && meta.conversation_id != null) {
+      currentConversationId = meta.conversation_id;
+    }
+    if (isNew) {
+      loadConversations().then(() => setActiveItem(currentConversationId));
+    }
+  }
+
+  // Read the SSE body to completion, driving the UI from each frame:
+  // meta -> open the bubble, token -> append + re-render, done/error -> finish.
+  async function consumeStream(body) {
+    const reader = body.getReader();
+    const decoder = new TextDecoder();
+    let raw = "";        // SSE text not yet split into frames
+    let answer = "";     // accumulated answer tokens
+    let meta = null;
+    let live = null;     // { row, bubble, text }
+    let finished = false;
+
+    const handleFrame = (event, data) => {
+      if (event === "meta") {
+        meta = data;
+        hideTyping();
+        live = makeStreamingBubble();
+      } else if (event === "token") {
+        if (!live) return;
+        answer += (data && data.text) || "";
+        live.text.innerHTML = renderMarkdown(answer);
+        scrollToBottom();
+      } else if (event === "done") {
+        finished = true;
+        finalizeBubble(live, meta);
+        adoptConversation(meta);
+      } else if (event === "error") {
+        finished = true;
+        if (live && live.row) live.row.remove();
+        hideTyping();
+        showErrorBubble((data && data.message) || "Sophia could not complete her answer.");
+      }
+    };
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      raw += decoder.decode(value, { stream: true });
+      let sep;
+      while ((sep = raw.indexOf("\n\n")) !== -1) {
+        const block = raw.slice(0, sep);
+        raw = raw.slice(sep + 2);
+        const frame = parseFrame(block);
+        if (frame) handleFrame(frame.event, frame.data);
+      }
+    }
+
+    // Stream ended without an explicit done/error (e.g. dropped connection).
+    if (!finished) {
+      if (live && answer) {
+        finalizeBubble(live, meta);
+        adoptConversation(meta);
+      } else {
+        if (live && live.row) live.row.remove();
+        hideTyping();
+        showErrorBubble("Sophia's answer was interrupted. Please try again.");
+      }
     }
   }
 

@@ -146,3 +146,25 @@ def test_save_index_meta_writes_required_keys(tmp_path):
     assert data["total_vectors"] == 1422
     assert data["generated_at"] == "2026-05-22T00:00:00+00:00"
     assert data["embeddings_source"] == "data/embeddings.npy"
+
+
+# ---------------------------------------------------------------------------
+# relative_to_project_root
+# ---------------------------------------------------------------------------
+
+def test_relative_to_project_root_strips_absolute_prefix():
+    """A path inside the project becomes a repo-relative POSIX string."""
+    absolute = build_faiss_index.PROJECT_ROOT / "data" / "embeddings.npy"
+
+    result = build_faiss_index.relative_to_project_root(absolute)
+
+    assert result == "data/embeddings.npy"
+
+
+def test_relative_to_project_root_falls_back_outside_root(tmp_path):
+    """A path outside the project is returned unchanged as its string form."""
+    outside = tmp_path / "embeddings.npy"
+
+    result = build_faiss_index.relative_to_project_root(outside)
+
+    assert result == str(outside)

@@ -358,6 +358,83 @@ def test_ask_empty_retrieval_triggers_web_search():
     assert response.web_results == web_results
 
 
+# ---------------------------------------------------------------------------
+# Sophia.ask_stream — streaming twin
+# ---------------------------------------------------------------------------
+
+from sophia.core.orchestrator import StreamingSophiaResponse
+
+
+def test_ask_stream_exposes_metadata_before_tokens():
+    """ask_stream returns chunks + search_mode synchronously, tokens lazily."""
+    chunks = [_make_chunk("Strong match.", "wisdom.md", "mind", 0.80)]
+
+    mock_retriever = MagicMock()
+    mock_retriever.retrieve.return_value = chunks
+
+    mock_llm = MagicMock()
+    mock_llm.chat_stream.return_value = iter(["The ", "answer."])
+
+    sophia = Sophia(retriever=mock_retriever, llm_client=mock_llm)
+    result = sophia.ask_stream("What is wisdom?")
+
+    assert isinstance(result, StreamingSophiaResponse)
+    assert result.search_mode == "corpus"
+    assert result.chunks == chunks
+    assert result.web_results == []
+
+
+def test_ask_stream_tokens_accumulate_to_full_answer():
+    """Consuming the token iterator yields the complete answer."""
+    mock_retriever = MagicMock()
+    mock_retriever.retrieve.return_value = [_make_chunk("p", "f.md", "mind", 0.9)]
+
+    mock_llm = MagicMock()
+    mock_llm.chat_stream.return_value = iter(["Wisdom ", "is ", "love."])
+
+    sophia = Sophia(retriever=mock_retriever, llm_client=mock_llm)
+    result = sophia.ask_stream("What is wisdom?")
+
+    assert "".join(result.tokens) == "Wisdom is love."
+
+
+def test_ask_stream_low_confidence_goes_hybrid_with_web_results():
+    """Below-threshold retrieval → hybrid mode with populated web_results."""
+    chunks = [_make_chunk("vaguely related", "f.md", "mind", 0.30)]
+    web_results = [
+        SearchResult(title="Web Hit", url="https://example.com", snippet="..."),
+    ]
+
+    mock_retriever = MagicMock()
+    mock_retriever.retrieve.return_value = chunks
+
+    mock_llm = MagicMock()
+    mock_llm.chat_stream.return_value = iter(["streamed"])
+
+    with patch("sophia.core.orchestrator.web_search", return_value=web_results):
+        sophia = Sophia(retriever=mock_retriever, llm_client=mock_llm)
+        result = sophia.ask_stream("something obscure")
+
+    assert result.search_mode == "hybrid"
+    assert result.web_results == web_results
+    assert result.chunks == chunks
+
+
+def test_ask_stream_calls_llm_chat_stream_not_chat():
+    """ask_stream uses the streaming LLM method, never the blocking one."""
+    mock_retriever = MagicMock()
+    mock_retriever.retrieve.return_value = [_make_chunk("p", "f.md", "mind", 0.9)]
+
+    mock_llm = MagicMock()
+    mock_llm.chat_stream.return_value = iter(["x"])
+
+    sophia = Sophia(retriever=mock_retriever, llm_client=mock_llm)
+    list(sophia.ask_stream("hello").tokens)
+
+    mock_llm.chat_stream.assert_called_once()
+    mock_llm.chat.assert_not_called()
+
+
 def test_ask_web_search_failure_degrades_to_corpus():
     """Web search raises SophiaSearchError -> continue with corpus only."""
     chunks = [_make_chunk("weak match", "file.md", "mind", 0.20)]

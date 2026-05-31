@@ -20,6 +20,7 @@ Philosophy: ZenCode PRO + CEO of Water
 from __future__ import annotations
 
 import logging
+from collections.abc import Iterator
 from dataclasses import dataclass, field
 
 from sophia.rag.retriever import Chunk
@@ -40,6 +41,22 @@ DEFAULT_CONFIDENCE_THRESHOLD = 0.45
 @dataclass
 class SophiaResponse:
     answer: str
+    chunks: list[Chunk] = field(default_factory=list)
+    web_results: list[SearchResult] = field(default_factory=list)
+    search_mode: str = "corpus"
+
+
+@dataclass
+class StreamingSophiaResponse:
+    """The streaming twin of SophiaResponse.
+
+    All retrieval metadata (chunks, web_results, search_mode) is known up
+    front, before the first LLM token. `tokens` is a lazy iterator over the
+    answer text — the caller consumes it to stream the answer and accumulate
+    the full string for persistence.
+    """
+
+    tokens: Iterator[str]
     chunks: list[Chunk] = field(default_factory=list)
     web_results: list[SearchResult] = field(default_factory=list)
     search_mode: str = "corpus"
@@ -109,6 +126,45 @@ class Sophia:
 
         return SophiaResponse(
             answer=answer,
+            chunks=chunks,
+            web_results=web_results,
+            search_mode=search_mode,
+        )
+
+    def ask_stream(
+        self,
+        query: str,
+        conversation_history: list[dict] | None = None,
+    ) -> StreamingSophiaResponse:
+        """Same pipeline as ask(), but stream the answer token-by-token.
+
+        Runs retrieval and the web-search decision synchronously — all the
+        metadata is ready before the first token — then hands back a lazy
+        token iterator from the LLM. The caller reads the metadata, paints the
+        context, and consumes `tokens` to stream the answer.
+        """
+        chunks = self._retriever.retrieve(query, top_k=5)
+        top_score = chunks[0].score if chunks else 0.0
+
+        web_results: list[SearchResult] = []
+        search_mode = "corpus"
+
+        if top_score < self._confidence_threshold:
+            web_results = self._search_web(query)
+            search_mode = "hybrid" if chunks else "web"
+
+        system_prompt = self._build_system_prompt(chunks, web_results)
+        messages = self._build_messages(system_prompt, query, conversation_history)
+
+        tokens = self._llm_client.chat_stream(messages=messages)
+
+        logger.info(
+            "Sophia streaming. mode=%s | top_score=%.3f | chunks=%d | web=%d",
+            search_mode, top_score, len(chunks), len(web_results),
+        )
+
+        return StreamingSophiaResponse(
+            tokens=tokens,
             chunks=chunks,
             web_results=web_results,
             search_mode=search_mode,

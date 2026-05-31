@@ -3,5 +3,5 @@
   "dimension": 384,
   "total_vectors": 1422,
   "generated_at": "2026-05-22T19:46:06.936113+00:00",
-  "embeddings_source": "C:\\Users\\serra\\Desktop\\SophiaAI\\data\\embeddings.npy"
+  "embeddings_source": "data/embeddings.npy"
 }

@@ -572,6 +572,45 @@ img { max-width: 100%; height: auto; display: block; }
 .src-chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--p); flex: 0 0 auto; }
 .src-chip .ct { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 22ch; }
 
+/* ------------------------- Markdown in answers -------------------------- */
+/* Sophia's answers are rendered markdown (see renderMarkdown in chat.js).
+   These tame the block elements so they sit tidily inside a chat bubble. */
+.msg-sophia .msg-text { white-space: normal; }
+.msg-sophia .msg-text > :first-child { margin-top: 0; }
+.msg-sophia .msg-text > :last-child { margin-bottom: 0; }
+.msg-sophia .msg-text p { margin: 0 0 var(--space-2); }
+.msg-sophia .msg-text ul,
+.msg-sophia .msg-text ol { margin: 0 0 var(--space-2) 1.2em; padding: 0; }
+.msg-sophia .msg-text li { margin: 2px 0; }
+.msg-sophia .msg-text h1,
+.msg-sophia .msg-text h2,
+.msg-sophia .msg-text h3 { margin: var(--space-2) 0 var(--space-1); line-height: 1.25; }
+.msg-sophia .msg-text code {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.88em;
+  background: color-mix(in srgb, var(--violet) 14%, transparent);
+  padding: 1px 5px;
+  border-radius: 5px;
+}
+
+/* --------------------------- From-the-web links ------------------------- */
+.web-cite { margin-top: var(--space-3); }
+.web-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.web-list a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.85rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--text) 25%, transparent);
+}
+.web-list a:hover { color: var(--violet); border-bottom-color: var(--violet); }
+
 /* ----------------------------- Sophia's Mind ---------------------------- */
 .mind {
   display: flex;

@@ -66,6 +66,28 @@ DEFAULT_INDEX_PATH = PROJECT_ROOT / "data" / "sophia_index.faiss"
 DEFAULT_META_PATH = PROJECT_ROOT / "data" / "faiss_index_meta.json"
 
 
+def relative_to_project_root(path: Path) -> str:
+    """
+    Mental Model:
+        The meta sidecar records WHERE the embeddings came from for provenance,
+        not for runtime loading. Store that origin as a repo-relative POSIX path
+        so the file is portable across machines and never leaks a local username
+        or absolute desktop path into version control.
+
+    Args:
+        path: The embeddings path the index was built from.
+
+    Returns:
+        A forward-slash relative path (e.g. "data/embeddings.npy") when the
+        source lives inside the project. Falls back to the absolute string if
+        the source sits outside PROJECT_ROOT (e.g. a custom --embeddings dir).
+    """
+    try:
+        return Path(path).resolve().relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        return str(path)
+
+
 # ---------------------------------------------------------------------------
 # Data structures
 # ---------------------------------------------------------------------------
@@ -321,7 +343,7 @@ def main() -> None:
         dimension=index.d,
         total_vectors=index.ntotal,
         generated_at=datetime.now(timezone.utc).isoformat(),
-        embeddings_source=str(args.embeddings),
+        embeddings_source=relative_to_project_root(args.embeddings),
     )
 
     try:
