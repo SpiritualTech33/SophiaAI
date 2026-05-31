@@ -256,6 +256,100 @@ def test_chat_raises_on_no_choices(mock_groq_class):
 
 
 # ---------------------------------------------------------------------------
+# GroqClient.chat_stream — streaming
+# ---------------------------------------------------------------------------
+
+def _make_stream_chunk(content):
+    """Build a fake Groq streaming chunk whose delta carries `content`."""
+    chunk = MagicMock()
+    chunk.choices = [MagicMock()]
+    chunk.choices[0].delta.content = content
+    return chunk
+
+
+@patch.dict("os.environ", {"GROQ_API_KEY": "test-key-123"})
+@patch("sophia.llm.groq_client.Groq")
+def test_chat_stream_yields_deltas_in_order(mock_groq_class):
+    """chat_stream yields each delta's content in arrival order."""
+    mock_instance = MagicMock()
+    mock_instance.chat.completions.create.return_value = iter([
+        _make_stream_chunk("Wisdom "),
+        _make_stream_chunk("is "),
+        _make_stream_chunk("love."),
+    ])
+    mock_groq_class.return_value = mock_instance
+
+    client = GroqClient()
+    tokens = list(client.chat_stream(messages=[{"role": "user", "content": "?"}]))
+
+    assert tokens == ["Wisdom ", "is ", "love."]
+
+
+@patch.dict("os.environ", {"GROQ_API_KEY": "test-key-123"})
+@patch("sophia.llm.groq_client.Groq")
+def test_chat_stream_skips_none_deltas(mock_groq_class):
+    """A final chunk with delta.content=None (stream end) is skipped, not yielded."""
+    mock_instance = MagicMock()
+    mock_instance.chat.completions.create.return_value = iter([
+        _make_stream_chunk("Hello"),
+        _make_stream_chunk(None),
+    ])
+    mock_groq_class.return_value = mock_instance
+
+    client = GroqClient()
+    tokens = list(client.chat_stream(messages=[{"role": "user", "content": "hi"}]))
+
+    assert tokens == ["Hello"]
+
+
+@patch.dict("os.environ", {"GROQ_API_KEY": "test-key-123"})
+@patch("sophia.llm.groq_client.Groq")
+def test_chat_stream_passes_stream_true(mock_groq_class):
+    """chat_stream calls the SDK with stream=True."""
+    mock_instance = MagicMock()
+    mock_instance.chat.completions.create.return_value = iter([_make_stream_chunk("x")])
+    mock_groq_class.return_value = mock_instance
+
+    client = GroqClient()
+    list(client.chat_stream(messages=[{"role": "user", "content": "hi"}]))
+
+    call_kwargs = mock_instance.chat.completions.create.call_args.kwargs
+    assert call_kwargs["stream"] is True
+
+
+@patch.dict("os.environ", {"GROQ_API_KEY": "test-key-123"})
+@patch("sophia.llm.groq_client.Groq")
+def test_chat_stream_raises_on_empty_messages(mock_groq_class):
+    """Empty messages list → ValueError, eagerly (before any iteration)."""
+    mock_groq_class.return_value = MagicMock()
+    client = GroqClient()
+
+    with pytest.raises(ValueError, match="messages"):
+        client.chat_stream(messages=[])
+
+
+@patch.dict("os.environ", {"GROQ_API_KEY": "test-key-123"})
+@patch("sophia.llm.groq_client.Groq")
+def test_chat_stream_wraps_rate_limit_error(mock_groq_class):
+    """A RateLimitError during streaming is wrapped as SophiaLLMError."""
+    import groq
+
+    mock_response = MagicMock()
+    mock_response.status_code = 429
+    mock_response.headers = {}
+
+    mock_instance = MagicMock()
+    mock_instance.chat.completions.create.side_effect = groq.RateLimitError(
+        message="rate limited", response=mock_response, body=None,
+    )
+    mock_groq_class.return_value = mock_instance
+
+    client = GroqClient()
+    with pytest.raises(SophiaLLMError, match="rate limit"):
+        list(client.chat_stream(messages=[{"role": "user", "content": "hi"}]))
+
+
+# ---------------------------------------------------------------------------
 # Real-API integration test (skips if GROQ_API_KEY is not set)
 # ---------------------------------------------------------------------------
 

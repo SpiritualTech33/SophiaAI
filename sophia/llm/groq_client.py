@@ -180,3 +180,67 @@ class GroqClient:
             )
 
         return response.choices[0].message.content
+
+    def chat_stream(self, messages: list[dict], model: str = DEFAULT_MODEL):
+        """
+        Mental Model:
+            The streaming twin of chat(). Instead of one blocking string, it
+            yields the assistant's reply token-by-token as the model produces
+            it, so the UI can paint the answer as it arrives. Same single
+            responsibility: translate Groq's stream into plain text deltas and
+            funnel every Groq error into SophiaLLMError.
+
+            Input validation is eager (a regular method call), but the actual
+            network call lives in the inner generator, so streaming errors are
+            wrapped when the caller iterates — exactly when they occur.
+
+        Args:
+            messages: Non-empty list of OpenAI-format message dicts.
+            model:    Groq model identifier. Defaults to llama-3.1-8b-instant.
+
+        Returns:
+            Iterator[str]: Successive content deltas. None deltas (the final
+            end-of-stream chunk) are skipped.
+
+        Raises:
+            ValueError: messages is None or empty (raised eagerly).
+            SophiaLLMError: Any Groq API failure during streaming.
+        """
+        if not messages:
+            raise ValueError(
+                "messages must be a non-empty list of message dicts, "
+                "got empty or None."
+            )
+
+        return self._stream_tokens(messages, model)
+
+    def _stream_tokens(self, messages: list[dict], model: str):
+        """Inner generator: open the Groq stream and yield content deltas."""
+        try:
+            stream = self._client.chat.completions.create(
+                messages=messages,
+                model=model,
+                stream=True,
+            )
+            for chunk in stream:
+                if not chunk.choices:
+                    continue
+                delta = chunk.choices[0].delta.content
+                if delta is not None:
+                    yield delta
+        except groq.APIConnectionError as error:
+            raise SophiaLLMError(
+                f"Groq API connection failed during streaming. Check your "
+                f"network and try again. Original error: {error}"
+            ) from error
+        except groq.RateLimitError as error:
+            raise SophiaLLMError(
+                f"Groq API rate limit exceeded during streaming. The free tier "
+                f"allows limited requests per minute. Wait and retry. "
+                f"Original error: {error}"
+            ) from error
+        except groq.APIStatusError as error:
+            raise SophiaLLMError(
+                f"Groq API returned status {error.status_code} during "
+                f"streaming. Original error: {error}"
+            ) from error
