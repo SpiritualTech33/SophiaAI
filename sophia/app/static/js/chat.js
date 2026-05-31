@@ -177,13 +177,26 @@ function initChat() {
     setTimeout(() => { if (orb) orb.dataset.state = "idle"; }, 1500);
   }
 
+  // Loading phrases shown while the LLM generates. One is picked at random
+  // per query so the wait feels alive instead of repeating the same line.
+  const CONTEMPLATION_PHRASES = [
+    "Sophia is philosophizing…",
+    "Sophia is connecting with higher dimensions…",
+    "Sophia is thinking…",
+    "Sophia is symbiotizing…",
+    "Sophia is contemplating…",
+    "Sophia is reasoning…",
+    "Sophia is connecting with Nous…",
+  ];
+
   let typingRow = null;
   function showTyping() {
     typingRow = document.createElement("div");
     typingRow.className = "msg msg-sophia typing";
     typingRow.appendChild(makeOrb("thinking"));
     const span = document.createElement("span");
-    span.textContent = "Sophia is contemplating…";
+    const index = Math.floor(Math.random() * CONTEMPLATION_PHRASES.length);
+    span.textContent = CONTEMPLATION_PHRASES[index];
     typingRow.appendChild(span);
     thread.appendChild(typingRow);
     scrollToBottom();
