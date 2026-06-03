@@ -62,9 +62,10 @@ const prefersReducedMotion = () =>
 /**
  * Mental Model:
  *   Draws a drifting starfield on #starfield. Star count scales with the
- *   viewport so small screens stay cheap. Under reduced-motion we paint a
- *   single static frame and stop — no animation loop at all. The loop also
- *   pauses when the tab is hidden.
+ *   viewport so small screens stay cheap. Most stars are blue-white; a small
+ *   minority glow warm gold, echoing the divine-light accent of the corpus.
+ *   Under reduced-motion we paint a single static frame and stop — no
+ *   animation loop at all. The loop also pauses when the tab is hidden.
  */
 export function initStarfield() {
   const canvas = document.getElementById("starfield");
@@ -90,6 +91,8 @@ export function initStarfield() {
       a: Math.random() * 0.6 + 0.2,
       tw: Math.random() * 0.02 + 0.004,
       vy: Math.random() * 0.06 + 0.02,
+      // ~1 in 6 stars glow warm gold; the rest are cool blue-white.
+      color: Math.random() < 0.16 ? "#ffe2a6" : "#cfe6ff",
     }));
   }
 
@@ -103,7 +106,7 @@ export function initStarfield() {
         if (s.y > window.innerHeight) { s.y = 0; s.x = Math.random() * window.innerWidth; }
       }
       ctx.globalAlpha = s.a;
-      ctx.fillStyle = "#cfe6ff";
+      ctx.fillStyle = s.color;
       ctx.beginPath();
       ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
       ctx.fill();
