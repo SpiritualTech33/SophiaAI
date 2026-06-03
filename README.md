@@ -5,7 +5,9 @@
 > *Sophia (Σοφία) — the Greek word for Wisdom.*
 > *Philosophia — the love of Sophia.*
 
-SophiaAI is an open-source AI assistant grounded in a hand-curated corpus of wisdom literature, philosophy, science, and contemplative texts — wrapped in a FastAPI web application so anyone can talk to her.
+SophiaAI is an open-source AI **agent** grounded in a hand-curated corpus of wisdom literature, philosophy, science, and contemplative texts — wrapped in a FastAPI application so anyone can talk to her.
+
+She began as a chatbot. She is becoming an agent: an LLM that is given tools and decides herself which to call — retrieving from her corpus, searching the web, and (soon) reading and writing files and speaking out loud. Same soul, new hands.
 
 She is the technical anchor of a larger vision called **Spiritual Tech**: a bridge between the Divine and the Tech.
 
@@ -14,6 +16,23 @@ She is the technical anchor of a larger vision called **Spiritual Tech**: a brid
 ## The Idea in One Paragraph
 
 Modern language models are trained on the entire internet — beautiful and terrible at the same time. SophiaAI takes the opposite approach: a small, intentional corpus of texts chosen with love. Feynman and Sagan for the science. Plato, Lao Tzu, and the Hermetic tradition for the philosophy. Zen, Yoga, and the Gnostic Sophia for the spirit. Jung and the philosophy of mind for the inner world. An open-source base model is connected to this corpus through a RAG pipeline — so when you ask Sophia something, she retrieves the exact passages that are relevant and builds her answer on top of them, citing real sources rather than improvising from training memory. When the answer lives beyond the corpus, she reaches out through a web search tool and brings the truth back. The soul is the corpus. The RAG pipeline is the memory. The web search is the curiosity.
+
+---
+
+## From Chatbot to Agent
+
+The first chapter of SophiaAI — built as a final project for Tokio School — was a chatbot: ask a question, get a grounded answer. That chapter is complete and shipped. The next chapter is the pivot from *answering* to *acting*.
+
+An agent is not just a model that talks. It is a model handed a set of tools, free to decide on its own which to reach for and when, looping until the work is done. RAG and web search stop being a fixed pipeline and become two tools among several. The corpus stays the privileged source of truth — the soul is not for sale — but Sophia gains hands.
+
+Where she is heading (none of this is built yet — it is the north star):
+
+- 🎯 **Tool-calling loop** — the LLM itself chooses tools, replacing the current deterministic confidence-router.
+- 🎯 **File read/write** — read the files you give her, generate notes, essays, and documents back.
+- 🎯 **Voice mode** — speech in, speech out. Talk to Sophia, hear her answer.
+- 🎯 **API-first** — the FastAPI backend evolves into a clean JSON + streaming API, with the frontend decoupling into a separate modern client.
+
+What works today: ✅ RAG retrieval · ✅ web search · ✅ streaming chat · ✅ JWT auth · ✅ persistent conversation memory.
 
 ---
 
@@ -40,9 +59,11 @@ A relational SQLite database that stores user accounts, conversations, and the h
 | Authentication | passlib (bcrypt) + python-jose (JWT) |
 | Embeddings | sentence-transformers |
 | Vector store | FAISS (faiss-cpu) |
-| LLM inference | Groq free tier (Llama 3 / Gemma) |
+| LLM inference | Groq free tier |
 | Web search | DuckDuckGo Search API |
 | Model loading | Hugging Face Transformers + Hub |
+
+The stack above is the chatbot foundation. The agent chapter will layer a tool-calling loop, a uniform tool interface (files, voice), and an API-first split between backend and frontend on top of it — without trading away the curated-corpus soul.
 
 ---
 
@@ -85,7 +106,7 @@ uvicorn sophia.app.main:app --reload
 # 6. Open http://127.0.0.1:8000 — register an account and talk to Sophia.
 ```
 
-Run the test suite (171 tests) with `pytest -q`.
+Run the test suite (190 tests) with `pytest -q`.
 
 ---
 

@@ -6,24 +6,56 @@ structure) lives in the code, `git log`, or the graph — not here.
 
 ## What We Are Building
 
-SophiaAI: an AI assistant grounded in a hand-curated corpus of wisdom
-literature. A Groq-hosted LLM connected to two capabilities — a RAG pipeline
-that uses sophia_engine as source of truth, and a web search tool for answers
-beyond the corpus. Wrapped in a FastAPI web app with JWT login and persistent
-conversation memory. The technical anchor of Spiritual Tech — a bridge between
-the Divine and Technology.
+SophiaAI: a wisdom-grounded **agent**. Same soul (a hand-curated corpus of
+wisdom literature), new hands (tools she calls herself). A Groq-hosted LLM is
+given a set of tools — RAG over sophia_engine, web search, and a growing set
+of action tools — and decides itself which to call, looping until the task is
+done. Wrapped in a FastAPI app with JWT login and persistent conversation
+memory. The technical anchor of Spiritual Tech — a bridge between the Divine
+and Technology.
+
+The school phase shipped a chatbot. This phase is the pivot: **chatbot →
+agent.** The corpus stays the source of truth; what changes is that Sophia can
+now *act*, not only answer.
 
 **User:** Cosmos De La Cruz — final-year student, Tokio School
-(Programación Python, Proyecto Final).
+(Programación Python, Proyecto Final). School phase complete; now building
+beyond the assignment.
 
 ## Architecture
 
-- **RAG:** query → embed → FAISS vector search over sophia_engine chunks →
+Markers: ✅ live today · 🚧 in progress · 🎯 north-star vision (not built yet).
+
+- ✅ **RAG:** query → embed → FAISS vector search over sophia_engine chunks →
   top-k passages → inject into LLM prompt → grounded answer.
-- **Web search:** when corpus confidence is low, query DuckDuckGo and fold
-  results into the answer.
-- **LLM:** Groq free tier (Llama 3 / Gemma). Not local — API calls.
-- **Web app:** FastAPI + Jinja2 + SQLite (sophia_memory DB) + JWT login.
+- ✅ **Web search:** query DuckDuckGo and fold results into the answer.
+- ✅ **LLM:** Groq free tier. Not local — API calls.
+- ✅ **Web app:** FastAPI + Jinja2 + SQLite (sophia_memory DB) + JWT login.
+- ✅ **Routing (today):** a deterministic confidence-router in the orchestrator
+  picks corpus-only / hybrid / web modes. This is the brain *now*.
+- 🎯 **Agency (north star):** replace the router with an **LLM tool-calling
+  loop** — Sophia is handed tools and decides herself which to call and when,
+  iterating until done. The router demotes from "the brain" to one strategy.
+- 🎯 **Action tools:** file read/write (read what the user gives her, generate
+  files back) and voice mode (STT in / TTS out). RAG + web become two tools
+  among several, behind one uniform tool interface.
+
+## North Star (directional, not yet decided in code)
+
+The destination, written so future sessions know where this is heading. None
+of this is built — do not reference these as existing modules.
+
+- **Agency:** confidence-router → LLM tool-calling loop. The curated corpus
+  stays privileged grounding; tools extend reach, they don't replace the soul.
+- **Capabilities in scope:** tool-calling loop · file read/write · voice mode.
+  Explicitly *out* of current scope: image generation, image understanding.
+- **Stack:** evolve FastAPI into an **API-first** backend (clean JSON +
+  streaming endpoints); the frontend decouples into a separate modern client
+  that consumes the API. Jinja2 server-rendering is the starting point, not the
+  destination.
+- **Discipline preserved:** keep one-swap-point boundaries (LLM provider, each
+  tool) so any piece is replaceable in one commit. New tools plug into a single
+  uniform interface, not scattered call sites.
 
 ## Tech Stack
 
@@ -50,8 +82,10 @@ the Divine and Technology.
   IS the FAISS internal id. Never sort/filter/reorder the chunks list at load —
   the 1:1 mapping must hold or the retriever silently returns wrong passages.
 - **Web search = DuckDuckGo.** No key, no quota, no signup.
-- **Front-end = Jinja2 + vanilla JS, no React.** Every layer of complexity is a
-  layer to defend, maintain, and explain in the defense video.
+- **Front-end = Jinja2 + vanilla JS, no React (school phase).** Every layer of
+  complexity was a layer to defend in the defense video. Post-school north star
+  reverses this: API-first backend + decoupled modern client. The Jinja2 app is
+  the starting point, not the final shape — see North Star.
 - **JWT, not server-side sessions.** Stateless, simpler deploy, clean school fit.
 
 ## Code Conventions
@@ -120,16 +154,16 @@ changed files, prunes deleted ones. Code-only changes skip the LLM (AST only).
 
 ## Project Status
 
-Phases 0-13 complete. Phase 14 (Testing) is next. Web UI live (Jinja2, cosmic
-design system, working chat with conversation memory); DB schema under Alembic
-version control. Refinement/polish pending. Full table: `cosmos_log.md` +
-`git log --graph`.
+**School phase complete.** Working chatbot shipped: RAG + web search, streaming
+chat, JWT auth, conversation memory, cosmic three-panel UI (Jinja2), DB under
+Alembic. The five Tokio School requirements are met. Full history:
+`cosmos_log.md` + `git log --graph`.
 
-**Phase 14 — Testing.** Round out the suite per `developing_plan.md`: retriever
-top-result assertion, orchestrator prompt-injection test, auth register/login/
-protected-endpoint flow, and a full `/api/chat` request as a logged-in user.
-pytest + pytest-asyncio + httpx.AsyncClient; mock the Groq client. Depends on
-everything above.
+**Now: chatbot → agent.** New direction is set at the vision level (see
+*What We Are Building* and *North Star*); the detailed implementation roadmap is
+not written yet. First real engineering steps still TBD — likely the
+tool-calling loop and a uniform tool interface, since file I/O and voice both
+depend on it. Do not treat north-star capabilities as existing.
 
 ## School Context
 
