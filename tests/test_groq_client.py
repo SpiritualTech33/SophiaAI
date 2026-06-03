@@ -87,7 +87,7 @@ def test_chat_returns_response_content(mock_groq_class):
 @patch.dict("os.environ", {"GROQ_API_KEY": "test-key-123"})
 @patch("sophia.llm.groq_client.Groq")
 def test_chat_uses_default_model(mock_groq_class):
-    """When no model arg given, uses 'llama-3.1-8b-instant'."""
+    """When no model arg given, uses 'openai/gpt-oss-20b'."""
     fake_response = MagicMock()
     fake_response.choices = [MagicMock()]
     fake_response.choices[0].message.content = "answer"
@@ -100,7 +100,7 @@ def test_chat_uses_default_model(mock_groq_class):
     client.chat(messages=[{"role": "user", "content": "hi"}])
 
     call_kwargs = mock_instance.chat.completions.create.call_args
-    assert call_kwargs.kwargs["model"] == "llama-3.1-8b-instant"
+    assert call_kwargs.kwargs["model"] == "openai/gpt-oss-20b"
 
 
 @patch.dict("os.environ", {"GROQ_API_KEY": "test-key-123"})
@@ -118,11 +118,11 @@ def test_chat_uses_custom_model(mock_groq_class):
     client = GroqClient()
     client.chat(
         messages=[{"role": "user", "content": "hi"}],
-        model="gemma2-9b-it",
+        model="llama-3.3-70b-versatile",
     )
 
     call_kwargs = mock_instance.chat.completions.create.call_args
-    assert call_kwargs.kwargs["model"] == "gemma2-9b-it"
+    assert call_kwargs.kwargs["model"] == "llama-3.3-70b-versatile"
 
 
 # ---------------------------------------------------------------------------

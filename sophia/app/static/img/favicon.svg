@@ -1,18 +1,41 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <radialGradient id="core" cx="50%" cy="50%" r="50%">
-      <stop offset="22%" stop-color="#050414"/>
-      <stop offset="50%" stop-color="#7c5cff"/>
-      <stop offset="72%" stop-color="#7c5cff" stop-opacity="0.15"/>
-      <stop offset="100%" stop-color="#7c5cff" stop-opacity="0"/>
+    <!-- Outer glow: electric blue fading into the dark -->
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="#7fe8ff"/>
+      <stop offset="35%" stop-color="#18a0ff" stop-opacity="0.85"/>
+      <stop offset="70%" stop-color="#1452d8" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#1452d8" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#7c5cff"/>
-      <stop offset="50%" stop-color="#3ad0ff"/>
-      <stop offset="100%" stop-color="#ff6ec7"/>
+    <!-- Hot core: white-cyan center, alive and warm -->
+    <radialGradient id="core" cx="50%" cy="45%" r="50%">
+      <stop offset="0%"  stop-color="#ffffff"/>
+      <stop offset="30%" stop-color="#eafcff"/>
+      <stop offset="60%" stop-color="#79e2ff"/>
+      <stop offset="100%" stop-color="#2b8bff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="arc" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"  stop-color="#aef2ff"/>
+      <stop offset="100%" stop-color="#2b8bff"/>
     </linearGradient>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="0.7"/>
+    </filter>
   </defs>
-  <rect width="64" height="64" rx="14" fill="#07061a"/>
-  <circle cx="32" cy="32" r="20" fill="none" stroke="url(#ring)" stroke-width="3"/>
-  <circle cx="32" cy="32" r="18" fill="url(#core)"/>
+
+  <!-- Dark cosmic frame -->
+  <rect width="64" height="64" rx="14" fill="#04060f"/>
+
+  <!-- Orb glow body -->
+  <circle cx="32" cy="32" r="26" fill="url(#glow)"/>
+
+  <!-- Plasma swirls — the "alive" energy -->
+  <g filter="url(#soft)" fill="none" stroke="url(#arc)" stroke-linecap="round">
+    <path d="M14 26 A20 20 0 0 1 50 24" stroke-width="1.4" opacity="0.75"/>
+    <path d="M16 40 A18 18 0 0 0 49 42" stroke-width="1.2" opacity="0.6"/>
+    <path d="M22 16 A22 22 0 0 1 47 47" stroke-width="1" opacity="0.45"/>
+  </g>
+
+  <!-- Hot living core -->
+  <circle cx="32" cy="31" r="15" fill="url(#core)"/>
 </svg>

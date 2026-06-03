@@ -248,18 +248,18 @@ img { max-width: 100%; height: auto; display: block; }
   border-radius: 50%;
   flex: 0 0 auto;
   background:
-    radial-gradient(circle at 50% 50%,
-      #050414 0%, #050414 26%,
-      var(--violet) 46%, rgba(124,92,255,0.15) 66%, transparent 72%);
+    radial-gradient(circle at 50% 42%,
+      #ffffff 0%, #eafcff 18%, #79e2ff 42%,
+      #2b8bff 66%, rgba(20,82,216,0.25) 82%, transparent 90%);
 }
-/* Accretion ring */
+/* Plasma ring — the living blue energy */
 .orb::before {
   content: "";
   position: absolute;
   inset: -14%;
   border-radius: 50%;
   background: conic-gradient(from 0deg,
-    var(--violet), var(--cyan), var(--magenta), var(--violet));
+    #2b8bff, #7fe8ff, #aef2ff, #18a0ff, #2b8bff);
   -webkit-mask: radial-gradient(closest-side, transparent 58%, #000 60%, #000 100%);
           mask: radial-gradient(closest-side, transparent 58%, #000 60%, #000 100%);
   opacity: 0.9;
@@ -270,7 +270,7 @@ img { max-width: 100%; height: auto; display: block; }
   position: absolute;
   inset: -40%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(124,92,255,0.45), transparent 65%);
+  background: radial-gradient(circle, rgba(40,140,255,0.5), transparent 65%);
   filter: blur(6px);
   z-index: -1;
 }

@@ -81,7 +81,7 @@ class SophiaLLMError(Exception):
 # Constants
 # ---------------------------------------------------------------------------
 
-DEFAULT_MODEL = "llama-3.1-8b-instant"
+DEFAULT_MODEL = "openai/gpt-oss-20b"
 
 
 # ---------------------------------------------------------------------------
@@ -135,8 +135,8 @@ class GroqClient:
             messages: List of message dicts with 'role' and 'content' keys.
                       Must contain at least one message. Follows the OpenAI
                       chat format: [{"role": "user", "content": "..."}].
-            model:    Groq model identifier. Defaults to llama-3.1-8b-instant.
-                      Other options: gemma2-9b-it, llama-3.3-70b-versatile.
+            model:    Groq model identifier. Defaults to openai/gpt-oss-20b.
+                      Other options: llama-3.1-8b-instant, llama-3.3-70b-versatile.
 
         Returns:
             str: The assistant's response text.
@@ -196,7 +196,7 @@ class GroqClient:
 
         Args:
             messages: Non-empty list of OpenAI-format message dicts.
-            model:    Groq model identifier. Defaults to llama-3.1-8b-instant.
+            model:    Groq model identifier. Defaults to openai/gpt-oss-20b.
 
         Returns:
             Iterator[str]: Successive content deltas. None deltas (the final
