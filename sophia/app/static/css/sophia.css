@@ -6,20 +6,28 @@
    ========================================================================= */
 
 :root {
-  /* Cosmic palette (deep / black-hole) */
-  --void:        #07061a;
-  --void-2:      #0c0a24;
-  --surface:     #12102e;
-  --surface-2:   #1a1840;
-  --violet:      #7c5cff;
+  /* Cosmic palette (deep indigo void / living-orb blue).
+     Atmosphere refinement: electric blue is the dominant luminance, gold the
+     sacred accent; violet/magenta survive for the human (user) side. */
+  --void:        #050414;   /* near-black indigo — deeper than before for drama */
+  --void-2:      #080726;
+  --surface:     #0f0d28;
+  --surface-2:   #18163e;
+  --azure:       #2b8bff;   /* the orb's core — now the dominant accent */
+  --azure-bright:#7fe8ff;
+  --violet:      #7c5cff;   /* human / secondary side */
   --cyan:        #3ad0ff;
-  --magenta:     #ff6ec7;
-  --gold:        #c9a227;
+  --magenta:     #ff6ec7;   /* human / secondary side */
+  --gold:        #c9a227;   /* sacred accent: halo, divine light, grounded truth */
   --text:        #e8e6ff;
   --text-dim:    #a7a3d6;
   --danger:      #ff5d6c;
   --ok:          #5ce6a3;
   --border:      #2a2752;
+
+  /* Glows — reused by orb, wordmark, glass, CTAs. */
+  --blue-glow:   rgba(43,139,255,0.55);
+  --gold-glow:   rgba(201,162,39,0.50);
 
   /* Type */
   --font-brand:  'Cinzel', Georgia, serif;
@@ -38,9 +46,9 @@
   --dur:      280ms;
 
   /* Glass (Spatial-UI). Modest blur for performance. */
-  --glass-bg:   rgba(18, 16, 46, 0.55);
+  --glass-bg:   rgba(15, 13, 40, 0.55);
   --glass-blur: 14px;
-  --glass-brd:  rgba(124, 92, 255, 0.25);
+  --glass-brd:  rgba(58, 208, 255, 0.24);   /* azure-tinted edge */
 
   /* The four pillars of Sophia's mind — one accent each. */
   --pillar-mind:       var(--violet);
@@ -64,8 +72,9 @@ body {
   line-height: 1.5;
   color: var(--text);
   background:
-    radial-gradient(1200px 800px at 70% -10%, rgba(124,92,255,0.18), transparent 60%),
-    radial-gradient(900px 700px at 10% 110%, rgba(58,208,255,0.10), transparent 55%),
+    radial-gradient(1200px 820px at 72% -12%, rgba(43,139,255,0.20), transparent 60%),
+    radial-gradient(820px 700px at 8% 6%, rgba(124,92,255,0.10), transparent 55%),
+    radial-gradient(760px 620px at 50% 122%, rgba(201,162,39,0.07), transparent 55%),
     linear-gradient(180deg, var(--void) 0%, var(--void-2) 100%);
   background-attachment: fixed;
   display: flex;
@@ -111,10 +120,14 @@ img { max-width: 100%; height: auto; display: block; }
   font-weight: 700;
   letter-spacing: 0.28em;
   font-size: 1.35rem;
-  color: var(--text);
-  text-shadow: 0 0 18px rgba(124,92,255,0.55);
+  color: var(--azure-bright);                 /* fallback if background-clip unsupported */
+  background: linear-gradient(100deg, #ffffff 0%, var(--azure-bright) 46%, var(--gold) 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 18px var(--blue-glow), 0 0 34px var(--gold-glow);
 }
-.brand:hover { text-decoration: none; color: #fff; }
+.brand:hover { text-decoration: none; filter: brightness(1.12); }
 
 .site-main {
   flex: 1;
@@ -138,7 +151,8 @@ img { max-width: 100%; height: auto; display: block; }
   backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-brd);
   border-radius: var(--radius-lg);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45),
+              inset 0 1px 0 rgba(127,232,255,0.10);   /* lit top edge */
 }
 
 /* ----------------------------- Buttons ---------------------------------- */
@@ -163,11 +177,11 @@ img { max-width: 100%; height: auto; display: block; }
 
 .btn-primary {
   color: #fff;
-  background: linear-gradient(135deg, var(--violet), var(--magenta));
-  box-shadow: 0 0 0 rgba(124,92,255,0);
+  background: linear-gradient(135deg, var(--azure), var(--violet));
+  box-shadow: 0 0 0 rgba(43,139,255,0);
 }
 .btn-primary:hover:not(:disabled) {
-  box-shadow: 0 0 24px rgba(124,92,255,0.6);
+  box-shadow: 0 0 26px var(--blue-glow);
   transform: translateY(-1px);
 }
 
@@ -248,33 +262,41 @@ img { max-width: 100%; height: auto; display: block; }
   border-radius: 50%;
   flex: 0 0 auto;
   background:
-    radial-gradient(circle at 50% 42%,
-      #ffffff 0%, #eafcff 18%, #79e2ff 42%,
-      #2b8bff 66%, rgba(20,82,216,0.25) 82%, transparent 90%);
+    radial-gradient(circle at 50% 40%,
+      #ffffff 0%, #eafcff 16%, #79e2ff 40%,
+      #2b8bff 64%, rgba(20,82,216,0.30) 80%, transparent 90%);
+  box-shadow: 0 0 18px var(--blue-glow), 0 0 40px rgba(43,139,255,0.28);
 }
-/* Plasma ring — the living blue energy */
+/* Plasma ring — the living blue energy, arcing like the reference orbs */
 .orb::before {
   content: "";
   position: absolute;
-  inset: -14%;
+  inset: -16%;
   border-radius: 50%;
   background: conic-gradient(from 0deg,
-    #2b8bff, #7fe8ff, #aef2ff, #18a0ff, #2b8bff);
-  -webkit-mask: radial-gradient(closest-side, transparent 58%, #000 60%, #000 100%);
-          mask: radial-gradient(closest-side, transparent 58%, #000 60%, #000 100%);
-  opacity: 0.9;
+    #2b8bff, #7fe8ff, #ffffff, #aef2ff, #18a0ff, #7fe8ff, #2b8bff);
+  -webkit-mask: radial-gradient(closest-side, transparent 56%, #000 60%, #000 100%);
+          mask: radial-gradient(closest-side, transparent 56%, #000 60%, #000 100%);
+  opacity: 0.95;
 }
 /* Glow halo */
 .orb::after {
   content: "";
   position: absolute;
-  inset: -40%;
+  inset: -45%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(40,140,255,0.5), transparent 65%);
-  filter: blur(6px);
+  background: radial-gradient(circle, rgba(43,140,255,0.55), transparent 62%);
+  filter: blur(8px);
   z-index: -1;
 }
-.orb-lg { --orb-size: 160px; }
+/* The hero orb (empty state): blue core wrapped in a soft gold divine aura. */
+.orb-lg {
+  --orb-size: 160px;
+  box-shadow:
+    0 0 26px var(--blue-glow),
+    0 0 72px rgba(43,139,255,0.32),
+    0 0 130px rgba(201,162,39,0.12);
+}
 
 /* ----------------------------- Chat layout ------------------------------ */
 /* The chat page breaks out of the centered 1200px column: a three-panel
@@ -533,7 +555,7 @@ img { max-width: 100%; height: auto; display: block; }
   min-height: 48px;
   padding: 0;
   border-radius: var(--radius);
-  background: linear-gradient(135deg, var(--violet), var(--magenta));
+  background: linear-gradient(135deg, var(--azure), var(--violet));
   border: none;
   color: #fff;
   cursor: pointer;
@@ -813,7 +835,12 @@ img { max-width: 100%; height: auto; display: block; }
   font-size: clamp(2.6rem, 7vw, 5rem);
   letter-spacing: 0.18em;
   margin: 0 0 var(--space-3);
-  text-shadow: 0 0 30px rgba(124,92,255,0.5);
+  color: var(--azure-bright);                 /* fallback if background-clip unsupported */
+  background: linear-gradient(100deg, #ffffff 0%, var(--azure-bright) 48%, var(--gold) 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px var(--blue-glow), 0 0 48px var(--gold-glow);
 }
 .hero-copy .manifesto { font-size: 1.15rem; color: var(--text-dim); max-width: 60ch; margin-bottom: var(--space-5); }
 .hero-cta { display: flex; gap: var(--space-3); flex-wrap: wrap; }
@@ -823,7 +850,9 @@ img { max-width: 100%; height: auto; display: block; }
   position: absolute;
   inset: 8% 18%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(124,92,255,0.35), transparent 65%);
+  background:
+    radial-gradient(circle, rgba(43,139,255,0.35), transparent 60%),
+    radial-gradient(circle, rgba(201,162,39,0.16), transparent 72%);
   filter: blur(40px);
   z-index: -1;
 }
