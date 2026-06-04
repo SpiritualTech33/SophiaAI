@@ -48,14 +48,10 @@ def test_app():
     from sophia.core.corpus import CorpusLibrary
     app.state.corpus = CorpusLibrary()
 
-    from sophia.app.main import configure_assets
-    configure_assets(app)
-
-    from sophia.app.routers import auth, chat, corpus, pages
+    from sophia.app.routers import auth, chat, corpus
     app.include_router(auth.router)
     app.include_router(chat.router)
     app.include_router(corpus.router)
-    app.include_router(pages.router)
 
     yield app
 

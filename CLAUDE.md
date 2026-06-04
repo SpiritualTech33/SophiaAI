@@ -30,7 +30,10 @@ Markers: ✅ live today · 🚧 in progress · 🎯 north-star vision (not built
   top-k passages → inject into LLM prompt → grounded answer.
 - ✅ **Web search:** query DuckDuckGo and fold results into the answer.
 - ✅ **LLM:** Groq free tier. Not local — API calls.
-- ✅ **Web app:** FastAPI + Jinja2 + SQLite (sophia_memory DB) + JWT login.
+- ✅ **Web app:** API-only FastAPI (JSON + SSE) + SQLite (sophia_memory DB) +
+  JWT login. The UI is a decoupled **Next.js client in `web/`** (App Router, TS,
+  Tailwind v4) that consumes the API through a Backend-for-Frontend; the JWT
+  lives in an httpOnly cookie. Jinja2 has been retired.
 - ✅ **Routing (today):** a deterministic confidence-router in the orchestrator
   picks corpus-only / hybrid / web modes. This is the brain *now*.
 - 🎯 **Agency (north star):** replace the router with an **LLM tool-calling
@@ -49,10 +52,9 @@ of this is built — do not reference these as existing modules.
   stays privileged grounding; tools extend reach, they don't replace the soul.
 - **Capabilities in scope:** tool-calling loop · file read/write · voice mode.
   Explicitly *out* of current scope: image generation, image understanding.
-- **Stack:** evolve FastAPI into an **API-first** backend (clean JSON +
-  streaming endpoints); the frontend decouples into a separate modern client
-  that consumes the API. Jinja2 server-rendering is the starting point, not the
-  destination.
+- **Stack:** ✅ *done* — FastAPI is now an **API-first** backend (clean JSON +
+  SSE streaming) and the frontend is a decoupled Next.js client in `web/`. What
+  remains north-star here is the agency layer below, not the frontend split.
 - **Discipline preserved:** keep one-swap-point boundaries (LLM provider, each
   tool) so any piece is replaceable in one commit. New tools plug into a single
   uniform interface, not scattered call sites.
@@ -63,7 +65,8 @@ of this is built — do not reference these as existing modules.
 - Vector store: FAISS (faiss-cpu)
 - LLM: Groq API (groq client)
 - Web search: duckduckgo-search (DDGS().text(), v8.x API)
-- Web: FastAPI + Uvicorn + Jinja2
+- Backend: FastAPI + Uvicorn (API-only: JSON + SSE)
+- Frontend: Next.js 16 (App Router) + TypeScript + Tailwind v4 + React 19 (`web/`)
 - DB: SQLAlchemy + SQLite + Alembic
 - Auth: passlib (bcrypt<4.1) + python-jose (JWT)
 - transformers 5.9.0 (major version — watch 4.x→5.x API drift)
@@ -82,10 +85,14 @@ of this is built — do not reference these as existing modules.
   IS the FAISS internal id. Never sort/filter/reorder the chunks list at load —
   the 1:1 mapping must hold or the retriever silently returns wrong passages.
 - **Web search = DuckDuckGo.** No key, no quota, no signup.
-- **Front-end = Jinja2 + vanilla JS, no React (school phase).** Every layer of
-  complexity was a layer to defend in the defense video. Post-school north star
-  reverses this: API-first backend + decoupled modern client. The Jinja2 app is
-  the starting point, not the final shape — see North Star.
+- **Front-end = Next.js client in `web/` (post-school).** The school phase
+  shipped Jinja2 + vanilla JS — each layer a thing to defend in the defense
+  video. That has now been replaced by a decoupled Next.js + TS + Tailwind
+  client over the API-only backend. Auth uses a Backend-for-Frontend: Next.js
+  route handlers hold the JWT in an httpOnly cookie (proxy guards `/chat`,
+  Server Components read server-side, the SSE chat stream is piped through a
+  Node route handler). The cosmic design system was ported faithfully from the
+  old `sophia.css` into bespoke React components — same soul, new skin.
 - **JWT, not server-side sessions.** Stateless, simpler deploy, clean school fit.
 
 ## Code Conventions
@@ -155,9 +162,14 @@ changed files, prunes deleted ones. Code-only changes skip the LLM (AST only).
 ## Project Status
 
 **School phase complete.** Working chatbot shipped: RAG + web search, streaming
-chat, JWT auth, conversation memory, cosmic three-panel UI (Jinja2), DB under
-Alembic. The five Tokio School requirements are met. Full history:
-`cosmos_log.md` + `git log --graph`.
+chat, JWT auth, conversation memory, cosmic three-panel UI, DB under Alembic.
+The five Tokio School requirements are met. Full history: `cosmos_log.md` +
+`git log --graph`.
+
+**Frontend re-platformed (post-school).** The Jinja2 UI was replaced by a
+decoupled Next.js client in `web/` over an API-only FastAPI backend (BFF auth,
+httpOnly cookie). Same cosmic soul, modern skin. See
+`documentation/specs/nextjs-frontend.md`.
 
 **Now: chatbot → agent.** New direction is set at the vision level (see
 *What We Are Building* and *North Star*); the detailed implementation roadmap is

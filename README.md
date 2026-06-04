@@ -99,14 +99,27 @@ In `.env`, set:
 - `JWT_SECRET` — any long random string. Generate one with:
   `python -c "import secrets; print(secrets.token_urlsafe(48))"`
 
+The app is now two processes: an **API-only FastAPI backend** and a **Next.js
+client** in `web/`. Run both.
+
 ```bash
-# 5. Launch the app
+# 5. Launch the backend API (terminal 1) — serves JSON + the SSE stream on :8000
 uvicorn sophia.app.main:app --reload
 
-# 6. Open http://127.0.0.1:8000 — register an account and talk to Sophia.
+# 6. Launch the frontend (terminal 2) — requires Node 20+
+cd web
+cp .env.example .env.local      # SOPHIA_API_URL defaults to http://127.0.0.1:8000
+npm install
+npm run dev
+
+# 7. Open http://localhost:3000 — register an account and talk to Sophia.
 ```
 
-Run the test suite (190 tests) with `pytest -q`.
+The browser only ever talks to the Next.js client; the client talks to the
+FastAPI backend server-side (the JWT lives in an httpOnly cookie, never in the
+browser).
+
+Run the backend test suite (185 tests) with `pytest -q`.
 
 ---
 
