@@ -19,7 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from sophia.core.orchestrator import Sophia, SophiaResponse
 from sophia.tools.web_search import SearchResult, SophiaSearchError
-from sophia.llm.groq_client import SophiaLLMError
+from sophia.llm import SophiaLLMError
 
 
 def test_sophia_response_holds_fields():

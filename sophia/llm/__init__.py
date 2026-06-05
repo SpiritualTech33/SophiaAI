@@ -14,6 +14,6 @@ Anything else inside this package is implementation detail and may change.
 Author: Cosmos De La Cruz — SophiaAI Phase 6
 """
 
-from sophia.llm.groq_client import GroqClient, SophiaLLMError
+from sophia.llm.openrouter_client import OpenRouterClient, SophiaLLMError
 
-__all__ = ["GroqClient", "SophiaLLMError"]
+__all__ = ["OpenRouterClient", "SophiaLLMError"]

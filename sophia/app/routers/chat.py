@@ -20,7 +20,7 @@ from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
 from sophia.app.dependencies import get_authenticated_user, get_db_session
-from sophia.llm.groq_client import SophiaLLMError
+from sophia.llm import SophiaLLMError
 from sophia.app.schemas import (
     ChatRequest,
     ChatResponse,

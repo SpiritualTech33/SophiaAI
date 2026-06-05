@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.12.1-ALFA] - 2026-06-05
+
+Migration of LLM provider from Groq to OpenRouter using Google Gemini.
+
+### Added
+- New OpenRouter client implementation under [`sophia/llm/openrouter_client.py`](file:///C:/Users/serra/Desktop/SophiaAI/sophia/llm/openrouter_client.py) using `httpx` to handle standard completions and SSE streaming.
+- Comprehensive unit tests in [`tests/test_openrouter_client.py`](file:///C:/Users/serra/Desktop/SophiaAI/tests/test_openrouter_client.py) covering validation, rate limits, status errors, and stream parsing.
+- Migration plan saved in [`documentation/plans/llm_provider_migration_plan.md`](file:///C:/Users/serra/Desktop/SophiaAI/documentation/plans/llm_provider_migration_plan.md).
+
+### Changed
+- Configured FastAPI startup lifespan to instantiate `OpenRouterClient` instead of `GroqClient`.
+- Environment variable configuration in [`.env.example`](file:///C:/Users/serra/Desktop/SophiaAI/.env.example) and local [`.env`](file:///C:/Users/serra/Desktop/SophiaAI/.env) replaced `GROQ_` keys with `OPENROUTER_` keys, defaulting to `google/gemini-2.5-flash`.
+- Decoupled [SophiaLLMError](file:///C:/Users/serra/Desktop/SophiaAI/sophia/llm/__init__.py) imports across backend and test files to import directly from the `sophia.llm` package.
+
+### Removed
+- Deprecated Groq client implementation [`sophia/llm/groq_client.py`](file:///C:/Users/serra/Desktop/SophiaAI/sophia/llm/groq_client.py).
+- Deprecated unit tests in [`tests/test_groq_client.py`](file:///C:/Users/serra/Desktop/SophiaAI/tests/test_groq_client.py).
+
 ## [ALFA] - 2026-06-04
 
 Premium frontend rebuilt on Next.js; backend becomes API-only.

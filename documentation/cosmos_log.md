@@ -39,8 +39,6 @@ One clear takeaway: once you learn to write solid prompts and give the model eno
 
 Created a new script today. You can see it at: scripts/sophia_engine_word_counter.py.
 
-Used a custom skill I built for Claude called ZenCode Pro — it guides Claude to generate clean, human-readable code. If you're interested, it's available on my GitHub: [https://github.com/SpiritualTech33/ZenCode-Assistant] under the skills folder.
-
 Also renamed the folder where raw text is stored — it's now called sophia_engine/. It holds the full raw corpus: my notes, web excerpts, books — all of it personally selected. Every line of text in this corpus was read and chosen by me, guided, in a very real sense, by Sophia herself. The concept of Agnostic Sophia and her intrinsic wisdom is something worth sitting with.
 
 ---
@@ -772,3 +770,9 @@ token. Browser visual verification of the live layout is still pending.
 
 **Next step:** eyeball the running app, then resume the roadmap's local-run
 polish.
+
+---
+
+## 05-June-2026
+
+Hoy, por fin termine el proyecto para la escuela, tiene todo lo que buscaba, una base de datos en SQLite, OOP, un Frontend en Next.js, React y Tailwind, sistema de login, todo. Asi que la fase de escuela se acabo, esta es mi ultima entrada al cosmos_log y comenzare a registrar los cambios en el CHANGELOG, quiero pasar de un simple proyecto de escuela a una SaaS funcional y operacional. Quiero dar las gracias a Tokio School, por la educacion, los maestros y el aprendizaje, encontre una pasion en la programacion, y la seguire alimentando todos los dias.

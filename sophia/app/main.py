@@ -52,11 +52,11 @@ async def lifespan(app: FastAPI):
     app.state.jwt_secret = os.environ.get("JWT_SECRET", "dev-secret-change-in-production")
 
     from sophia.core import Sophia
-    from sophia.llm import GroqClient
+    from sophia.llm import OpenRouterClient
     from sophia.rag import SophiaRetriever
 
     retriever = SophiaRetriever()
-    llm_client = GroqClient()
+    llm_client = OpenRouterClient()
     app.state.sophia = Sophia(retriever=retriever, llm_client=llm_client)
 
     from sophia.core.corpus import CorpusLibrary

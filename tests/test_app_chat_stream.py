@@ -20,7 +20,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from sophia.core.orchestrator import StreamingSophiaResponse
-from sophia.llm.groq_client import SophiaLLMError
+from sophia.llm import SophiaLLMError
 from sophia.rag.retriever import Chunk
 from sophia.tools.web_search import SearchResult
 from tests.conftest import register_and_get_token

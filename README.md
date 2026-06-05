@@ -108,7 +108,7 @@ uvicorn sophia.app.main:app --reload
 
 # 6. Launch the frontend (terminal 2) — requires Node 20+
 cd web
-cp .env.example .env.local      # SOPHIA_API_URL defaults to http://127.0.0.1:8000
+cp .env.example .env.local      
 npm install
 npm run dev
 
