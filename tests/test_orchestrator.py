@@ -577,3 +577,80 @@ def test_injection_inside_retrieved_chunk_is_framed_as_data():
     assert poisoned in system_content
     # ...but Sophia's guarding instruction comes FIRST, framing it as a source, not an order.
     assert system_content.index("primary source of truth") < system_content.index(poisoned)
+
+
+# ---------------------------------------------------------------------------
+# Uploaded-file attachments — injected into the system prompt
+# ---------------------------------------------------------------------------
+
+
+def _sophia_with_chunk():
+    mock_retriever = MagicMock()
+    mock_retriever.retrieve.return_value = [
+        _make_chunk("Corpus passage text.", "data/sophia_engine/mind/x.md", "mind", 0.88),
+    ]
+    mock_llm = MagicMock()
+    mock_llm.chat.return_value = "answer"
+    mock_llm.chat_stream.return_value = iter(["streamed"])
+    return Sophia(retriever=mock_retriever, llm_client=mock_llm), mock_llm
+
+
+def _system_prompt_of(mock_llm) -> str:
+    call_args = mock_llm.chat.call_args
+    messages = call_args.kwargs.get("messages") or call_args[0][0]
+    return messages[0]["content"]
+
+
+def test_ask_injects_attachment_text_into_system_prompt():
+    """Uploaded file text is injected so Sophia can read it."""
+    sophia, mock_llm = _sophia_with_chunk()
+    sophia.ask("Summarize my file.", attachments=["The meeting is on Tuesday at noon."])
+    system_content = _system_prompt_of(mock_llm)
+    assert "The meeting is on Tuesday at noon." in system_content
+
+
+def test_ask_attachments_appear_before_corpus_passages():
+    """User documents are framed before corpus passages in the prompt."""
+    sophia, mock_llm = _sophia_with_chunk()
+    sophia.ask("Question", attachments=["UNIQUE_ATTACHMENT_MARKER"])
+    system_content = _system_prompt_of(mock_llm)
+    assert "UNIQUE_ATTACHMENT_MARKER" in system_content
+    assert "Corpus passage text." in system_content
+    assert system_content.index("UNIQUE_ATTACHMENT_MARKER") < system_content.index("Corpus passage text.")
+
+
+def test_ask_without_attachments_has_no_documents_section():
+    """No attachments -> no user-documents block (backward compatible)."""
+    sophia, mock_llm = _sophia_with_chunk()
+    sophia.ask("Question")
+    assert "User-provided documents" not in _system_prompt_of(mock_llm)
+
+
+def test_ask_truncates_oversize_attachments():
+    """An over-long attachment is truncated with a marker so prompts stay bounded."""
+    from sophia.core.orchestrator import MAX_ATTACHMENT_CHARS
+
+    sophia, mock_llm = _sophia_with_chunk()
+    huge = "A" * (MAX_ATTACHMENT_CHARS + 5000)
+    sophia.ask("Question", attachments=[huge])
+    system_content = _system_prompt_of(mock_llm)
+    assert "[truncated]" in system_content
+    # The raw attachment block must not exceed the cap by more than the marker.
+    assert system_content.count("A") <= MAX_ATTACHMENT_CHARS + 1
+
+
+def test_ask_stream_injects_attachment_text():
+    """The streaming path injects attachments just like ask()."""
+    mock_retriever = MagicMock()
+    mock_retriever.retrieve.return_value = [
+        _make_chunk("p", "f.md", "mind", 0.9),
+    ]
+    mock_llm = MagicMock()
+    mock_llm.chat_stream.return_value = iter(["x"])
+
+    sophia = Sophia(retriever=mock_retriever, llm_client=mock_llm)
+    sophia.ask_stream("Question", attachments=["STREAM_ATTACHMENT_TEXT"])
+
+    call_args = mock_llm.chat_stream.call_args
+    messages = call_args.kwargs.get("messages") or call_args[0][0]
+    assert "STREAM_ATTACHMENT_TEXT" in messages[0]["content"]

@@ -29,7 +29,7 @@ TEST_JWT_SECRET = "test-secret-for-sophia-phase-11"
 
 
 @pytest.fixture()
-def test_app():
+def test_app(tmp_path):
     """Create a FastAPI app with in-memory SQLite and no AI objects."""
     # StaticPool ensures all connections share the same in-memory database
     # so the schema created by create_all is visible to every session.
@@ -44,14 +44,17 @@ def test_app():
     app = FastAPI()
     app.state.session_factory = session_factory
     app.state.jwt_secret = TEST_JWT_SECRET
+    # Uploads land in a per-test temp dir so the repo is never touched.
+    app.state.upload_dir = str(tmp_path / "uploads")
 
     from sophia.core.corpus import CorpusLibrary
     app.state.corpus = CorpusLibrary()
 
-    from sophia.app.routers import auth, chat, corpus
+    from sophia.app.routers import auth, chat, corpus, files
     app.include_router(auth.router)
     app.include_router(chat.router)
     app.include_router(corpus.router)
+    app.include_router(files.router)
 
     yield app
 

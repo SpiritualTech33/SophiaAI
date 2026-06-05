@@ -24,7 +24,7 @@ from tests.conftest import register_and_get_token
 class MockSophia:
     """Fake orchestrator that returns a fixed response without AI calls."""
 
-    def ask(self, query, conversation_history=None):
+    def ask(self, query, conversation_history=None, attachments=None):
         return SophiaResponse(
             answer=f"Mocked wisdom about: {query}",
             chunks=[],

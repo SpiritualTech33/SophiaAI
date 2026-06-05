@@ -73,7 +73,7 @@ export default function ChatWorkspace({
   }, []);
 
   const send = useCallback(
-    async (text: string) => {
+    async (text: string, fileIds: number[] = []) => {
       if (sending) return;
       setSending(true);
       setTypingPhrase(randomPhrase());
@@ -90,7 +90,11 @@ export default function ChatWorkspace({
         const res = await clientFetch("/api/chat/stream", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text, conversation_id: currentId }),
+          body: JSON.stringify({
+            message: text,
+            conversation_id: currentId,
+            attached_file_ids: fileIds,
+          }),
         });
 
         if (!res.ok || !res.body) {

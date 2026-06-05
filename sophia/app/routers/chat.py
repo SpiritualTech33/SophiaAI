@@ -37,6 +37,7 @@ from sophia.db.service import (
     delete_conversation,
     get_conversation_with_messages,
     get_conversations_for_user,
+    get_files_text,
     update_conversation_title,
 )
 
@@ -90,7 +91,10 @@ def chat(
 
     add_message(session, conversation.id, "user", body.message)
 
-    response = sophia.ask(body.message, conversation_history=history)
+    attachments = get_files_text(session, body.attached_file_ids, user.id)
+    response = sophia.ask(
+        body.message, conversation_history=history, attachments=attachments
+    )
 
     sources_data = [
         {"text": c.text[:200], "source_file": c.source_file, "pillar": c.pillar, "score": c.score}
@@ -157,7 +161,10 @@ def chat_stream(
     add_message(session, conversation.id, "user", body.message)
     conversation_id = conversation.id
 
-    stream = sophia.ask_stream(body.message, conversation_history=history)
+    attachments = get_files_text(session, body.attached_file_ids, user.id)
+    stream = sophia.ask_stream(
+        body.message, conversation_history=history, attachments=attachments
+    )
     session_factory = request.app.state.session_factory
 
     # Corpus citations are known up front (chunks are retrieved before the LLM

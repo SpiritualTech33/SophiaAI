@@ -16,7 +16,19 @@ export type TokenResponse = {
 export type ChatRequest = {
   message: string;
   conversation_id: number | null;
+  attached_file_ids: number[];
 };
+
+/** Response from POST /api/files/upload. */
+export type UploadedFile = {
+  id: number;
+  filename: string;
+  mime: string;
+  chars: number;
+};
+
+/** The formats Sophia can generate for download. */
+export type ExportFormat = "txt" | "md" | "pdf" | "docx";
 
 export type SourceOut = {
   text: string;

@@ -3,6 +3,7 @@ import type { ChatMessage } from "./model";
 import { renderAnswer } from "@/lib/markdown";
 import Orb from "@/components/cosmic/Orb";
 import { ModeBadge, SourceChips, WebResults } from "./SourceChips";
+import DownloadButton from "./DownloadButton";
 
 /**
  * Mental Model:
@@ -51,6 +52,7 @@ export default function MessageBubble({
             <ModeBadge searchMode={message.searchMode} />
             <SourceChips sources={message.sources} byPath={byPath} onOpen={onOpenSource} />
             <WebResults results={message.webResults} />
+            {message.content.trim() && <DownloadButton content={message.content} />}
           </>
         )}
       </div>

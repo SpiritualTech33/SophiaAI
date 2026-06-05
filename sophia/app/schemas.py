@@ -37,6 +37,21 @@ class ChatRequest(BaseModel):
     """Body for POST /api/chat."""
     message: str
     conversation_id: int | None = None
+    attached_file_ids: list[int] = []
+
+
+class FileUploadOut(BaseModel):
+    """Response from POST /api/files/upload."""
+    id: int
+    filename: str
+    mime: str
+    chars: int
+
+
+class FileGenerateRequest(BaseModel):
+    """Body for POST /api/files/generate."""
+    content: str
+    format: str
 
 
 class ConversationRenameRequest(BaseModel):
