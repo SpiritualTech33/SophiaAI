@@ -115,6 +115,19 @@ def test_render_file_returns_rendered_file(fmt, media_type):
     assert rendered.extension == f".{fmt}"
 
 
+def test_render_pdf_handles_multiline_content():
+    """Multi-line / markdown content must not exhaust the horizontal space.
+
+    Regression: rendering more than one line raised FPDFException because the
+    cursor stayed at the right margin after each line.
+    """
+    body = "# Sophia\n\nWisdom flows like water.\nBe still and know."
+    rendered = render_file(body, "pdf")
+    assert rendered.content[:4] == b"%PDF"
+    text = extract_text(rendered.content, "out.pdf")
+    assert "Wisdom flows like water." in text
+
+
 def test_render_txt_is_exact_content():
     rendered = render_file("plain wisdom", "txt")
     assert rendered.content.decode("utf-8") == "plain wisdom"

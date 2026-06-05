@@ -97,9 +97,11 @@ def _render_pdf(content: str) -> bytes:
     # exotic glyphs degrade gracefully instead of raising.
     safe = content.encode("latin-1", errors="replace").decode("latin-1")
     for line in safe.split("\n"):
-        # multi_cell with an empty string draws nothing, so feed blank lines a
-        # space to preserve paragraph spacing.
-        pdf.multi_cell(0, 8, line if line else " ")
+        # new_x=LMARGIN / new_y=NEXT returns the cursor to the left margin on the
+        # next line; without it the cursor stays at the right margin and the
+        # following line has zero width ("Not enough horizontal space").
+        # A blank line gets a space so paragraph spacing is preserved.
+        pdf.multi_cell(0, 8, line if line else " ", new_x="LMARGIN", new_y="NEXT")
     return bytes(pdf.output())
 
 
