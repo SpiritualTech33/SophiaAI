@@ -5,7 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.12.1-ALFA] - 2026-06-05
+## [0.7.2-ALFA] - 2026-06-05
+
+File read & generate — Sophia gains hands for documents. Users upload files for
+her to read, and download any of her answers as a file.
+
+### Added
+- New file tool [`sophia/files/`](file:///C:/Users/serra/Desktop/SophiaAI/sophia/files/): two pure functions behind one interface — `extract_text()` (read) and `render_file()` (write) — so the future agent tool-calling loop can call the same functions. Typed errors map to HTTP `413/415/422`.
+  - Read: `.txt`, `.md`, `.pdf` (pypdf), `.docx` (python-docx).
+  - Write: `txt`, `md`, `pdf` (fpdf2), `docx` (python-docx) — pure-Python, no system binaries.
+- `UserFile` model + service (`create_user_file`, `get_user_file`, `get_files_text`) with **ownership enforced in the query** — a forged file id injects nothing. Alembic migration [`b2c4f1a7d9e3`](file:///C:/Users/serra/Desktop/SophiaAI/alembic/versions/b2c4f1a7d9e3_add_user_files.py) adds the `user_files` table.
+- Endpoints: `POST /api/files/upload` (multipart, UUID-named per-user storage — path-traversal safe) and `POST /api/files/generate` (streams the file as an attachment).
+- Web: paperclip upload + attachment chips in the composer, a Download menu on Sophia's answers, two BFF route handlers (multipart-aware forward, binary relay), cosmic-token styles.
+- New deps: `pypdf`, `python-docx`, `fpdf2`. Plan in [`documentation/sophia_capabilities/read-and-write-files.md`](file:///C:/Users/serra/Desktop/SophiaAI/documentation/sophia_capabilities/read-and-write-files.md).
+
+### Changed
+- `ChatRequest` accepts `attached_file_ids`; the chat router threads owner-scoped file text into the orchestrator. `Sophia.ask`/`ask_stream` take `attachments`, injected into the system prompt before corpus passages, capped at `MAX_ATTACHMENT_CHARS` and framed as reference material (not instructions).
+- App version bumped to 0.12.1; lifespan reads `FILES_UPLOAD_DIR` (default `data/user_uploads`).
+
+### Fixed
+- PDF generation of multi-line content raised `fpdf2` "Not enough horizontal space" (cursor left at the right margin) — now resets to the left margin per line. Caught by live smoke; covered by a multi-line regression test.
+
+### Tests
+- 225 backend tests pass (added file module, service, endpoint, and orchestrator-injection suites). Next build + lint clean. Live E2E verified: upload → chat reads the file → download.
+
+## [0.7.1-ALFA] - 2026-06-05
 
 Migration of LLM provider from Groq to OpenRouter using Google Gemini.
 
@@ -23,7 +47,7 @@ Migration of LLM provider from Groq to OpenRouter using Google Gemini.
 - Deprecated Groq client implementation [`sophia/llm/groq_client.py`](file:///C:/Users/serra/Desktop/SophiaAI/sophia/llm/groq_client.py).
 - Deprecated unit tests in [`tests/test_groq_client.py`](file:///C:/Users/serra/Desktop/SophiaAI/tests/test_groq_client.py).
 
-## [ALFA] - 2026-06-04
+## [0.7.0-ALFA] - 2026-06-04
 
 Premium frontend rebuilt on Next.js; backend becomes API-only.
 

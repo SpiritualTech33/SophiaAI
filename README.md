@@ -59,7 +59,7 @@ A relational SQLite database that stores user accounts, conversations, and the h
 | Authentication | passlib (bcrypt) + python-jose (JWT) |
 | Embeddings | sentence-transformers |
 | Vector store | FAISS (faiss-cpu) |
-| LLM inference | Groq free tier |
+| LLM inference | OpenRouter |
 | Web search | DuckDuckGo Search API |
 | Model loading | Hugging Face Transformers + Hub |
 
@@ -95,7 +95,7 @@ cp .env.example .env
 
 In `.env`, set:
 
-- `GROQ_API_KEY` — a free key from [console.groq.com](https://console.groq.com).
+- `OPENROUTER_API_KEY` — a free key from [openrouter.ai](https://openrouter.ai).
 - `JWT_SECRET` — any long random string. Generate one with:
   `python -c "import secrets; print(secrets.token_urlsafe(48))"`
 

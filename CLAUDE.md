@@ -31,7 +31,11 @@ Markers: ✅ live today · 🎯 north-star (not built yet — don't reference as
 - ✅ **RAG:** query → embed → FAISS vector search over sophia_engine chunks →
   top-k passages → inject into prompt → grounded answer.
 - ✅ **Web search:** DuckDuckGo, folded into the answer.
-- ✅ **LLM:** Groq API (`openai/gpt-oss-20b`). Not local — API calls.
+- ✅ **File tool (`sophia/files/`):** `extract_text` reads uploads (txt/md/pdf/
+  docx) → injected into the prompt; `render_file` writes downloads (txt/md/pdf/
+  docx). Two pure functions behind one interface — wired deterministically now
+  (upload button + download menu), the same functions the agent loop will call.
+- ✅ **LLM:** OpenRouter API (`google/gemini-2.5-flash`). Not local — API calls.
 - ✅ **Backend:** API-only FastAPI (JSON + SSE) + SQLite (sophia_memory) + JWT.
 - ✅ **Frontend:** decoupled Next.js client in `web/` (App Router, TS, Tailwind
   v4, React 19). Backend-for-Frontend auth: route handlers hold the JWT in an
@@ -47,8 +51,9 @@ Markers: ✅ live today · 🎯 north-star (not built yet — don't reference as
 
 - Embeddings: sentence-transformers (all-MiniLM-L6-v2, 384 dims)
 - Vector store: FAISS (faiss-cpu), IndexFlatIP on L2-normalized vectors
-- LLM: Groq API (groq client), model `openai/gpt-oss-20b`
+- LLM: OpenRouter API (httpx client), model `google/gemini-2.5-flash`
 - Web search: duckduckgo-search (DDGS().text(), v8.x API)
+- File I/O: pypdf + python-docx (read), fpdf2 + python-docx (write) — pure-Python
 - Backend: FastAPI + Uvicorn (API-only: JSON + SSE)
 - Frontend: Next.js 16 + TypeScript + Tailwind v4 + React 19 (`web/`)
 - DB: SQLAlchemy + SQLite + Alembic (→ Postgres in SaaS phase)
@@ -57,8 +62,9 @@ Markers: ✅ live today · 🎯 north-star (not built yet — don't reference as
 
 ## Architecture Decisions & Rationale
 
-- **LLM = Groq, not local.** Free tier, no GPU. One swap-point file
-  (`sophia/llm/groq_client.py`) → provider replaceable in one commit.
+- **LLM = OpenRouter, not local.** No GPU; one API key reaches many providers.
+  One swap-point file (`sophia/llm/openrouter_client.py`) → provider/model
+  replaceable in one commit (set `OPENROUTER_MODEL`).
 - **Embeddings = all-MiniLM-L6-v2 (384 dims).** Small, fast on CPU, free, good
   enough. No Ferrari to drive to the corner store.
 - **FAISS IndexFlatIP on L2-normalized vectors.** Flat = exact search; ~1,422

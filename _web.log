@@ -1,0 +1,21 @@
+
+> web@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.7 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.35:3000
+- Environments: .env.local
+✓ Ready in 905ms
+
+ GET /login 200 in 456ms (next.js: 92ms, proxy.ts: 152ms, application-code: 212ms)
+ POST /api/auth/register 200 in 396ms (next.js: 81ms, application-code: 315ms)
+ POST /api/files/upload 201 in 255ms (next.js: 214ms, application-code: 42ms)
+ POST /api/files/generate 200 in 163ms (next.js: 137ms, application-code: 26ms)
+ GET / 200 in 146ms (next.js: 43ms, application-code: 102ms)
+ GET /chat 200 in 139ms (next.js: 48ms, proxy.ts: 13ms, application-code: 78ms)
+ POST /api/files/upload 201 in 39ms (next.js: 3ms, application-code: 35ms)
+ POST /api/chat/stream 200 in 7.9s (next.js: 41ms, application-code: 7.8s)
+ GET /api/conversations 200 in 57ms (next.js: 32ms, application-code: 25ms)
+ DELETE /api/conversations/22 204 in 1317ms (next.js: 1251ms, application-code: 66ms)
+[?25h
