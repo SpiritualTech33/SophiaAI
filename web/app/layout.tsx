@@ -3,6 +3,7 @@ import { Cinzel, Inter } from "next/font/google";
 import "./globals.css";
 import Starfield from "@/components/cosmic/Starfield";
 import Aurora from "@/components/cosmic/Aurora";
+import CosmicPlayer from "@/components/cosmic/CosmicPlayer";
 
 /**
  * Mental Model:
@@ -41,6 +42,7 @@ export default function RootLayout({
         <Aurora />
         <Starfield />
         {children}
+        <CosmicPlayer />
       </body>
     </html>
   );
