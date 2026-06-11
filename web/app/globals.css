@@ -49,7 +49,12 @@
   /* Glass (Spatial-UI). Modest blur for performance. */
   --glass-bg:   rgba(15, 13, 40, 0.55);
   --glass-blur: 14px;
+  --glass-blur-strong: 22px;        /* small/elevated surfaces only */
   --glass-brd:  rgba(58, 208, 255, 0.24);
+  --glass-spec: rgba(127, 232, 255, 0.14);  /* specular top highlight */
+  /* Cursor-reactive glow position (updated by GlassPanel on mouse move). */
+  --mx: 50%;
+  --my: 50%;
 
   /* The four pillars of Sophia's mind — one accent each. */
   --pillar-mind:       var(--violet);
@@ -171,6 +176,74 @@ img { max-width: 100%; height: auto; display: block; }
   border-radius: var(--radius-lg);
   box-shadow: 0 12px 40px rgba(0,0,0,0.45),
               inset 0 1px 0 rgba(127,232,255,0.10);
+}
+
+/* -- Living glass: a slowly-rotating "membrane" border + a cursor-reactive
+   specular glow. Geometry never moves (no text jitter); only light shifts. -- */
+@property --angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.glass-alive { position: relative; isolation: isolate; }
+
+/* The membrane: a thin conic-gradient ring, masked to the border only. */
+.glass-alive::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--angle),
+    transparent 0deg,
+    var(--azure) 90deg,
+    var(--violet) 190deg,
+    var(--cyan) 290deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* The glow: a faint pool of light that follows the cursor (--mx/--my). */
+.glass-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    380px circle at var(--mx) var(--my),
+    var(--glass-spec),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+  pointer-events: none;
+  mix-blend-mode: screen;
+  z-index: 2;
+}
+.glass-glow:hover::after { opacity: 1; }
+
+/* The cytoplasm: a slow aurora behind the glass that reads as living depth. */
+.aurora {
+  position: fixed;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(40% 40% at 22% 28%, rgba(43,139,255,0.18), transparent 60%),
+    radial-gradient(38% 38% at 78% 32%, rgba(124,92,255,0.16), transparent 60%),
+    radial-gradient(45% 45% at 60% 80%, rgba(58,208,255,0.12), transparent 62%),
+    radial-gradient(35% 35% at 30% 75%, rgba(201,162,39,0.08), transparent 60%);
+  filter: blur(40px);
+  opacity: 0.7;
 }
 
 /* ----------------------------- Buttons ---------------------------------- */
@@ -943,10 +1016,35 @@ img { max-width: 100%; height: auto; display: block; }
   @keyframes orb-spin { to { transform: rotate(360deg); } }
   @keyframes orb-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
   @keyframes halo-pulse { 0%,100% { opacity: 0.45; } 50% { opacity: 0.85; } }
-  @keyframes msg-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
   @keyframes doc-flash {
     0% { background: color-mix(in srgb, var(--p) 38%, transparent); }
     100% { background: color-mix(in srgb, var(--p) 12%, transparent); }
+  }
+
+  /* Living-glass motion. */
+  @keyframes border-rotate { to { --angle: 360deg; } }
+  /* Opacity only — never transform: the mobile drawers use transform to hide
+     off-canvas, and a fill:both transform animation would clobber that. */
+  @keyframes panel-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes panel-breathe {
+    0%, 100% {
+      box-shadow: 0 12px 40px rgba(0,0,0,0.45),
+                  inset 0 1px 0 rgba(127,232,255,0.10);
+    }
+    50% {
+      box-shadow: 0 16px 52px rgba(0,0,0,0.5),
+                  inset 0 1px 0 rgba(127,232,255,0.16),
+                  0 0 44px -10px var(--blue-glow);
+    }
+  }
+  @keyframes aurora-drift {
+    0%   { transform: translate3d(0, 0, 0) scale(1); }
+    33%  { transform: translate3d(2%, -1.5%, 0) scale(1.05); }
+    66%  { transform: translate3d(-1.5%, 1.5%, 0) scale(1.02); }
+    100% { transform: translate3d(0, 0, 0) scale(1); }
   }
 
   .orb::before { animation: orb-spin 24s linear infinite; }
@@ -955,7 +1053,12 @@ img { max-width: 100%; height: auto; display: block; }
   .orb[data-state="thinking"]::after { animation: halo-pulse 1.4s ease-in-out infinite; }
   .orb[data-state="speaking"]::after { animation: halo-pulse 0.7s ease-in-out 2; }
 
-  .msg { animation: msg-in var(--dur) var(--ease-out); }
+  .glass-alive::before { animation: border-rotate 16s linear infinite; }
+  .glass-alive {
+    animation: panel-in 520ms var(--ease-out) both,
+               panel-breathe 9s var(--ease-out) 600ms infinite;
+  }
+  .aurora { animation: aurora-drift 48s ease-in-out infinite; }
 }
 
 /* ----------------------------- Responsive ------------------------------- */

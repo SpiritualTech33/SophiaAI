@@ -60,8 +60,8 @@ export default function ChatThread({
         </div>
       ) : (
         <>
-          {messages.map((m) => (
-            <MessageBubble key={m.key} message={m} byPath={byPath} onOpenSource={onOpenSource} />
+          {messages.map((m, i) => (
+            <MessageBubble key={m.key} index={i} message={m} byPath={byPath} onOpenSource={onOpenSource} />
           ))}
           {thinking && (
             <div className="msg msg-sophia typing">

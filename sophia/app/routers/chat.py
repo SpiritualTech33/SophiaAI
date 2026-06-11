@@ -14,6 +14,7 @@ Executive Brief:
 from __future__ import annotations
 
 import json
+import logging
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from fastapi.responses import StreamingResponse
@@ -42,6 +43,7 @@ from sophia.db.service import (
 )
 
 router = APIRouter(tags=["chat"])
+logger = logging.getLogger("sophia.app.routers.chat")
 
 _MAX_TITLE_LENGTH = 42
 
@@ -194,13 +196,31 @@ def chat_stream(
             for token in stream.tokens:
                 buffer.append(token)
                 yield _sse_frame("token", {"text": token})
-        except SophiaLLMError:
+        except SophiaLLMError as error:
+            logger.warning(
+                "LLM stream failed for conversation %s: %s",
+                conversation_id,
+                error,
+            )
             yield _sse_frame("error", {
                 "message": "Sophia could not complete her answer. Please try again.",
             })
             return
 
         answer = "".join(buffer)
+
+        # Final guard: a stream that produced no real content must not persist
+        # an empty bubble. Surface an error instead (the client retries before
+        # reaching here, so this is rare).
+        if not answer.strip():
+            logger.warning(
+                "Empty answer for conversation %s; emitting error, not persisting.",
+                conversation_id,
+            )
+            yield _sse_frame("error", {
+                "message": "Sophia could not complete her answer. Please try again.",
+            })
+            return
 
         write_session = session_factory()
         try:

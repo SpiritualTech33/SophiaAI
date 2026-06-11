@@ -22,6 +22,22 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from sophia.llm import OpenRouterClient, SophiaLLMError
+from sophia.llm.openrouter_client import DEFAULT_MAX_RETRIES
+
+
+@pytest.fixture(autouse=True)
+def _no_backoff_sleep():
+    """Patch out the retry back-off sleep so retry tests run instantly."""
+    with patch("sophia.llm.openrouter_client.time.sleep", return_value=None):
+        yield
+
+
+def _stream_cm(response):
+    """Build a fake context manager mimicking httpx.Client.stream(...)."""
+    cm = MagicMock()
+    cm.__enter__.return_value = response
+    cm.__exit__.return_value = False
+    return cm
 
 
 # ---------------------------------------------------------------------------
@@ -52,7 +68,10 @@ def test_sophia_llm_error_preserves_cause():
 def test_init_creates_client_with_api_key(mock_client_class):
     """OpenRouterClient reads OPENROUTER_API_KEY from env and instantiates client."""
     client = OpenRouterClient()
-    mock_client_class.assert_called_once_with(base_url="https://openrouter.ai/api/v1", timeout=60.0)
+    mock_client_class.assert_called_once_with(
+        base_url="https://openrouter.ai/api/v1",
+        timeout=httpx.Timeout(connect=10.0, read=90.0, write=10.0, pool=10.0),
+    )
     assert client is not None
 
 
@@ -97,7 +116,7 @@ def test_chat_returns_response_content(mock_client_class):
 @patch.dict("os.environ", {"OPENROUTER_API_KEY": "test-key-123"})
 @patch("sophia.llm.openrouter_client.httpx.Client")
 def test_chat_uses_default_model(mock_client_class):
-    """When no model arg given, uses default model (e.g. google/gemini-2.5-flash)."""
+    """When no model arg given, uses the configured OpenRouter default model."""
     fake_response = MagicMock()
     fake_response.status_code = 200
     fake_response.json.return_value = {
@@ -112,7 +131,7 @@ def test_chat_uses_default_model(mock_client_class):
     client.chat(messages=[{"role": "user", "content": "hi"}])
 
     call_kwargs = mock_instance.post.call_args.kwargs
-    assert call_kwargs["json"]["model"] == "google/gemini-2.5-flash"
+    assert call_kwargs["json"]["model"] == "google/gemma-4-31b-it:free"
 
 
 @patch.dict("os.environ", {"OPENROUTER_API_KEY": "test-key-123"})
@@ -348,6 +367,173 @@ def test_chat_stream_wraps_api_status_error(mock_client_class):
     client = OpenRouterClient()
     with pytest.raises(SophiaLLMError, match="server crash"):
         list(client.chat_stream(messages=[{"role": "user", "content": "hi"}]))
+
+
+# ---------------------------------------------------------------------------
+# OpenRouterClient.chat — retry / back-off (free-tier resilience)
+# ---------------------------------------------------------------------------
+
+@patch.dict("os.environ", {"OPENROUTER_API_KEY": "test-key-123"})
+@patch("sophia.llm.openrouter_client.httpx.Client")
+def test_chat_retries_on_rate_limit_then_succeeds(mock_client_class):
+    """A transient 429 is retried and the next 200 succeeds."""
+    resp_429 = MagicMock(status_code=429)
+    resp_200 = MagicMock(status_code=200)
+    resp_200.json.return_value = {"choices": [{"message": {"content": "patience"}}]}
+
+    mock_instance = MagicMock()
+    mock_instance.post.side_effect = [resp_429, resp_200]
+    mock_client_class.return_value = mock_instance
+
+    client = OpenRouterClient()
+    result = client.chat(messages=[{"role": "user", "content": "hi"}])
+
+    assert result == "patience"
+    assert mock_instance.post.call_count == 2
+
+
+@patch.dict("os.environ", {"OPENROUTER_API_KEY": "test-key-123"})
+@patch("sophia.llm.openrouter_client.httpx.Client")
+def test_chat_retries_then_raises_after_max(mock_client_class):
+    """A persistent 429 is retried MAX_RETRIES times, then raises."""
+    resp_429 = MagicMock(status_code=429)
+
+    mock_instance = MagicMock()
+    mock_instance.post.return_value = resp_429
+    mock_client_class.return_value = mock_instance
+
+    client = OpenRouterClient()
+    with pytest.raises(SophiaLLMError, match="rate limit"):
+        client.chat(messages=[{"role": "user", "content": "hi"}])
+
+    assert mock_instance.post.call_count == DEFAULT_MAX_RETRIES + 1
+
+
+@patch.dict("os.environ", {"OPENROUTER_API_KEY": "test-key-123"})
+@patch("sophia.llm.openrouter_client.httpx.Client")
+def test_chat_does_not_retry_on_client_error(mock_client_class):
+    """A 400 (bad request) is a caller error — raised immediately, no retry."""
+    resp_400 = MagicMock(status_code=400, text="bad request")
+    resp_400.json.return_value = {"error": {"message": "bad request"}}
+
+    mock_instance = MagicMock()
+    mock_instance.post.return_value = resp_400
+    mock_client_class.return_value = mock_instance
+
+    client = OpenRouterClient()
+    with pytest.raises(SophiaLLMError, match="400"):
+        client.chat(messages=[{"role": "user", "content": "hi"}])
+
+    assert mock_instance.post.call_count == 1
+
+
+@patch.dict("os.environ", {"OPENROUTER_API_KEY": "test-key-123"})
+@patch("sophia.llm.openrouter_client.httpx.Client")
+def test_chat_retries_on_timeout_then_succeeds(mock_client_class):
+    """A timeout is retried, and the next attempt succeeds."""
+    resp_200 = MagicMock(status_code=200)
+    resp_200.json.return_value = {"choices": [{"message": {"content": "slow but sure"}}]}
+
+    mock_instance = MagicMock()
+    mock_instance.post.side_effect = [httpx.ReadTimeout("slow"), resp_200]
+    mock_client_class.return_value = mock_instance
+
+    client = OpenRouterClient()
+    result = client.chat(messages=[{"role": "user", "content": "hi"}])
+
+    assert result == "slow but sure"
+    assert mock_instance.post.call_count == 2
+
+
+# ---------------------------------------------------------------------------
+# OpenRouterClient.chat_stream — retry / empty-stream handling
+# ---------------------------------------------------------------------------
+
+@patch.dict("os.environ", {"OPENROUTER_API_KEY": "test-key-123"})
+@patch("sophia.llm.openrouter_client.httpx.Client")
+def test_chat_stream_retries_empty_then_succeeds(mock_client_class):
+    """An empty stream (only [DONE], no tokens) is retried; the next try yields."""
+    empty = MagicMock(status_code=200)
+    empty.iter_lines.return_value = ["data: [DONE]"]
+    good = MagicMock(status_code=200)
+    good.iter_lines.return_value = [
+        "data: {\"choices\": [{\"delta\": {\"content\": \"Light.\"}}]}",
+        "data: [DONE]",
+    ]
+
+    mock_instance = MagicMock()
+    mock_instance.stream.side_effect = [_stream_cm(empty), _stream_cm(good)]
+    mock_client_class.return_value = mock_instance
+
+    client = OpenRouterClient()
+    tokens = list(client.chat_stream(messages=[{"role": "user", "content": "?"}]))
+
+    assert tokens == ["Light."]
+    assert mock_instance.stream.call_count == 2
+
+
+@patch.dict("os.environ", {"OPENROUTER_API_KEY": "test-key-123"})
+@patch("sophia.llm.openrouter_client.httpx.Client")
+def test_chat_stream_raises_on_persistent_empty(mock_client_class):
+    """A stream that stays empty across all retries raises SophiaLLMError."""
+    empty = MagicMock(status_code=200)
+    empty.iter_lines.return_value = ["data: [DONE]"]
+
+    mock_instance = MagicMock()
+    mock_instance.stream.return_value = _stream_cm(empty)
+    mock_client_class.return_value = mock_instance
+
+    client = OpenRouterClient()
+    with pytest.raises(SophiaLLMError, match="empty"):
+        list(client.chat_stream(messages=[{"role": "user", "content": "hi"}]))
+
+    assert mock_instance.stream.call_count == DEFAULT_MAX_RETRIES + 1
+
+
+@patch.dict("os.environ", {"OPENROUTER_API_KEY": "test-key-123"})
+@patch("sophia.llm.openrouter_client.httpx.Client")
+def test_chat_stream_does_not_retry_after_tokens(mock_client_class):
+    """A drop *after* tokens have streamed raises — never retried (no duplicates)."""
+    def _lines_then_drop():
+        yield "data: {\"choices\": [{\"delta\": {\"content\": \"Hello\"}}]}"
+        raise httpx.ReadError("connection dropped")
+
+    resp = MagicMock(status_code=200)
+    resp.iter_lines.return_value = _lines_then_drop()
+
+    mock_instance = MagicMock()
+    mock_instance.stream.return_value = _stream_cm(resp)
+    mock_client_class.return_value = mock_instance
+
+    client = OpenRouterClient()
+    collected = []
+    with pytest.raises(SophiaLLMError):
+        for token in client.chat_stream(messages=[{"role": "user", "content": "hi"}]):
+            collected.append(token)
+
+    assert collected == ["Hello"]
+    assert mock_instance.stream.call_count == 1
+
+
+@patch.dict("os.environ", {"OPENROUTER_API_KEY": "test-key-123"})
+@patch("sophia.llm.openrouter_client.httpx.Client")
+def test_chat_stream_finish_reason_length_keeps_content(mock_client_class):
+    """finish_reason='length' (truncated) is not an error — content is kept."""
+    resp = MagicMock(status_code=200)
+    resp.iter_lines.return_value = [
+        "data: {\"choices\": [{\"delta\": {\"content\": \"Truncated answer\"}}]}",
+        "data: {\"choices\": [{\"delta\": {}, \"finish_reason\": \"length\"}]}",
+        "data: [DONE]",
+    ]
+
+    mock_instance = MagicMock()
+    mock_instance.stream.return_value = _stream_cm(resp)
+    mock_client_class.return_value = mock_instance
+
+    client = OpenRouterClient()
+    tokens = list(client.chat_stream(messages=[{"role": "user", "content": "hi"}]))
+
+    assert tokens == ["Truncated answer"]
 
 
 # ---------------------------------------------------------------------------

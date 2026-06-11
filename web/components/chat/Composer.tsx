@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, type ChangeEvent, type KeyboardEvent } from "react";
+import { motion } from "motion/react";
 import { PaperclipIcon, SendIcon, CloseIcon } from "@/components/cosmic/icons";
 import { clientFetch } from "@/lib/client";
 import type { UploadedFile } from "@/lib/types";
@@ -123,16 +124,18 @@ export default function Composer({
           aria-hidden
           tabIndex={-1}
         />
-        <button
+        <motion.button
           type="button"
           className="btn-attach"
           onClick={() => fileInputRef.current?.click()}
           disabled={disabled || uploading}
           aria-label="Attach files"
           title="Attach files (txt, md, pdf, docx)"
+          whileHover={disabled || uploading ? undefined : { scale: 1.08 }}
+          whileTap={disabled || uploading ? undefined : { scale: 0.92 }}
         >
           <PaperclipIcon />
-        </button>
+        </motion.button>
         <textarea
           ref={textareaRef}
           placeholder="Ask Sophia…"
@@ -141,9 +144,16 @@ export default function Composer({
           onKeyDown={onKeyDown}
           aria-label="Message Sophia"
         />
-        <button type="submit" className="btn-send" disabled={disabled} aria-label="Send message">
+        <motion.button
+          type="submit"
+          className="btn-send"
+          disabled={disabled}
+          aria-label="Send message"
+          whileHover={disabled ? undefined : { scale: 1.06 }}
+          whileTap={disabled ? undefined : { scale: 0.92 }}
+        >
           <SendIcon />
-        </button>
+        </motion.button>
       </form>
     </div>
   );

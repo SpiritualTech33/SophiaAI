@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cinzel, Inter } from "next/font/google";
 import "./globals.css";
 import Starfield from "@/components/cosmic/Starfield";
+import Aurora from "@/components/cosmic/Aurora";
 
 /**
  * Mental Model:
@@ -37,6 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cinzel.variable} ${inter.variable}`}>
       <body>
+        <Aurora />
         <Starfield />
         {children}
       </body>

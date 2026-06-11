@@ -40,7 +40,7 @@ async def lifespan(app: FastAPI):
     """
     Executive Brief:
         Startup: create DB engine, create tables, build session factory,
-        load AI objects (retriever, LLM client, orchestrator).
+        load AI objects (retriever, OpenRouter client, orchestrator).
         Shutdown: dispose the engine.
     """
     logger.info("SophiaAI starting up ...")
