@@ -28,7 +28,7 @@ export default async function LandingPage() {
       <main className="site-main">
         <section className="hero">
           <div className="hero-copy">
-            <h1>SOPHIA</h1>
+            <h1>ΣΟΦΙΑ</h1>
             <p className="manifesto">
               Wisdom, grounded. An intelligence rooted in a hand-curated corpus
               of the world&apos;s wisdom literature — a bridge between the Divine
