@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from sqlalchemy.orm import Session
 
-from sophia.db.models import Conversation, Message, User
+from sophia.db.models import Conversation, Message, User, UserFile
 
 
 def create_user(session: Session, email: str, hashed_password: str) -> User:
@@ -188,3 +188,68 @@ def get_conversation_with_messages(
     if conversation is not None:
         _ = conversation.messages
     return conversation
+
+
+def create_user_file(
+    session: Session,
+    user_id: int,
+    conversation_id: int | None,
+    original_filename: str,
+    stored_path: str,
+    mime_type: str,
+    extracted_text: str,
+    size_bytes: int,
+) -> UserFile:
+    """
+    Executive Brief:
+        Persist a record of an uploaded file. The bytes already live on disk at
+        stored_path; this stores the metadata plus the cached extracted text.
+
+    Returns:
+        UserFile: The newly created record with a populated id.
+    """
+    record = UserFile(
+        user_id=user_id,
+        conversation_id=conversation_id,
+        original_filename=original_filename,
+        stored_path=stored_path,
+        mime_type=mime_type,
+        extracted_text=extracted_text,
+        size_bytes=size_bytes,
+    )
+    session.add(record)
+    session.commit()
+    session.refresh(record)
+    return record
+
+
+def get_user_file(session: Session, file_id: int, user_id: int) -> UserFile | None:
+    """
+    Executive Brief:
+        Fetch a file by id, scoped to its owner. Returns None when the file does
+        not exist or belongs to a different user — ownership is enforced here so
+        callers cannot read another user's file by guessing its id.
+    """
+    return (
+        session.query(UserFile)
+        .filter(UserFile.id == file_id, UserFile.user_id == user_id)
+        .first()
+    )
+
+
+def get_files_text(session: Session, file_ids: list[int], user_id: int) -> list[str]:
+    """
+    Executive Brief:
+        Return the extracted text of the given files, owner-scoped and kept in
+        the caller's id order. Files the user does not own are silently skipped,
+        so a forged id injects nothing into the prompt.
+    """
+    if not file_ids:
+        return []
+    owned = (
+        session.query(UserFile)
+        .filter(UserFile.id.in_(file_ids), UserFile.user_id == user_id)
+        .all()
+    )
+    text_by_id = {record.id: record.extracted_text for record in owned}
+    return [text_by_id[fid] for fid in file_ids if fid in text_by_id]

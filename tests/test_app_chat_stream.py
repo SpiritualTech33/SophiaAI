@@ -37,14 +37,14 @@ class MockStreamSophia:
         self._chunks = chunks or []
         self._raise_midstream = raise_midstream
 
-    def ask_stream(self, query, conversation_history=None):
+    def ask_stream(self, query, conversation_history=None, attachments=None):
         tokens = self._tokens
         raise_midstream = self._raise_midstream
 
         def gen():
             yield tokens[0]
             if raise_midstream:
-                raise SophiaLLMError("Groq exploded mid-stream")
+                raise SophiaLLMError("OpenRouter failed mid-stream")
             for t in tokens[1:]:
                 yield t
 
@@ -198,8 +198,8 @@ def test_stream_corpus_sources_surface_in_meta(test_app, client):
     assert meta["sources"][0]["pillar"] == "philosophy"
 
 
-def test_stream_midstream_error_emits_error_and_skips_persist(test_app, client):
-    """A Groq failure mid-stream emits an error frame and saves no sophia message."""
+def test_stream_midstream_error_emits_error_and_skips_persist(test_app, client, caplog):
+    """An LLM failure mid-stream emits an error frame, logs cause, and saves no sophia message."""
     test_app.state.sophia = MockStreamSophia(raise_midstream=True)
     token = register_and_get_token(client)
 
@@ -214,11 +214,38 @@ def test_stream_midstream_error_emits_error_and_skips_persist(test_app, client):
 
     assert "error" in events
     assert "done" not in events
+    assert "LLM stream failed for conversation" in caplog.text
+    assert "OpenRouter failed mid-stream" in caplog.text
 
     detail = client.get(
         f"/api/conversations/{meta['conversation_id']}", headers=_auth_header(token)
     ).json()
     # Only the user message survives; no broken sophia message persisted.
+    assert len(detail["messages"]) == 1
+    assert detail["messages"][0]["role"] == "user"
+
+
+def test_stream_empty_answer_emits_error_and_skips_persist(test_app, client):
+    """An empty answer (no real content) emits an error frame and saves no sophia message."""
+    test_app.state.sophia = MockStreamSophia(tokens=("",))
+    token = register_and_get_token(client)
+
+    response = client.post(
+        "/api/chat/stream",
+        json={"message": "trigger empty"},
+        headers=_auth_header(token),
+    )
+    frames = _parse_sse(response.text)
+    events = [e for e, _ in frames]
+    meta = next(data for event, data in frames if event == "meta")
+
+    assert "error" in events
+    assert "done" not in events
+
+    detail = client.get(
+        f"/api/conversations/{meta['conversation_id']}", headers=_auth_header(token)
+    ).json()
+    # Only the user message survives; no empty sophia message persisted.
     assert len(detail["messages"]) == 1
     assert detail["messages"][0]["role"] == "user"
 

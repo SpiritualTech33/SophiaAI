@@ -25,7 +25,7 @@ from sqlalchemy import create_engine, inspect
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-EXPECTED_TABLES = {"users", "conversations", "messages"}
+EXPECTED_TABLES = {"users", "conversations", "messages", "user_files"}
 
 
 @pytest.fixture
@@ -56,7 +56,7 @@ def _table_names(cfg: Config) -> set[str]:
 
 
 def test_upgrade_head_creates_all_tables(alembic_config: Config) -> None:
-    """upgrade head produces exactly the three application tables."""
+    """upgrade head produces exactly the application tables."""
     command.upgrade(alembic_config, "head")
     assert _table_names(alembic_config) == EXPECTED_TABLES
 

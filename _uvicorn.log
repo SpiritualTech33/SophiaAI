@@ -1,0 +1,69 @@
+11:57:22 | INFO     | SophiaAI starting up ...
+11:57:22 | INFO     | Loading faiss with AVX2 support.
+11:57:22 | INFO     | Successfully loaded faiss with AVX2 support.
+11:57:31 | INFO     | Loading FAISS index from C:\Users\serra\Desktop\SophiaAI\data\sophia_index.faiss ...
+11:57:31 | INFO     | Loading SentenceTransformer model 'sentence-transformers/all-MiniLM-L6-v2' ...
+11:57:31 | INFO     | No device provided, using cpu
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/modules.json "HTTP/1.1 200 OK"
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config_sentence_transformers.json "HTTP/1.1 200 OK"
+11:57:32 | INFO     | Loading SentenceTransformer model from sentence-transformers/all-MiniLM-L6-v2.
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config_sentence_transformers.json "HTTP/1.1 307 Temporary Redirect"
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config_sentence_transformers.json "HTTP/1.1 200 OK"
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/README.md "HTTP/1.1 200 OK"
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/modules.json "HTTP/1.1 307 Temporary Redirect"
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/modules.json "HTTP/1.1 200 OK"
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/sentence_bert_config.json "HTTP/1.1 307 Temporary Redirect"
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/sentence_bert_config.json "HTTP/1.1 200 OK"
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/adapter_config.json "HTTP/1.1 404 Not Found"
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config.json "HTTP/1.1 200 OK"
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]
+Loading weights: 100%|##########| 103/103 [00:00<00:00, 4950.08it/s]
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+11:57:32 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+11:57:33 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/video_preprocessor_config.json "HTTP/1.1 404 Not Found"
+11:57:33 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+11:57:33 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+11:57:33 | INFO     | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/tokenizer_config.json "HTTP/1.1 200 OK"
+11:57:33 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+11:57:33 | INFO     | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config.json "HTTP/1.1 200 OK"
+11:57:33 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+11:57:33 | INFO     | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/config.json "HTTP/1.1 200 OK"
+11:57:33 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+11:57:33 | INFO     | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/tokenizer_config.json "HTTP/1.1 200 OK"
+11:57:33 | INFO     | HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+11:57:33 | INFO     | HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+11:57:33 | INFO     | HTTP Request: HEAD https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/1_Pooling/config.json "HTTP/1.1 307 Temporary Redirect"
+11:57:33 | INFO     | HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/sentence-transformers/all-MiniLM-L6-v2/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/1_Pooling%2Fconfig.json "HTTP/1.1 200 OK"
+11:57:33 | INFO     | HTTP Request: GET https://huggingface.co/api/models/sentence-transformers/all-MiniLM-L6-v2 "HTTP/1.1 200 OK"
+11:57:33 | INFO     | SophiaRetriever ready. ntotal=1422 | d=384 | chunks=1422 | model=sentence-transformers/all-MiniLM-L6-v2
+11:57:34 | INFO     | OpenRouterClient initialized. Default model: google/gemini-2.5-flash
+11:57:34 | INFO     | Sophia initialized. Confidence threshold: 0.45
+11:57:34 | INFO     | CorpusLibrary ready. documents=137 | root=C:\Users\serra\Desktop\SophiaAI\data\sophia_engine
+11:57:34 | INFO     | SophiaAI ready. Listening for requests.
+11:57:35 | INFO     | User 13 uploaded 'nova.txt' (61 chars).
+
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]
+Batches: 100%|##########| 1/1 [00:00<00:00, 59.19it/s]
+11:57:36 | INFO     | response: https://en.wikipedia.org/w/api.php?action=opensearch&profile=fuzzy&limit=1&search=What%20date%20does%20Project%20Nova%20launch%20and%20what%20is%20its%20budget%3F%20Answer%20briefly. 200
+11:57:36 | INFO     | response: https://grokipedia.com/api/typeahead?query=What+date+does+Project+Nova+launch+and+what+is+its+budget%3F+Answer+briefly.&limit=1 200
+11:57:37 | INFO     | response: https://www.google.com/search?q=What+date+does+Project+Nova+launch+and+what+is+its+budget%3F+Answer+briefly.&filter=1&start=0&hl=en-US&lr=lang_en&cr=countryUS 200
+11:57:37 | INFO     | Web search for 'What date does Project Nova launch and what is its budget? Answer briefly.': 3 results returned (requested 3).
+11:57:37 | INFO     | HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+11:57:37 | INFO     | Sophia answered. mode=hybrid | top_score=0.230 | chunks=5 | web=3
+11:58:44 | INFO     | User 14 uploaded 'plan.txt' (38 chars).
+12:00:05 | INFO     | User 5 uploaded 'MATH.md' (2756 chars).
+
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]
+Batches: 100%|##########| 1/1 [00:00<00:00, 50.00it/s]
+12:00:17 | INFO     | response: https://grokipedia.com/api/typeahead?query=Puedes+leer+ese+archivo+y+decirme+que+contiene%3F&limit=1 200
+12:00:17 | INFO     | response: https://en.wikipedia.org/w/api.php?action=opensearch&profile=fuzzy&limit=1&search=Puedes%20leer%20ese%20archivo%20y%20decirme%20que%20contiene%3F 200
+12:00:17 | INFO     | HTTP Request: POST https://html.duckduckgo.com/html/ "HTTP/2 202 Accepted"
+12:00:18 | INFO     | response: https://www.google.com/search?q=Puedes+leer+ese+archivo+y+decirme+que+contiene%3F&filter=1&start=0&hl=en-US&lr=lang_en&cr=countryUS 200
+12:00:18 | INFO     | Web search for 'Puedes leer ese archivo y decirme que contiene?': 3 results returned (requested 3).
+12:00:18 | INFO     | Sophia streaming. mode=hybrid | top_score=0.255 | chunks=5 | web=3
+12:00:19 | INFO     | HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"

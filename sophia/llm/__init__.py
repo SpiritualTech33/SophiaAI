@@ -2,12 +2,12 @@
 SophiaAI — LLM Client package.
 
 Public API:
-    GroqClient     — Wraps the Groq API behind a single chat() method.
-                     The rest of the app imports this, never the groq
-                     library directly.
-    SophiaLLMError — Custom exception for all LLM failures. The orchestrator
-                     catches this one type instead of knowing about Groq's
-                     internal exception hierarchy.
+    OpenRouterClient — Wraps the OpenRouter API behind chat() and chat_stream().
+                       The rest of the app imports this boundary instead of
+                       provider-specific HTTP details.
+    SophiaLLMError   — Custom exception for all LLM failures. The orchestrator
+                       catches this one type instead of knowing about provider
+                       internals.
 
 Anything else inside this package is implementation detail and may change.
 

@@ -99,3 +99,21 @@ export function PlusIcon({ size = 16, className }: IconProps) {
     </svg>
   );
 }
+
+export function PaperclipIcon({ size = 20, className }: IconProps) {
+  return (
+    <svg {...svgProps(size, className)}>
+      <path d="M21.44 11.05 12.25 20.24a5 5 0 0 1-7.07-7.07l9.19-9.19a3 3 0 0 1 4.24 4.24l-9.2 9.19a1 1 0 0 1-1.41-1.41l8.49-8.49" />
+    </svg>
+  );
+}
+
+export function DownloadIcon({ size = 15, className }: IconProps) {
+  return (
+    <svg {...svgProps(size, className)}>
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <path d="M7 10l5 5 5-5" />
+      <path d="M12 15V3" />
+    </svg>
+  );
+}

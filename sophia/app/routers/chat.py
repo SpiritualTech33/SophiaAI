@@ -14,6 +14,7 @@ Executive Brief:
 from __future__ import annotations
 
 import json
+import logging
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from fastapi.responses import StreamingResponse
@@ -37,10 +38,12 @@ from sophia.db.service import (
     delete_conversation,
     get_conversation_with_messages,
     get_conversations_for_user,
+    get_files_text,
     update_conversation_title,
 )
 
 router = APIRouter(tags=["chat"])
+logger = logging.getLogger("sophia.app.routers.chat")
 
 _MAX_TITLE_LENGTH = 42
 
@@ -90,7 +93,10 @@ def chat(
 
     add_message(session, conversation.id, "user", body.message)
 
-    response = sophia.ask(body.message, conversation_history=history)
+    attachments = get_files_text(session, body.attached_file_ids, user.id)
+    response = sophia.ask(
+        body.message, conversation_history=history, attachments=attachments
+    )
 
     sources_data = [
         {"text": c.text[:200], "source_file": c.source_file, "pillar": c.pillar, "score": c.score}
@@ -157,7 +163,10 @@ def chat_stream(
     add_message(session, conversation.id, "user", body.message)
     conversation_id = conversation.id
 
-    stream = sophia.ask_stream(body.message, conversation_history=history)
+    attachments = get_files_text(session, body.attached_file_ids, user.id)
+    stream = sophia.ask_stream(
+        body.message, conversation_history=history, attachments=attachments
+    )
     session_factory = request.app.state.session_factory
 
     # Corpus citations are known up front (chunks are retrieved before the LLM
@@ -187,13 +196,31 @@ def chat_stream(
             for token in stream.tokens:
                 buffer.append(token)
                 yield _sse_frame("token", {"text": token})
-        except SophiaLLMError:
+        except SophiaLLMError as error:
+            logger.warning(
+                "LLM stream failed for conversation %s: %s",
+                conversation_id,
+                error,
+            )
             yield _sse_frame("error", {
                 "message": "Sophia could not complete her answer. Please try again.",
             })
             return
 
         answer = "".join(buffer)
+
+        # Final guard: a stream that produced no real content must not persist
+        # an empty bubble. Surface an error instead (the client retries before
+        # reaching here, so this is rare).
+        if not answer.strip():
+            logger.warning(
+                "Empty answer for conversation %s; emitting error, not persisting.",
+                conversation_id,
+            )
+            yield _sse_frame("error", {
+                "message": "Sophia could not complete her answer. Please try again.",
+            })
+            return
 
         write_session = session_factory()
         try:

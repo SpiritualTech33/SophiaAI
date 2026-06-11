@@ -40,7 +40,7 @@ async def lifespan(app: FastAPI):
     """
     Executive Brief:
         Startup: create DB engine, create tables, build session factory,
-        load AI objects (retriever, LLM client, orchestrator).
+        load AI objects (retriever, OpenRouter client, orchestrator).
         Shutdown: dispose the engine.
     """
     logger.info("SophiaAI starting up ...")
@@ -50,6 +50,7 @@ async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
     app.state.session_factory = build_session_factory(engine)
     app.state.jwt_secret = os.environ.get("JWT_SECRET", "dev-secret-change-in-production")
+    app.state.upload_dir = os.environ.get("FILES_UPLOAD_DIR", "data/user_uploads")
 
     from sophia.core import Sophia
     from sophia.llm import OpenRouterClient
@@ -98,10 +99,11 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    from sophia.app.routers import auth, chat, corpus
+    from sophia.app.routers import auth, chat, corpus, files
     application.include_router(auth.router)
     application.include_router(chat.router)
     application.include_router(corpus.router)
+    application.include_router(files.router)
 
     return application
 

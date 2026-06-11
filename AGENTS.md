@@ -1,4 +1,4 @@
-# CLAUDE.md — SophiaAI
+# AGENTS.md — SophiaAI
 
 Durable facts that survive across sessions. Holds the WHY, not the WHAT.
 Anything derivable from the repo (file paths, test names, git history, code
@@ -65,6 +65,10 @@ Markers: ✅ live today · 🎯 north-star (not built yet — don't reference as
 - **LLM = OpenRouter, not local.** No GPU; one API key reaches many providers.
   One swap-point file (`sophia/llm/openrouter_client.py`) → provider/model
   replaceable in one commit (set `OPENROUTER_MODEL`).
+- **Streaming LLM failures stay user-safe but must be operator-visible.** The
+  UI shows a generic recovery message, while the backend should log the real
+  `SophiaLLMError` cause at the streaming boundary so production debugging has
+  evidence.
 - **Embeddings = all-MiniLM-L6-v2 (384 dims).** Small, fast on CPU, free, good
   enough. No Ferrari to drive to the corner store.
 - **FAISS IndexFlatIP on L2-normalized vectors.** Flat = exact search; ~1,422
@@ -108,6 +112,9 @@ Markers: ✅ live today · 🎯 north-star (not built yet — don't reference as
 - **FAISS returns -1 ids as padding** when `top_k > index.ntotal`. Filter `< 0`.
 - **DB env name mismatch (fix in SaaS M0):** app reads `DATABASE_URL`
   (`sophia/app/main.py`), Alembic reads `SOPHIA_DB_URL` (`alembic/env.py`).
+- **Restart Uvicorn after LLM env changes.** `OPENROUTER_MODEL` is loaded from
+  `.env` during process startup/import. If logs still show the previous model,
+  the backend process is stale, not necessarily the code.
 - **Windows line endings.** Git warns `LF will be replaced by CRLF` — harmless.
 - **venv activation:** `SophiaAI-venv\Scripts\Activate.ps1` (PowerShell). Run
   shell commands via PowerShell on this Windows box.
