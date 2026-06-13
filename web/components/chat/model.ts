@@ -35,3 +35,11 @@ export const CONTEMPLATION_PHRASES = [
 export function randomPhrase(): string {
   return CONTEMPLATION_PHRASES[Math.floor(Math.random() * CONTEMPLATION_PHRASES.length)];
 }
+
+/**
+ * Mental Model:
+ *   The two modes of the left sidebar. `conversations` shows the existing
+ *   chat list; `images` shows the generated-image gallery. A single piece
+ *   of state in ChatWorkspace drives which tab is active.
+ */
+export type SidebarTab = "conversations" | "images";

@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion } from "motion/react";
 import type {
   ConversationDetail,
   ConversationSummary,
@@ -12,7 +13,7 @@ import type {
 import { clientFetch } from "@/lib/client";
 import { consumeSse } from "@/lib/sse";
 import { dedupeSources } from "@/lib/format";
-import { randomPhrase, type ChatMessage } from "./model";
+import { randomPhrase, type ChatMessage, type SidebarTab } from "./model";
 import Wordmark from "@/components/cosmic/Wordmark";
 import ConversationSidebar from "./ConversationSidebar";
 import ChatThread from "./ChatThread";
@@ -20,15 +21,15 @@ import Composer from "./Composer";
 import GlassPanel from "@/components/cosmic/GlassPanel";
 import MindPanel from "@/components/mind/MindPanel";
 import DocReader from "@/components/mind/DocReader";
+import ImageLightbox from "./ImageLightbox";
 
 /**
  * Mental Model:
- *   The brain of the chat page. It holds every piece of mutable state —
- *   conversations, the open conversation's messages, the streaming answer, the
- *   cited documents, the reader — and hands slices down to the three panels.
- *   Reads come pre-loaded from the server (initialConversations, corpus); all
- *   live interaction (send, open, rename, delete) talks to the BFF from here.
- *   The single source of truth for the dialogue lives in `messages`.
+ *   The brain of the chat page. Holds every piece of mutable state —
+ *   conversations, messages, streaming answer, cited documents, reader,
+ *   sidebar tab, and image lightbox. Hands slices down to the three panels.
+ *   The sidebar now supports two tabs: "conversations" (default) and "images".
+ *   The header has two toggle buttons that control which tab is active.
  */
 
 let counter = 0;
@@ -56,7 +57,9 @@ export default function ChatWorkspace({
   const [citedPaths, setCitedPaths] = useState<string[]>([]);
   const [readerDoc, setReaderDoc] = useState<CorpusDocOut | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarTab, setSidebarTab] = useState<SidebarTab>("conversations");
   const [mindOpen, setMindOpen] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState<ImageGenerateOut | null>(null);
 
   const byPath = useMemo(() => {
     const map = new Map<string, CorpusDocOut>();
@@ -292,27 +295,58 @@ export default function ChatWorkspace({
     [byPath],
   );
 
+  /**
+   * Toggle the sidebar open/closed for a specific tab.
+   * If the sidebar is already open on the same tab, close it.
+   * If it's open on a different tab, switch to the new tab.
+   */
+  const toggleSidebar = useCallback(
+    (tab: SidebarTab) => {
+      if (sidebarOpen && sidebarTab === tab) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarTab(tab);
+        setSidebarOpen(true);
+      }
+    },
+    [sidebarOpen, sidebarTab],
+  );
+
   return (
     <>
       <header className="site-header">
         <Wordmark />
         <div className="header-toggles">
-          <button
+          <motion.button
             type="button"
-            className="btn btn-ghost panel-toggle"
-            onClick={() => setSidebarOpen((v) => !v)}
-            aria-expanded={sidebarOpen}
+            className={`btn btn-ghost panel-toggle${sidebarOpen && sidebarTab === "conversations" ? " active" : ""}`}
+            onClick={() => toggleSidebar("conversations")}
+            aria-expanded={sidebarOpen && sidebarTab === "conversations"}
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
           >
             Chats
-          </button>
-          <button
+          </motion.button>
+          <motion.button
+            type="button"
+            className={`btn btn-ghost panel-toggle${sidebarOpen && sidebarTab === "images" ? " active" : ""}`}
+            onClick={() => toggleSidebar("images")}
+            aria-expanded={sidebarOpen && sidebarTab === "images"}
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
+          >
+            Images
+          </motion.button>
+          <motion.button
             type="button"
             className="btn btn-ghost panel-toggle"
             onClick={() => setMindOpen((v) => !v)}
             aria-expanded={mindOpen}
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
           >
             Mind
-          </button>
+          </motion.button>
         </div>
       </header>
 
@@ -322,11 +356,14 @@ export default function ChatWorkspace({
             conversations={conversations}
             currentId={currentId}
             open={sidebarOpen}
+            activeTab={sidebarTab}
+            onTabChange={setSidebarTab}
             onOpen={openConversation}
             onNew={newConversation}
             onRename={renameConversation}
             onDelete={deleteConversation}
             onSignout={signout}
+            onImageClick={setLightboxImage}
           />
 
           <GlassPanel as="section" className="conversation">
@@ -353,6 +390,8 @@ export default function ChatWorkspace({
       {readerDoc ? (
         <DocReader key={readerDoc.id} doc={readerDoc} onClose={() => setReaderDoc(null)} />
       ) : null}
+
+      <ImageLightbox image={lightboxImage} onClose={() => setLightboxImage(null)} />
     </>
   );
 }
