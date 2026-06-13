@@ -30,6 +30,14 @@ export type UploadedFile = {
 /** The formats Sophia can generate for download. */
 export type ExportFormat = "txt" | "md" | "pdf" | "docx";
 
+/** Response from POST /api/images/generate. */
+export type ImageGenerateOut = {
+  id: number;
+  filename: string;
+  mime: string;
+  url: string;
+};
+
 export type SourceOut = {
   text: string;
   source_file: string;

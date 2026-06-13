@@ -81,7 +81,7 @@ def create_app() -> FastAPI:
     application = FastAPI(
         title="SophiaAI",
         description="A bridge between the Divine and Technology.",
-        version="0.12.0",
+        version="0.12.2",
         lifespan=lifespan,
     )
 
@@ -99,11 +99,12 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    from sophia.app.routers import auth, chat, corpus, files
+    from sophia.app.routers import auth, chat, corpus, files, images
     application.include_router(auth.router)
     application.include_router(chat.router)
     application.include_router(corpus.router)
     application.include_router(files.router)
+    application.include_router(images.router)
 
     return application
 

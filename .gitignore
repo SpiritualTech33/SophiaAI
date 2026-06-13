@@ -15,3 +15,5 @@ sophia_memory.db
 
 # graphify knowledge graph — regenerable from the repo, not tracked
 graphify-out/
+# User-uploaded and Sophia-generated files (runtime data, never commit)
+data/user_uploads/

@@ -54,6 +54,19 @@ class FileGenerateRequest(BaseModel):
     format: str
 
 
+class ImageGenerateRequest(BaseModel):
+    """Body for POST /api/images/generate."""
+    prompt: str
+
+
+class ImageGenerateOut(BaseModel):
+    """Response from POST /api/images/generate."""
+    id: int
+    filename: str
+    mime: str
+    url: str
+
+
 class ConversationRenameRequest(BaseModel):
     """Body for PATCH /api/conversations/{id}."""
     title: str

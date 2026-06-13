@@ -26,9 +26,11 @@ class CapturingSophia:
 
     def __init__(self):
         self.last_attachments = None
+        self.last_image_attachments = None
 
-    def ask(self, query, conversation_history=None, attachments=None):
+    def ask(self, query, conversation_history=None, attachments=None, image_attachments=None):
         self.last_attachments = attachments
+        self.last_image_attachments = image_attachments
         return SophiaResponse(
             answer=f"Mocked wisdom about: {query}",
             chunks=[],
@@ -187,3 +189,83 @@ def test_chat_ignores_other_users_file_ids(auth_client):
     )
     captured = client.app.state.sophia.last_attachments
     assert captured == []
+
+
+# ---------------------------------------------------------------------------
+# Image upload + raw serving
+# ---------------------------------------------------------------------------
+
+
+def test_upload_image_returns_metadata(auth_client):
+    client, token = auth_client
+    response = client.post(
+        "/api/files/upload",
+        files={"file": ("photo.png", b"\x89PNG\r\n\x1a\nfake-png-bytes", "image/png")},
+        headers=_auth_header(token),
+    )
+    assert response.status_code == 201
+    data = response.json()
+    assert data["filename"] == "photo.png"
+    assert data["mime"] == "image/png"
+    assert data["chars"] == 0
+
+
+def test_raw_serves_uploaded_image_bytes(auth_client):
+    client, token = auth_client
+    raw = b"\x89PNG\r\n\x1a\nfake-png-bytes"
+    file_id = client.post(
+        "/api/files/upload",
+        files={"file": ("photo.png", raw, "image/png")},
+        headers=_auth_header(token),
+    ).json()["id"]
+
+    response = client.get(f"/api/files/{file_id}/raw", headers=_auth_header(token))
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/png"
+    assert response.content == raw
+
+
+def test_raw_requires_auth(auth_client):
+    client, token = auth_client
+    file_id = _upload(client, token, "agenda.txt", b"text")
+    response = client.get(f"/api/files/{file_id}/raw")
+    assert response.status_code == 401
+
+
+def test_raw_404_for_missing_file(auth_client):
+    client, token = auth_client
+    response = client.get("/api/files/999999/raw", headers=_auth_header(token))
+    assert response.status_code == 404
+
+
+def test_raw_404_for_other_users_file(auth_client):
+    client, token = auth_client
+    other_token = register_and_get_token(client, email="intruder2@sophia.ai")
+    foreign_id = _upload(client, other_token, "secret.txt", b"Top secret.")
+
+    response = client.get(f"/api/files/{foreign_id}/raw", headers=_auth_header(token))
+    assert response.status_code == 404
+
+
+# ---------------------------------------------------------------------------
+# Chat with image attachment -> vision (multimodal) path
+# ---------------------------------------------------------------------------
+
+
+def test_chat_with_image_attachment_passes_image_to_orchestrator(auth_client):
+    client, token = auth_client
+    raw = b"\x89PNG\r\n\x1a\nfake-png-bytes"
+    file_id = client.post(
+        "/api/files/upload",
+        files={"file": ("photo.png", raw, "image/png")},
+        headers=_auth_header(token),
+    ).json()["id"]
+
+    response = client.post(
+        "/api/chat",
+        json={"message": "What is in this image?", "attached_file_ids": [file_id]},
+        headers=_auth_header(token),
+    )
+    assert response.status_code == 200
+    captured = client.app.state.sophia.last_image_attachments
+    assert captured == [(raw, "image/png")]

@@ -25,13 +25,18 @@ from sqlalchemy.orm import Session
 from sophia.app.dependencies import get_authenticated_user, get_db_session
 from sophia.app.schemas import FileGenerateRequest, FileUploadOut
 from sophia.db.models import User
-from sophia.db.service import create_user_file
+from sophia.db.service import create_user_file, get_user_file
 from sophia.files import (
     FileParseError,
     FileTooLargeError,
     UnsupportedFileTypeError,
     extract_text,
     render_file,
+)
+from sophia.vision import (
+    ImageTooLargeError,
+    UnsupportedImageTypeError,
+    encode_image_content,
 )
 
 logger = logging.getLogger("sophia.app.routers.files")
@@ -43,6 +48,12 @@ _STATUS_BY_ERROR = {
     UnsupportedFileTypeError: 415,
     FileTooLargeError: 413,
     FileParseError: 422,
+}
+
+# Same mapping for the image path (vision tool errors).
+_IMAGE_STATUS_BY_ERROR = {
+    UnsupportedImageTypeError: 415,
+    ImageTooLargeError: 413,
 }
 
 
@@ -69,11 +80,19 @@ async def upload_file(
     """
     raw = await file.read()
     original_name = file.filename or "upload"
+    mime_type = file.content_type or "application/octet-stream"
 
-    try:
-        text = extract_text(raw, original_name)
-    except tuple(_STATUS_BY_ERROR) as error:
-        raise HTTPException(status_code=_STATUS_BY_ERROR[type(error)], detail=str(error))
+    if mime_type.startswith("image/"):
+        try:
+            encode_image_content(raw, mime_type)
+        except tuple(_IMAGE_STATUS_BY_ERROR) as error:
+            raise HTTPException(status_code=_IMAGE_STATUS_BY_ERROR[type(error)], detail=str(error))
+        text = ""
+    else:
+        try:
+            text = extract_text(raw, original_name)
+        except tuple(_STATUS_BY_ERROR) as error:
+            raise HTTPException(status_code=_STATUS_BY_ERROR[type(error)], detail=str(error))
 
     extension = Path(original_name).suffix.lower()
     user_dir = _upload_dir(request) / str(user.id)
@@ -87,7 +106,7 @@ async def upload_file(
         conversation_id=None,
         original_filename=original_name,
         stored_path=str(stored_path),
-        mime_type=file.content_type or "application/octet-stream",
+        mime_type=mime_type,
         extracted_text=text,
         size_bytes=len(raw),
     )
@@ -99,6 +118,26 @@ async def upload_file(
         mime=record.mime_type,
         chars=len(text),
     )
+
+
+@router.get("/api/files/{file_id}/raw")
+def get_file_raw(
+    file_id: int,
+    user: User = Depends(get_authenticated_user),
+    session: Session = Depends(get_db_session),
+) -> Response:
+    """
+    Executive Brief:
+        Stream a file's raw bytes back, owner-scoped. Used by the frontend to
+        display image previews and Sophia-generated images inline. Returns
+        404 if the file does not exist or belongs to a different user.
+    """
+    record = get_user_file(session, file_id, user.id)
+    if record is None:
+        raise HTTPException(status_code=404, detail="File not found")
+
+    data = Path(record.stored_path).read_bytes()
+    return Response(content=data, media_type=record.mime_type)
 
 
 @router.post("/api/files/generate")

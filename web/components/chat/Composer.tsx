@@ -2,25 +2,32 @@
 
 import { useRef, useState, type ChangeEvent, type KeyboardEvent } from "react";
 import { motion } from "motion/react";
-import { PaperclipIcon, SendIcon, CloseIcon } from "@/components/cosmic/icons";
+import { PaperclipIcon, SendIcon, CloseIcon, ImageIcon } from "@/components/cosmic/icons";
 import { clientFetch } from "@/lib/client";
-import type { UploadedFile } from "@/lib/types";
+import type { ImageGenerateOut, UploadedFile } from "@/lib/types";
 
-const ACCEPT = ".txt,.md,.pdf,.docx";
+const ACCEPT = ".txt,.md,.pdf,.docx,image/jpeg,image/png,image/webp,image/gif";
+const IMAGE_MIME_PREFIX = "image/";
 
 /**
  * Mental Model:
- *   Where the human speaks — and now, hands Sophia documents. The textarea grows
- *   with its content, Enter sends while Shift+Enter makes a newline. The paperclip
- *   uploads files to the BFF; each accepted file becomes a chip above the input.
- *   On send we pass the message plus the ids of the attached files, then clear
- *   both. Upload and send stay disabled while Sophia is answering.
+ *   Where the human speaks — and now, hands Sophia documents and images. The
+ *   textarea grows with its content, Enter sends while Shift+Enter makes a
+ *   newline. The paperclip uploads files to the BFF; each accepted file becomes
+ *   a chip above the input — images render as a thumbnail, other files as a
+ *   filename chip. The picture button opens an inline prompt that asks Sophia
+ *   to generate an image via the BFF, then hands the result to onImageGenerated
+ *   so it appears as a Sophia message. On send we pass the message plus the ids
+ *   of the attached files, then clear both. Upload and send stay disabled while
+ *   Sophia is answering.
  */
 export default function Composer({
   onSend,
+  onImageGenerated,
   disabled,
 }: {
-  onSend: (text: string, fileIds: number[]) => void;
+  onSend: (text: string, fileIds: number[], imageUrls: string[]) => void;
+  onImageGenerated: (image: ImageGenerateOut) => void;
   disabled: boolean;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -28,6 +35,10 @@ export default function Composer({
   const [attached, setAttached] = useState<UploadedFile[]>([]);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [generating, setGenerating] = useState(false);
+  const [generateOpen, setGenerateOpen] = useState(false);
+  const [generatePrompt, setGeneratePrompt] = useState("");
+  const [generateError, setGenerateError] = useState<string | null>(null);
 
   function autoGrow() {
     const el = textareaRef.current;
@@ -41,7 +52,10 @@ export default function Composer({
     if (!el) return;
     const text = el.value.trim();
     if (!text || disabled) return;
-    onSend(text, attached.map((f) => f.id));
+    const imageUrls = attached
+      .filter((f) => f.mime.startsWith(IMAGE_MIME_PREFIX))
+      .map((f) => `/api/files/${f.id}/raw`);
+    onSend(text, attached.map((f) => f.id), imageUrls);
     el.value = "";
     setAttached([]);
     autoGrow();
@@ -85,13 +99,45 @@ export default function Composer({
     setAttached((prev) => prev.filter((f) => f.id !== id));
   }
 
+  async function submitGeneratePrompt() {
+    const prompt = generatePrompt.trim();
+    if (!prompt || generating) return;
+
+    setGenerating(true);
+    setGenerateError(null);
+    try {
+      const res = await clientFetch("/api/images/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
+      if (!res.ok) {
+        const detail = await res.json().catch(() => null);
+        setGenerateError(detail?.detail ?? "Sophia could not create that image.");
+        return;
+      }
+      const image = (await res.json()) as ImageGenerateOut;
+      onImageGenerated(image);
+      setGeneratePrompt("");
+      setGenerateOpen(false);
+    } catch {
+      setGenerateError("Network error during image generation. Please try again.");
+    } finally {
+      setGenerating(false);
+    }
+  }
+
   return (
     <div className="composer-wrap">
       {attached.length > 0 && (
         <ul className="attach-chips" aria-label="Attached files">
           {attached.map((f) => (
             <li key={f.id} className="attach-chip">
-              <span className="attach-chip-name">{f.filename}</span>
+              {f.mime.startsWith(IMAGE_MIME_PREFIX) ? (
+                <img className="attach-chip-thumb" src={`/api/files/${f.id}/raw`} alt={f.filename} />
+              ) : (
+                <span className="attach-chip-name">{f.filename}</span>
+              )}
               <button
                 type="button"
                 className="attach-chip-remove"
@@ -106,6 +152,42 @@ export default function Composer({
       )}
 
       {uploadError && <p className="attach-error">{uploadError}</p>}
+
+      {generateOpen && (
+        <form
+          className="generate-prompt"
+          onSubmit={(e) => {
+            e.preventDefault();
+            void submitGeneratePrompt();
+          }}
+        >
+          <input
+            type="text"
+            value={generatePrompt}
+            onChange={(e) => setGeneratePrompt(e.target.value)}
+            placeholder="Describe the image Sophia should create…"
+            aria-label="Image prompt"
+            disabled={generating}
+            autoFocus
+          />
+          <button type="submit" className="btn btn-ghost" disabled={generating || !generatePrompt.trim()}>
+            {generating ? "Creating…" : "Create"}
+          </button>
+          <button
+            type="button"
+            className="btn btn-ghost"
+            onClick={() => {
+              setGenerateOpen(false);
+              setGenerateError(null);
+            }}
+            disabled={generating}
+          >
+            Cancel
+          </button>
+        </form>
+      )}
+
+      {generateError && <p className="attach-error">{generateError}</p>}
 
       <form
         className="composer"
@@ -135,6 +217,19 @@ export default function Composer({
           whileTap={disabled || uploading ? undefined : { scale: 0.92 }}
         >
           <PaperclipIcon />
+        </motion.button>
+        <motion.button
+          type="button"
+          className="btn-attach"
+          onClick={() => setGenerateOpen((v) => !v)}
+          disabled={disabled}
+          aria-label="Generate image"
+          aria-expanded={generateOpen}
+          title="Ask Sophia to generate an image"
+          whileHover={disabled ? undefined : { scale: 1.08 }}
+          whileTap={disabled ? undefined : { scale: 0.92 }}
+        >
+          <ImageIcon />
         </motion.button>
         <textarea
           ref={textareaRef}

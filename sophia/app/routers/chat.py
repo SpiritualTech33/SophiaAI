@@ -32,13 +32,15 @@ from sophia.app.schemas import (
     SourceOut,
 )
 from sophia.db.models import User
+from pathlib import Path
+
 from sophia.db.service import (
     add_message,
     create_conversation,
     delete_conversation,
     get_conversation_with_messages,
     get_conversations_for_user,
-    get_files_text,
+    get_user_files,
     update_conversation_title,
 )
 
@@ -46,6 +48,25 @@ router = APIRouter(tags=["chat"])
 logger = logging.getLogger("sophia.app.routers.chat")
 
 _MAX_TITLE_LENGTH = 42
+
+
+def _split_attachments(
+    session: Session, file_ids: list[int], user_id: int,
+) -> tuple[list[str], list[tuple[bytes, str]]]:
+    """
+    Executive Brief:
+        Fetch the user's attached files and split them into text attachments
+        (extracted_text, for the system prompt) and image attachments (raw
+        bytes + mime type, for a multimodal user message). Files the user
+        does not own are silently skipped (enforced by get_user_files).
+    """
+    records = get_user_files(session, file_ids, user_id)
+    text_attachments = [r.extracted_text for r in records if not r.mime_type.startswith("image/")]
+    image_attachments = [
+        (Path(r.stored_path).read_bytes(), r.mime_type)
+        for r in records if r.mime_type.startswith("image/")
+    ]
+    return text_attachments, image_attachments
 
 
 def _title_from_message(message: str) -> str:
@@ -93,9 +114,12 @@ def chat(
 
     add_message(session, conversation.id, "user", body.message)
 
-    attachments = get_files_text(session, body.attached_file_ids, user.id)
+    attachments, image_attachments = _split_attachments(session, body.attached_file_ids, user.id)
     response = sophia.ask(
-        body.message, conversation_history=history, attachments=attachments
+        body.message,
+        conversation_history=history,
+        attachments=attachments,
+        image_attachments=image_attachments,
     )
 
     sources_data = [
@@ -163,9 +187,12 @@ def chat_stream(
     add_message(session, conversation.id, "user", body.message)
     conversation_id = conversation.id
 
-    attachments = get_files_text(session, body.attached_file_ids, user.id)
+    attachments, image_attachments = _split_attachments(session, body.attached_file_ids, user.id)
     stream = sophia.ask_stream(
-        body.message, conversation_history=history, attachments=attachments
+        body.message,
+        conversation_history=history,
+        attachments=attachments,
+        image_attachments=image_attachments,
     )
     session_factory = request.app.state.session_factory
 

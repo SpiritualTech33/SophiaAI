@@ -22,7 +22,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from sophia.llm import OpenRouterClient, SophiaLLMError
-from sophia.llm.openrouter_client import DEFAULT_MAX_RETRIES
+from sophia.llm.openrouter_client import DEFAULT_MAX_RETRIES, DEFAULT_MODEL
 
 
 @pytest.fixture(autouse=True)
@@ -131,7 +131,7 @@ def test_chat_uses_default_model(mock_client_class):
     client.chat(messages=[{"role": "user", "content": "hi"}])
 
     call_kwargs = mock_instance.post.call_args.kwargs
-    assert call_kwargs["json"]["model"] == "google/gemma-4-31b-it:free"
+    assert call_kwargs["json"]["model"] == DEFAULT_MODEL
 
 
 @patch.dict("os.environ", {"OPENROUTER_API_KEY": "test-key-123"})

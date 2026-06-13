@@ -6,6 +6,7 @@ import type {
   ConversationDetail,
   ConversationSummary,
   CorpusDocOut,
+  ImageGenerateOut,
   SourceOut,
 } from "@/lib/types";
 import { clientFetch } from "@/lib/client";
@@ -73,14 +74,14 @@ export default function ChatWorkspace({
   }, []);
 
   const send = useCallback(
-    async (text: string, fileIds: number[] = []) => {
+    async (text: string, fileIds: number[] = [], imageUrls: string[] = []) => {
       if (sending) return;
       setSending(true);
       setTypingPhrase(randomPhrase());
       setThinking(true);
       setMessages((m) => [
         ...m,
-        { key: uid(), role: "user", content: text, sources: [], webResults: [], searchMode: "" },
+        { key: uid(), role: "user", content: text, sources: [], webResults: [], searchMode: "", imageUrls },
       ]);
 
       const sophiaKey = uid();
@@ -186,6 +187,20 @@ export default function ChatWorkspace({
     },
     [sending, currentId, refreshConversations],
   );
+
+  const addGeneratedImage = useCallback((image: ImageGenerateOut) => {
+    setMessages((m) => [
+      ...m,
+      {
+        key: uid(),
+        role: "sophia",
+        content: `![generated](file:${image.id})`,
+        sources: [],
+        webResults: [],
+        searchMode: "",
+      },
+    ]);
+  }, []);
 
   const openConversation = useCallback(async (id: number) => {
     try {
@@ -323,7 +338,7 @@ export default function ChatWorkspace({
               onOpenSource={openSourceByPath}
               onExample={send}
             />
-            <Composer onSend={send} disabled={sending} />
+            <Composer onSend={send} onImageGenerated={addGeneratedImage} disabled={sending} />
           </GlassPanel>
 
           <MindPanel
