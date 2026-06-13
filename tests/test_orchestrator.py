@@ -654,3 +654,59 @@ def test_ask_stream_injects_attachment_text():
     call_args = mock_llm.chat_stream.call_args
     messages = call_args.kwargs.get("messages") or call_args[0][0]
     assert "STREAM_ATTACHMENT_TEXT" in messages[0]["content"]
+
+
+# ---------------------------------------------------------------------------
+# Image attachments — multimodal user message (vision)
+# ---------------------------------------------------------------------------
+
+
+def test_ask_with_image_attachment_builds_multimodal_user_content():
+    """An image attachment turns the user message content into a list with
+    a text part (the query) followed by an image_url part."""
+    sophia, mock_llm = _sophia_with_chunk()
+    sophia.ask(
+        "What is in this picture?",
+        image_attachments=[(b"fake-png-bytes", "image/png")],
+    )
+
+    call_args = mock_llm.chat.call_args
+    messages = call_args.kwargs.get("messages") or call_args[0][0]
+    user_content = messages[-1]["content"]
+
+    assert isinstance(user_content, list)
+    assert user_content[0] == {"type": "text", "text": "What is in this picture?"}
+    assert user_content[1]["type"] == "image_url"
+    assert user_content[1]["image_url"]["url"].startswith("data:image/png;base64,")
+
+
+def test_ask_without_image_attachments_user_content_is_string():
+    """Backward compatible: no image -> plain string content (existing behavior)."""
+    sophia, mock_llm = _sophia_with_chunk()
+    sophia.ask("Plain question")
+
+    call_args = mock_llm.chat.call_args
+    messages = call_args.kwargs.get("messages") or call_args[0][0]
+    assert messages[-1]["content"] == "Plain question"
+
+
+def test_ask_stream_with_image_attachment_builds_multimodal_user_content():
+    """The streaming path builds the same multimodal user content as ask()."""
+    mock_retriever = MagicMock()
+    mock_retriever.retrieve.return_value = [_make_chunk("p", "f.md", "mind", 0.9)]
+    mock_llm = MagicMock()
+    mock_llm.chat_stream.return_value = iter(["x"])
+
+    sophia = Sophia(retriever=mock_retriever, llm_client=mock_llm)
+    sophia.ask_stream(
+        "Describe this image",
+        image_attachments=[(b"fake-jpeg-bytes", "image/jpeg")],
+    )
+
+    call_args = mock_llm.chat_stream.call_args
+    messages = call_args.kwargs.get("messages") or call_args[0][0]
+    user_content = messages[-1]["content"]
+
+    assert isinstance(user_content, list)
+    assert user_content[0] == {"type": "text", "text": "Describe this image"}
+    assert user_content[1]["image_url"]["url"].startswith("data:image/jpeg;base64,")

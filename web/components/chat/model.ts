@@ -17,6 +17,8 @@ export type ChatMessage = {
   searchMode: string;
   streaming?: boolean;
   error?: boolean;
+  /** Raw-image URLs to show inside a user bubble (the photos they attached). */
+  imageUrls?: string[];
 };
 
 /** Loading lines shown while Sophia thinks — one picked at random per query. */

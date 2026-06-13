@@ -37,7 +37,7 @@ class MockStreamSophia:
         self._chunks = chunks or []
         self._raise_midstream = raise_midstream
 
-    def ask_stream(self, query, conversation_history=None, attachments=None):
+    def ask_stream(self, query, conversation_history=None, attachments=None, image_attachments=None):
         tokens = self._tokens
         raise_midstream = self._raise_midstream
 

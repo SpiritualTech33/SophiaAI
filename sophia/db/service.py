@@ -237,6 +237,24 @@ def get_user_file(session: Session, file_id: int, user_id: int) -> UserFile | No
     )
 
 
+def get_user_files(session: Session, file_ids: list[int], user_id: int) -> list[UserFile]:
+    """
+    Executive Brief:
+        Return the full records of the given files, owner-scoped and kept in
+        the caller's id order. Files the user does not own are silently
+        skipped, so a forged id is invisible to the caller.
+    """
+    if not file_ids:
+        return []
+    owned = (
+        session.query(UserFile)
+        .filter(UserFile.id.in_(file_ids), UserFile.user_id == user_id)
+        .all()
+    )
+    by_id = {record.id: record for record in owned}
+    return [by_id[fid] for fid in file_ids if fid in by_id]
+
+
 def get_files_text(session: Session, file_ids: list[int], user_id: int) -> list[str]:
     """
     Executive Brief:

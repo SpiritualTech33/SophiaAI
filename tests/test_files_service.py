@@ -26,6 +26,7 @@ from sophia.db.service import (
     create_user_file,
     get_files_text,
     get_user_file,
+    get_user_files,
 )
 
 
@@ -111,3 +112,25 @@ def test_get_files_text_empty_for_no_ids(session):
 def test_user_file_is_registered_on_metadata():
     assert "user_files" in Base.metadata.tables
     assert UserFile.__tablename__ == "user_files"
+
+
+def test_get_user_files_returns_owned_records_in_request_order(session):
+    user = create_user(session, "owner@sophia.ai", "hash")
+    a = _make_file(session, user.id, name="a.txt", text="alpha")
+    b = _make_file(session, user.id, name="b.txt", text="beta")
+    records = get_user_files(session, [b.id, a.id], user.id)
+    assert [r.id for r in records] == [b.id, a.id]
+
+
+def test_get_user_files_skips_files_not_owned(session):
+    owner = create_user(session, "owner@sophia.ai", "hash")
+    intruder = create_user(session, "intruder@sophia.ai", "hash")
+    mine = _make_file(session, owner.id, text="mine")
+    theirs = _make_file(session, intruder.id, text="theirs")
+    records = get_user_files(session, [mine.id, theirs.id], owner.id)
+    assert [r.id for r in records] == [mine.id]
+
+
+def test_get_user_files_empty_for_no_ids(session):
+    user = create_user(session, "owner@sophia.ai", "hash")
+    assert get_user_files(session, [], user.id) == []

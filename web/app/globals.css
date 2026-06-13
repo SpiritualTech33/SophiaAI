@@ -612,6 +612,21 @@ img { max-width: 100%; height: auto; display: block; }
 
 .msg-text { white-space: pre-wrap; }
 
+/* Images the user attached, shown on top of their message text. */
+.msg-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+.msg-image {
+  max-width: 220px;
+  max-height: 220px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  object-fit: cover;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
@@ -715,6 +730,12 @@ img { max-width: 100%; height: auto; display: block; }
   border-radius: var(--radius);
 }
 .attach-chip-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.attach-chip-thumb {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: calc(var(--radius) - 4px);
+}
 .attach-chip-remove {
   display: grid;
   place-items: center;
@@ -729,6 +750,31 @@ img { max-width: 100%; height: auto; display: block; }
   margin: var(--space-2) var(--space-3) 0;
   font-size: 0.78rem;
   color: var(--danger);
+}
+
+/* Generate image */
+.generate-prompt {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  margin: var(--space-2) var(--space-3) 0;
+}
+.generate-prompt input {
+  flex: 1;
+  padding: 8px var(--space-3);
+  font-size: 0.85rem;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.generate-prompt input:disabled { opacity: 0.6; }
+
+.generated-image {
+  display: block;
+  max-width: 100%;
+  border-radius: var(--radius);
+  margin: var(--space-2) 0;
 }
 
 /* Download (export a Sophia answer) */

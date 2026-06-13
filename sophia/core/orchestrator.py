@@ -25,6 +25,7 @@ from dataclasses import dataclass, field
 
 from sophia.rag.retriever import Chunk
 from sophia.tools.web_search import SearchResult, SophiaSearchError, web_search
+from sophia.vision import encode_image_content
 
 
 logging.basicConfig(
@@ -116,6 +117,7 @@ class Sophia:
         query: str,
         conversation_history: list[dict] | None = None,
         attachments: list[str] | None = None,
+        image_attachments: list[tuple[bytes, str]] | None = None,
     ) -> SophiaResponse:
         """Receive a user query, retrieve context, call the LLM, return a response."""
         chunks = self._retriever.retrieve(query, top_k=5)
@@ -129,7 +131,9 @@ class Sophia:
             search_mode = "hybrid" if chunks else "web"
 
         system_prompt = self._build_system_prompt(chunks, web_results, attachments)
-        messages = self._build_messages(system_prompt, query, conversation_history)
+        messages = self._build_messages(
+            system_prompt, query, conversation_history, image_attachments
+        )
 
         answer = self._llm_client.chat(messages=messages)
 
@@ -150,6 +154,7 @@ class Sophia:
         query: str,
         conversation_history: list[dict] | None = None,
         attachments: list[str] | None = None,
+        image_attachments: list[tuple[bytes, str]] | None = None,
     ) -> StreamingSophiaResponse:
         """Same pipeline as ask(), but stream the answer token-by-token.
 
@@ -169,7 +174,9 @@ class Sophia:
             search_mode = "hybrid" if chunks else "web"
 
         system_prompt = self._build_system_prompt(chunks, web_results, attachments)
-        messages = self._build_messages(system_prompt, query, conversation_history)
+        messages = self._build_messages(
+            system_prompt, query, conversation_history, image_attachments
+        )
 
         tokens = self._llm_client.chat_stream(messages=messages)
 
@@ -262,11 +269,16 @@ class Sophia:
         system_prompt: str,
         query: str,
         conversation_history: list[dict] | None,
+        image_attachments: list[tuple[bytes, str]] | None = None,
     ) -> list[dict]:
         """Build the messages list for the LLM: system + history + user query.
 
         History entries are normalized so domain roles (e.g. "sophia") become
         the LLM API roles the provider accepts (e.g. "assistant").
+
+        When image_attachments is non-empty, the final user message's content
+        becomes a multimodal list — the query as a text part followed by one
+        image_url part per attached image — instead of a plain string.
         """
         messages: list[dict] = [{"role": "system", "content": system_prompt}]
 
@@ -278,8 +290,23 @@ class Sophia:
                     "content": entry.get("content", ""),
                 })
 
-        messages.append({"role": "user", "content": query})
+        messages.append({"role": "user", "content": self._build_user_content(query, image_attachments)})
         return messages
+
+    @staticmethod
+    def _build_user_content(
+        query: str,
+        image_attachments: list[tuple[bytes, str]] | None,
+    ) -> str | list[dict]:
+        """Plain string when there are no images; otherwise a multimodal
+        content list with the query text followed by each image part."""
+        if not image_attachments:
+            return query
+
+        content: list[dict] = [{"type": "text", "text": query}]
+        for data, mime_type in image_attachments:
+            content.append(encode_image_content(data, mime_type))
+        return content
 
     # ------------------------------------------------------------------
     # Web search fallback

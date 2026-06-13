@@ -118,6 +118,16 @@ export function MusicIcon({ size = 20, className }: IconProps) {
   );
 }
 
+export function ImageIcon({ size = 20, className }: IconProps) {
+  return (
+    <svg {...svgProps(size, className)}>
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <circle cx="9" cy="9" r="2" />
+      <path d="m21 15-5-5L5 21" />
+    </svg>
+  );
+}
+
 export function DownloadIcon({ size = 15, className }: IconProps) {
   return (
     <svg {...svgProps(size, className)}>

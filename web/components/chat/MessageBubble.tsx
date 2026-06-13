@@ -51,6 +51,13 @@ export default function MessageBubble({
     className += "msg-user";
     inner = (
       <div className="bubble">
+        {message.imageUrls && message.imageUrls.length > 0 && (
+          <div className="msg-images">
+            {message.imageUrls.map((url) => (
+              <img key={url} className="msg-image" src={url} alt="Attached" />
+            ))}
+          </div>
+        )}
         <p className="msg-text">{message.content}</p>
       </div>
     );

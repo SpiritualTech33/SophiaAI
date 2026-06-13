@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.3-ALFA] - 2026-06-12
+
+Sophia gains eyes and a brush — she now **sees** the images you send and **generates** new ones on request. Two new senses, each behind the existing one-swap-point tool pattern (pure functions, isolated module, typed errors → HTTP status).
+
+### Added
+- New vision tool [`sophia/vision/`](file:///C:/Users/serra/Desktop/SophiaAI/sophia/vision/): `encode_image_content()` validates an upload (mime + size ceiling) and returns an OpenAI-format `image_url` content part (base64 data-URI). Typed errors map to `415` (unsupported type) and `413` (too large).
+- New image-generation tool [`sophia/image_gen/`](file:///C:/Users/serra/Desktop/SophiaAI/sophia/image_gen/): `generate_image(prompt) -> bytes` calls the Hugging Face Inference API (`black-forest-labs/FLUX.1-schnell`) with a Bearer `HF_TOKEN`. Any provider/transport failure is wrapped in `ImageGenerationError`.
+- Endpoint `POST /api/images/generate`: generates an image, stores it as a `UserFile`, and returns `{id, filename, mime, url}` (`502` on provider failure, `422` on empty prompt).
+- Endpoint `GET /api/files/{id}/raw`: owner-scoped raw-bytes serving (`404` if missing/not owned) — serves both uploaded photos and generated images for inline display.
+- `get_user_files()` service: owner-scoped fetch of full `UserFile` records (mime + path), preserving caller id order.
+- Web: image attachments in the composer (thumbnail chips), a "generate image" button with an inline prompt, two BFF routes ([`/api/images/generate`](file:///C:/Users/serra/Desktop/SophiaAI/web/app/api/images/generate/route.ts), [`/api/files/[id]/raw`](file:///C:/Users/serra/Desktop/SophiaAI/web/app/api/files/%5Bid%5D/raw/route.ts)), and inline rendering: generated images via a `![generated](file:{id})` sentinel, and **the photos you attach now appear inside your own message bubble** (image on top, text below).
+- New config: `HF_TOKEN` in [`.env.example`](file:///C:/Users/serra/Desktop/SophiaAI/.env.example).
+
+### Changed
+- `Sophia.ask`/`ask_stream` accept `image_attachments`; when present, the final user turn becomes a multimodal content array (`[{text}, {image_url}…]`) instead of a plain string. The chat router splits attachments by mime — text files keep the prompt-injection path, images ride as vision content.
+- The `upload_file` endpoint accepts image mimes (`jpeg/png/webp/gif`): images skip text extraction (validated via the vision encoder), stored with `extracted_text=""`.
+- **LLM model → `google/gemini-2.5-flash-lite`** (native multimodal, paid but cheap). One config line — no per-request model switching; text and vision share the configured `DEFAULT_MODEL`. App version bumped to 0.12.2.
+
+### Fixed
+- Image generation moved off Pollinations.ai after its anonymous tier began returning `402 Payment Required` (x402 micropayment challenge) on every keyless request. Hugging Face Inference (FLUX.1-schnell) replaces it.
+
+### Tests
+- 260 backend tests pass (added vision, image-gen, images-endpoint, raw-serving, and orchestrator-multimodal suites). Next build clean. Live E2E verified: attach a photo → Sophia describes it; click generate → JPEG renders inline.
+
 ## [0.7.2-ALFA] - 2026-06-05
 
 File read & generate — Sophia gains hands for documents. Users upload files for

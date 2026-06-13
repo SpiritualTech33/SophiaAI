@@ -50,11 +50,12 @@ def test_app(tmp_path):
     from sophia.core.corpus import CorpusLibrary
     app.state.corpus = CorpusLibrary()
 
-    from sophia.app.routers import auth, chat, corpus, files
+    from sophia.app.routers import auth, chat, corpus, files, images
     app.include_router(auth.router)
     app.include_router(chat.router)
     app.include_router(corpus.router)
     app.include_router(files.router)
+    app.include_router(images.router)
 
     yield app
 
